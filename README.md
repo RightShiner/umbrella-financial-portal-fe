@@ -1,1 +1,4 @@
-# umbrella-financial-fe
+# React Admin Dashboard
+
+Completed React Admin Dashboard Repo
+
