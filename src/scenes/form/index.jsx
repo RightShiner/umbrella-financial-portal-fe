@@ -115,6 +115,125 @@ const Form = () => {
                 helperText={touched.address2 && errors.address2}
                 sx={{ gridColumn: "span 4" }}
               />
+              <TextField
+                fullWidth
+                variant="filled"
+                type="text"
+                label="Profile photos"
+                onBlur={handleBlur}
+                onChange={handleChange}
+                value={values.profilePhotos}
+                name="profilePhotos"
+                error={!!touched.profilePhotos && !!errors.profilePhotos}
+                helperText={touched.profilePhotos && errors.profilePhotos}
+                sx={{ gridColumn: "span 4" }}
+              />
+              <TextField
+                fullWidth
+                variant="filled"
+                type="text"
+                label="City"
+                onBlur={handleBlur}
+                onChange={handleChange}
+                value={values.city}
+                name="city"
+                error={!!touched.city && !!errors.city}
+                helperText={touched.city && errors.city}
+                sx={{ gridColumn: "span 1" }}
+              />
+              <TextField
+                fullWidth
+                variant="filled"
+                type="text"
+                label="State"
+                onBlur={handleBlur}
+                onChange={handleChange}
+                value={values.state}
+                name="state"
+                error={!!touched.state && !!errors.state}
+                helperText={touched.state && errors.state}
+                sx={{ gridColumn: "span 1" }}
+              />
+              <TextField
+                fullWidth
+                variant="filled"
+                type="text"
+                label="Zipcode"
+                onBlur={handleBlur}
+                onChange={handleChange}
+                value={values.zipcode}
+                name="zipcode"
+                error={!!touched.zipcode && !!errors.zipcode}
+                helperText={touched.zipcode && errors.zipcode}
+                sx={{ gridColumn: "span 1" }}
+              />
+              <TextField
+                fullWidth
+                variant="filled"
+                type="text"
+                label="UIG ID"
+                onBlur={handleBlur}
+                onChange={handleChange}
+                value={values.uIGID}
+                name="uIGID"
+                error={!!touched.uIGID && !!errors.uIGID}
+                helperText={touched.uIGID && errors.uIGID}
+                sx={{ gridColumn: "span 1" }}
+              />
+              <TextField
+                fullWidth
+                variant="filled"
+                type="text"
+                label="Affiliate ID"
+                onBlur={handleBlur}
+                onChange={handleChange}
+                value={values.affiliateID}
+                name="affiliateID"
+                error={!!touched.affiliateID && !!errors.affiliateID}
+                helperText={touched.affiliateID && errors.affiliateID}
+                sx={{ gridColumn: "span 2" }}
+              />
+              <TextField
+                fullWidth
+                variant="filled"
+                type="text"
+                label="Date of Birth"
+                onBlur={handleBlur}
+                onChange={handleChange}
+                value={values.dateOfBirth}
+                name="dateOfBirth"
+                error={!!touched.dateOfBirth && !!errors.dateOfBirth}
+                helperText={touched.dateOfBirth && errors.dateOfBirth}
+                sx={{ gridColumn: "span 2" }}
+              />
+              <TextField
+                fullWidth
+                variant="filled"
+                type="text"                
+                label="About me description"
+                multiline="true"
+                rows="5"
+                onBlur={handleBlur}
+                onChange={handleChange}
+                value={values.aboutMeDescription}
+                name="aboutMeDescription"
+                error={!!touched.aboutMeDescription && !!errors.aboutMeDescription}
+                helperText={touched.aboutMeDescription && errors.aboutMeDescription}
+                sx={{ gridColumn: "span 4" }}
+              />
+              <TextField
+                fullWidth
+                variant="filled"
+                type="text"
+                label="Billing information"
+                onBlur={handleBlur}
+                onChange={handleChange}
+                value={values.billingInformation}
+                name="billingInformation"
+                error={!!touched.billingInformation && !!errors.billingInformation}
+                helperText={touched.billingInformation && errors.billingInformation}
+                sx={{ gridColumn: "span 4" }}
+              />
             </Box>
             <Box display="flex" justifyContent="end" mt="20px">
               <Button type="submit" color="secondary" variant="contained">
@@ -141,6 +260,16 @@ const checkoutSchema = yup.object().shape({
     .required("required"),
   address1: yup.string().required("required"),
   address2: yup.string().required("required"),
+  profilePhotos: yup.string().required("required"),
+  city: yup.string().required("required"),
+  state: yup.string().required("required"),
+  zipcode: yup.string().required("required"),
+  uIGID: yup.string().required("required"),
+  affiliateID: yup.string().required("required"),
+  aboutMeDescription: yup.string().required("required"),
+  dateOfBirth: yup.string().required("required"),
+  billingInformation: yup.string().required("required"),
+
 });
 const initialValues = {
   firstName: "",
@@ -149,6 +278,15 @@ const initialValues = {
   contact: "",
   address1: "",
   address2: "",
+  profilePhotos: "",
+  city: "",
+  state: "",
+  zipcode: "",
+  uIGID: "",
+  affiliateID: "",
+  aboutMeDescription: "",
+  dateOfBirth: "",
+  billingInformation: "",
 };
 
 export default Form;
