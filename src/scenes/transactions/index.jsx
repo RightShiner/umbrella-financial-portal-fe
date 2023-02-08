@@ -10,36 +10,151 @@ const Transactions = () => {
   const columns = [
     { field: "id", headerName: "ID" },
     {
-      field: "name",
-      headerName: "Name",
-      flex: 1,
-      cellClassName: "name-column--cell",
+      field: "affiliate_plan",
+      headerName: "Affiliate Plane",
+      
     },
     {
-      field: "phone",
+      field: "affiliate_plan_purchase_date",
+      headerName: "Affiliate Plan Purchase Date",
+      
+    },
+    {
+      field: "affiliate_referral_id",
+      headerName: "Affiliate Referral Id",
+      
+    },
+    {
+      field: "affiliate_referral_link",
+      headerName: "Affiliate Referral Link",
+      
+    },
+    {
+      field: "affiliate_referral_name",
+      headerName: "Affiliate Referral Name",
+      
+    },
+    {
+      field: "affiliate_referral_plan",
+      headerName: "Affiliate Referral Plan",
+      
+    },
+    {
+      field: "affiliate_referral_user_id",
+      headerName: "Affiliate Referral User Id",
+      
+    },
+    {
+      field: "affiliate_status",
+      headerName: "Affiliate Status",
+      
+    },
+    {
+      field: "affiliate_url",
+      headerName: "Affiliate Url",
+      
+    },
+    {
+      field: "coach_id",
+      headerName: "Coach Id",
+      
+    },
+    {
+      field: "coach_name",
+      headerName: "Coach Name",
+      
+    },
+    {
+      field: "coach_user_id",
+      headerName: "Coach User Id",
+      
+    },
+    {
+      field: "customer_plan",
+      headerName: "Customer Plan",
+      
+    },
+    {
+      field: "customer_plan_purchase_date",
+      headerName: "Customer Plan Purchase Date",
+      
+    },
+    {
+      field: "customer_status",
+      headerName: "Customer Status",
+      
+    },
+    {
+      field: "email1",      
+      headerName: "email1",
+      
+    },
+    {
+      field: "has_coach_tier",      
+      headerName: "Has Coach Tier",
+      
+    },
+    {
+      field: "has_partner_tier",      
+      headerName: "Has Partner Tier",
+      
+    },
+    {
+      field: "mentor_id",      
+      headerName: "Mentor Id",
+      
+    },
+    {
+      field: "mentor_name",      
+      headerName: "Mentor name",
+      
+    },
+    {
+      field: "mentor_user_id",      
+      headerName: "Mentor User Id",
+      
+    },
+    {
+      field: "name1",
+      headerName: "name1",
+      
+    },
+    {
+      field: "partner_id",
+      headerName: "Partner Id",
+      
+    },
+    {
+      field: "partner_name",
+      headerName: "Partner Name",
+      
+    },
+    {
+      field: "partner_user_id",
+      headerName: "Partner User Id",
+      
+    },
+    {
+      field: "phone_number",
       headerName: "Phone Number",
-      flex: 1,
+      
     },
     {
-      field: "email",
-      headerName: "Email",
-      flex: 1,
+      field: "referred_by_affiliate",
+      headerName: "Referred By Affiliate",
+      
     },
     {
-      field: "cost",
-      headerName: "Cost",
-      flex: 1,
-      renderCell: (params) => (
-        <Typography color={colors.greenAccent[500]}>
-          ${params.row.cost}
-        </Typography>
-      ),
+      field: "transaction_total",
+      headerName: "Transaction Total",
+      
     },
     {
-      field: "date",
-      headerName: "Date",
-      flex: 1,
+      field: "user_id",
+      headerName: "User Id",
+      
     },
+    
   ];
 
   return (
