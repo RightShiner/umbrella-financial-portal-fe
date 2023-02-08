@@ -11,6 +11,7 @@ import LineChart from "../../components/LineChart";
 import GeographyChart from "../../components/GeographyChart";
 import BarChart from "../../components/BarChart";
 import StatBox from "../../components/StatBox";
+import TopsalesBox from "../../components/TopsalesBox";
 import ProgressCircle from "../../components/ProgressCircle";
 
 const Dashboard = () => {
@@ -292,8 +293,43 @@ const Dashboard = () => {
             </Box>
           ))}
         </Box>
+        {/* ROW 4 */}
+        <Box
+          gridColumn="span 6"
+          backgroundColor={colors.primary[400]}
+          display="flex"
+          alignItems="center"
+          justifyContent="center"
+        >
+          <TopsalesBox
+            title="TOP SALES RESP FOR 06-2020"
+            name1="Pam Beesly"
+            description1="$70,428.00(74% heigher than previous month)"
+            name2="Dwight Schrute"
+            description2="$42,428.00(241% heigher than previous month)"
+            name3="Ryan Howard"
+            description3="$32,428.00(45% heigher than previous month)"
+          />
+        </Box>
+        <Box
+          gridColumn="span 6"
+          backgroundColor={colors.primary[400]}
+          display="flex"
+          alignItems="center"
+          justifyContent="center"
+        >
+          <TopsalesBox
+            title="TOP SALES RESP FOR 07-2020"
+            name1="Ryan Howard"
+            description1="$70,428.00(74% heigher than previous month)"
+            name2="Dwight Schrute"
+            description2="$42,428.00(241% heigher than previous month)"
+            name3="Pam Beesly"
+            description3="$32,428.00(45% heigher than previous month)"
+          />
+        </Box>
 
-        {/* ROW 3 */}
+        {/* ROW 5 */}
         <Box
           gridColumn="span 4"
           gridRow="span 2"
