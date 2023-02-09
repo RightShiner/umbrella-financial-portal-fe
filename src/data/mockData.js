@@ -74,50 +74,46 @@ export const mockDataTeam = [
     access: "admin",
   },
 ];
-
-//////////////////////////////////////////
-// id: "number",
-// affiliate_plan: "string",
-// affiliate_plan_purchase_date: Date,
-// affiliate_referral_id: "string",
-// affiliate_referral_link: "string",
-// affiliate_referral_name: "string",
-// affiliate_referral_plan: "string",
-// affiliate_referral_user_id: "number",
-// affiliate_status: "string",
-// affiliate_url: "string",
-// coach_id: "string", cd
-// coach_name: "string",
-// coach_user_id: "number",
-// customer_plan: "string",
-// customer_plan_purchase_date: Date,
-// customer_status: "string",
-// email: "string",
-// has_coach_tier: "boolean",
-// has_mentor_tier: "boolean",
-// has_partner_tier: "boolean",
-// mentor_id: "string",
-// mentor_name: "string",
-// mentor_user_id: "number",
-// name: "string",
-// partner_id: "string",
-// partner_name: "string",
-// partner_user_id: "number",
-// phone_"number": "string",
-// referred_by_affiliate: "boolean",
-// transaction_total: "number",
-// primary_ghl_location_id: "string",
-// primary_ghl_location_api_key: "string",
-// ghl_user_id: "string",
-// ghl_location_ids: "string"[],
-// ghl_super_corporate_contact_id: "string",
-// date_of_birth: Date | null,
-// username: "string",
-
-//////////////////////////////////////////
+export const mockDataReports = [
+  {
+    id: 1,
+    name: "Jon Snow",
+    email: "jonsnow@gmail.com",
+    age: 35,
+    phone: "(665)121-5454",
+    date: "04/06/2022",
+    description: "login this system",
+  },
+  {
+    id: 2,
+    name: "Jon Rain",
+    email: "jonrain@gmail.com",
+    age: 35,
+    phone: "(665)121-5454",
+    date: "11/23/2022",
+    description: "logout this system",
+  },
+  {
+    id: 3,
+    name: "Jon Snow",
+    email: "jonsnow@gmail.com",
+    age: 35,
+    phone: "(665)121-5454",
+    date: "05/22/2022",
+    description: "deleted data",
+  },
+  {
+    id: 4,
+    name: "Jon Rain",
+    email: "jonrain@gmail.com",
+    age: 35,
+    phone: "(665)121-5454",
+    date: "06/06/2022",
+    description: "Add some data",
+  },
+];
 
 export const mockDataContacts = [
-  
   {
     id: 1,
     affiliate_plan: "string",

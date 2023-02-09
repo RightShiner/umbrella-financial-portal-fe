@@ -4,6 +4,7 @@ import Topbar from "./scenes/global/Topbar";
 import Sidebar from "./scenes/global/Sidebar";
 import Dashboard from "./scenes/dashboard";
 import Team from "./scenes/team";
+import Reports from "./scenes/reports";
 import Transactions from "./scenes/transactions";
 import Customers from "./scenes/customers";
 import Bar from "./scenes/bar";
@@ -31,6 +32,7 @@ function App() {
             <Routes>
               <Route path="/" element={<Dashboard />} />
               <Route path="/team" element={<Team />} />
+              <Route path="/reports" element={<Reports />} />
               <Route path="/transactions" element={<Transactions />} />
               <Route path="/customers" element={<Customers />} />
               <Route path="/form" element={<Form />} />
