@@ -1,5 +1,5 @@
-import { Box, Typography, useTheme } from "@mui/material";
-import { DataGrid } from "@mui/x-data-grid";
+import { Box, useTheme } from "@mui/material";
+import { DataGrid, GridToolbar } from "@mui/x-data-grid";
 import { tokens } from "../../theme";
 import { mockDataInvoices } from "../../data/mockData";
 import Header from "../../components/Header";
@@ -85,8 +85,8 @@ const Transactions = () => {
       
     },
     {
-      field: "email1",      
-      headerName: "email1",
+      field: "email",      
+      headerName: "email",
       
     },
     {
@@ -115,8 +115,8 @@ const Transactions = () => {
       
     },
     {
-      field: "name1",
-      headerName: "name1",
+      field: "name",
+      headerName: "name",
       
     },
     {
@@ -187,9 +187,18 @@ const Transactions = () => {
           "& .MuiCheckbox-root": {
             color: `${colors.greenAccent[200]} !important`,
           },
+          "& .MuiDataGrid-toolbarContainer .MuiButton-text": {
+            color: `${colors.grey[100]} !important`,
+          },
         }}
-      >
-        <DataGrid checkboxSelection rows={mockDataInvoices} columns={columns} />
+      >        
+        <DataGrid
+          checkboxSelection
+          rows={mockDataInvoices}
+          columns={columns}
+          components={{ Toolbar: GridToolbar }}
+        />
+
       </Box>
     </Box>
   );
