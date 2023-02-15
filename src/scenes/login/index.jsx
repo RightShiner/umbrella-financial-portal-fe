@@ -3,12 +3,31 @@ import { Formik } from "formik";
 import * as yup from "yup";
 import useMediaQuery from "@mui/material/useMediaQuery";
 import Header from "../../components/Header";
+import axios from "axios";
 
 const Login = () => {
   const isNonMobile = useMediaQuery("(min-width:600px)");
 
-  const handleFormSubmit = (values) => {
-    console.log(values);
+  const handleFormSubmit = async (event) => {
+    event.preventDefault();
+    const data = {
+      email: event.target.email.value,
+      password: event.target.password.value
+    };
+    axios({
+      method: 'post',
+      url: 'http://localhost:3003/user/login',
+      data: data
+    })
+      .then(function (response) {
+        console.log(response.data.status);
+        if (response.data.success == "success") {
+          alert("Login Success");
+        }
+      })
+      .catch(function (err) {
+        console.log(err.response);
+      });
   };
 
   return (
@@ -16,7 +35,7 @@ const Login = () => {
       <Header title="Login" subtitle="" />
 
       <Formik
-        onSubmit={handleFormSubmit}
+        // onSubmit={handleFormSubmit}
         initialValues={initialValues}
         validationSchema={checkoutSchema}
       >
@@ -28,7 +47,7 @@ const Login = () => {
           handleChange,
           handleSubmit,
         }) => (
-          <form onSubmit={handleSubmit}>
+          <form onSubmit={handleFormSubmit}>
             <Box
               display="grid"
               gap="30px"
@@ -57,10 +76,10 @@ const Login = () => {
                 label="Password"
                 onBlur={handleBlur}
                 onChange={handleChange}
-                value={values.contact}
+                value={values.password}
                 name="password"
-                error={!!touched.contact && !!errors.contact}
-                helperText={touched.contact && errors.contact}
+                error={!!touched.password && !!errors.password}
+                helperText={touched.password && errors.password}
                 sx={{ gridColumn: "span 4" }}
               />
             </Box>
@@ -108,6 +127,7 @@ const initialValues = {
   lastName: "",
   email: "",
   contact: "",
+  password: "",
   address1: "",
   address2: "",
   profilePhotos: "",

@@ -1,11 +1,15 @@
+import { useEffect, useState } from "react";
+import axios from "axios";
+
 import { Box, Button, IconButton, Typography, useTheme } from "@mui/material";
-import { tokens } from "../../theme";
-import { mockTransactions } from "../../data/mockData";
 import DownloadOutlinedIcon from "@mui/icons-material/DownloadOutlined";
 import EmailIcon from "@mui/icons-material/Email";
 import PointOfSaleIcon from "@mui/icons-material/PointOfSale";
 import PersonAddIcon from "@mui/icons-material/PersonAdd";
 import TrafficIcon from "@mui/icons-material/Traffic";
+
+import { tokens } from "../../theme";
+
 import Header from "../../components/Header";
 import LineChart from "../../components/LineChart";
 import GeographyChart from "../../components/GeographyChart";
@@ -13,10 +17,35 @@ import BarChart from "../../components/BarChart";
 import StatBox from "../../components/StatBox";
 import ProgressCircle from "../../components/ProgressCircle";
 
+import { mockTransactions } from "../../data/mockData";
+
+
 const Dashboard = () => {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
 
+  const [commpaid, setCommpaid] = useState("12361");
+  
+  let tran_data= "22";
+
+    
+
+  // console.log(obj.items.filter(v => v.tags.some(k => k.name === 'Aflevering2')););
+  useEffect(() => {
+    axios({
+      method: 'post',
+      url: 'http://localhost:3003/totalcom'
+    })
+      .then(function (response) {
+        tran_data = JSON.stringify(response.data.transactionTotal);
+        tran_data = tran_data.replace(/"/g, '');
+        setCommpaid((parseInt(tran_data) * 0.14).toString());
+      })
+      .catch(function (err) {
+        console.log(err);
+      });
+  }, []);
+      
   return (
     <Box m="20px">
       {/* HEADER */}
@@ -55,7 +84,7 @@ const Dashboard = () => {
           justifyContent="center"
         >
           <StatBox
-            title="12,361"
+            title={commpaid}
             subtitle="Total Commission Due to be paid out based on total sum of transactions"
             progress="0.75"
             increase="+14%"

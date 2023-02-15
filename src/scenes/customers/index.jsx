@@ -1,3 +1,6 @@
+import { useState, useEffect} from 'react';
+import axios from 'axios';
+
 import { Box } from "@mui/material";
 import { DataGrid, GridToolbar } from "@mui/x-data-grid";
 import { tokens } from "../../theme";
@@ -8,45 +11,78 @@ import { useTheme } from "@mui/material";
 const Contacts = () => {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
+  const [row_state, setRow_state] = useState(mockDataContacts);
   
+  let cust_data= [];
+  let row_data = [];
+
+  useEffect(() => {
+    axios({
+      method: 'post',
+      url: 'http://localhost:3003/customerInit'
+    })
+      .then(function (response) {
+        //tran_data = JSON.stringify(response.data);
+        cust_data = Object.values(response.data);
+        cust_data.forEach((value, index) => {
+          row_data[index] = {};
+          row_data[index].id = cust_data[index].id;
+          row_data[index].firstName = cust_data[index].firstName;
+          row_data[index].lastName = cust_data[index].lastName;
+          row_data[index].email = cust_data[index].email;
+          row_data[index].phone = cust_data[index].phone;
+          row_data[index].dateCleared = cust_data[index].dateCleared;
+          row_data[index].companyName = cust_data[index].companyName;
+          row_data[index].timezone = cust_data[index].timezone;
+          row_data[index].locationId = cust_data[index].locationId;
+          row_data[index].dnc = cust_data[index].dnc;
+          row_data[index].type = cust_data[index].type;
+          row_data[index].source = cust_data[index].source;
+          row_data[index].assignedUserId = cust_data[index].assignedUserId;
+          row_data[index].addressId = cust_data[index].addressId;
+          row_data[index].website = cust_data[index].website;
+          row_data[index].dateOfBirth = cust_data[index].dateOfBirth;
+          row_data[index].dateAdded = cust_data[index].dateAdded;
+          row_data[index].dateUpdated = cust_data[index].dateUpdated;
+          row_data[index].ssn = cust_data[index].ssn;
+          row_data[index].gender = cust_data[index].gender;
+          row_data[index].keyword = cust_data[index].keyword;
+          row_data[index].dateLastActivity = cust_data[index].dateLastActivity;
+          row_data[index].umbrellaUserId = cust_data[index].umbrellaUserId;
+          console.log(index , row_data);
+          //console.log(mockDataInvoices);
+          setRow_state(row_data);
+        });
+        
+      })
+      .catch(function (err) {
+        console.log(err);
+      });
+  }, []);
+
   const columns = [   
     { field: "id", headerName: "ID", flex: 0.5 },
-    { field: "affiliate_plan", headerName: "Affiliate Plan" },
-    { field: "affiliate_plan_purchase_date", headerName: "Affiliate Plan Purchase Date" },
-    { field: "affiliate_referral_id", headerName: "Affiliate Referral Id" },
-    { field: "affiliate_referral_link", headerName: "Affiliate Referral Link" },
-    { field: "affiliate_referral_name", headerName: "Affiliate Referral Name" },
-    { field: "affiliate_referral_plan", headerName: "Affiliate Referral Plan" },
-    { field: "affiliate_referral_user_id", headerName: "Affiliate Referral User Id" },
-    { field: "affiliate_status", headerName: "Affiliate Status" },
-    { field: "affiliate_url", headerName: "Affiliate Url" },
-    { field: "coach_id", headerName: "Coach Id" },
-    { field: "coach_name", headerName: "Coach Name" },
-    { field: "coach_user_id", headerName: "Coach User Id" },
-    { field: "customer_plan", headerName: "Customer Plan" },
-    { field: "customer_plan_purchase_date", headerName: "Customer Plan Purchase Date" },    
-    { field: "customer_status", headerName: "Customer Status" },
+    { field: "firstName", headerName: "firstName" },
+    { field: "lastName", headerName: "lastName" },
     { field: "email", headerName: "email" },
-    { field: "has_coach_tier", headerName: "Has Coach Tier" },
-    { field: "has_mentor_tier", headerName: "Has Mentor Tier" },
-    { field: "has_partner_tier", headerName: "Has Partner Tier" },
-    { field: "mentor_id", headerName: "Mentor Id" },
-    { field: "mentor_name", headerName: "Mentor Name" },
-    { field: "mentor_user_id", headerName: "Mentor User Id" },
-    { field: "name", headerName: "name" },
-    { field: "partner_id", headerName: "partner_id" },
-    { field: "partner_name", headerName: "partner_name" },
-    { field: "partner_user_id", headerName: "partner_user_id" },
-    { field: "phone_number", headerName: "phone_number" },
-    { field: "referred_by_affiliate", headerName: "referred_by_affiliate" },
-    { field: "transaction_total", headerName: "transaction_total" },
-    { field: "primary_ghl_location_id", headerName: "primary_ghl_location_id" },
-    { field: "primary_ghl_location_api_key", headerName: "primary_ghl_location_api_key" },    
-    { field: "ghl_user_id", headerName: "ghl_user_id" },
-    { field: "ghl_location_ids", headerName: "ghl_location_ids" },
-    { field: "ghl_super_corporate_contact_id", headerName: "ghl_super_corporate_contact_id" },
-    { field: "date_of_birth", headerName: "date_of_birth" },
-    { field: "username", headerName: "username" },
+    { field: "phone", headerName: "phone" },
+    { field: "companyName", headerName: "companyName" },
+    { field: "timezone", headerName: "timezone" },
+    { field: "locationId", headerName: "locationId" },
+    { field: "dnc", headerName: "dnc" },
+    { field: "type", headerName: "type" },
+    { field: "source", headerName: "source" },
+    { field: "assignedUserId", headerName: "assignedUserId" },
+    { field: "addressId", headerName: "addressId" },
+    { field: "website", headerName: "website" },
+    { field: "dateOfBirth", headerName: "dateOfBirth" },    
+    { field: "dateAdded", headerName: "dateAdded" },
+    { field: "dateUpdated", headerName: "dateUpdated" },
+    { field: "ssn", headerName: "ssn" },
+    { field: "gender", headerName: "gender" },
+    { field: "keyword", headerName: "keyword" },
+    { field: "dateLastActivity", headerName: "dateLastActivity" },
+    { field: "umbrellaUserId", headerName: "umbrellaUserId" },
   ];
 
   return (
@@ -88,7 +124,7 @@ const Contacts = () => {
         }}
       >
         <DataGrid
-          rows={mockDataContacts}
+          rows={row_state}
           columns={columns}
           components={{ Toolbar: GridToolbar }}
         />
