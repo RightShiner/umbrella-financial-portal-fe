@@ -9,6 +9,7 @@ import Transactions from "./scenes/transactions";
 import Customers from "./scenes/customers";
 import Bar from "./scenes/bar";
 import Form from "./scenes/form";
+import Login from "./scenes/login";
 import Line from "./scenes/line";
 import Pie from "./scenes/pie";
 import FAQ from "./scenes/faq";
@@ -36,6 +37,7 @@ function App() {
               <Route path="/transactions" element={<Transactions />} />
               <Route path="/customers" element={<Customers />} />
               <Route path="/form" element={<Form />} />
+              <Route path="/login" element={<Login />} />
               <Route path="/bar" element={<Bar />} />
               <Route path="/pie" element={<Pie />} />
               <Route path="/line" element={<Line />} />

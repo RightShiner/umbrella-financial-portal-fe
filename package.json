@@ -24,6 +24,7 @@
     "@testing-library/jest-dom": "^5.16.5",
     "@testing-library/react": "^13.3.0",
     "@testing-library/user-event": "^13.5.0",
+    "axios": "^1.3.3",
     "chart.js": "^3.9.1",
     "formik": "^2.2.9",
     "react": "^18.2.0",
@@ -40,7 +41,8 @@
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "dev": "nodemon"
   },
   "eslintConfig": {
     "extends": [
@@ -59,5 +61,8 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.20"
   }
 }

@@ -1,3 +1,6 @@
+import { useState, useEffect} from 'react';
+import axios from 'axios';
+
 import { Box, useTheme } from "@mui/material";
 import { DataGrid, GridToolbar } from "@mui/x-data-grid";
 import { tokens } from "../../theme";
@@ -7,155 +10,127 @@ import Header from "../../components/Header";
 const Transactions = () => {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
+  const [row_state, setRow_state] = useState(mockDataInvoices);
+  
+  let tran_data= [];
+  let row_data = [];
+
+  useEffect(() => {
+        axios({
+      method: 'post',
+      url: 'http://localhost:3003/tranInit'
+    })
+      .then(function (response) {
+        //tran_data = JSON.stringify(response.data);
+        tran_data = Object.values(response.data);
+        tran_data.forEach((value, index) => {
+          row_data[index] = {};
+          row_data[index].id = tran_data[index].id;
+          row_data[index].name = tran_data[index].name;
+          row_data[index].description = tran_data[index].description;
+          row_data[index].amount = tran_data[index].amount;
+          row_data[index].dateCreated = tran_data[index].dateCreated;
+          row_data[index].dateCleared = tran_data[index].dateCleared;
+          row_data[index].accountId = tran_data[index].accountId;
+          row_data[index].accountName = tran_data[index].account.name;
+          row_data[index].accountBalance = tran_data[index].account.balance;
+          row_data[index].accountUserId = tran_data[index].account.userId;
+          row_data[index].commissionId = tran_data[index].commissionId;
+          row_data[index].commissionUserId = tran_data[index].commission.userId;
+          row_data[index].commissionProductId = tran_data[index].commission.productId;
+          row_data[index].purchaseId = tran_data[index].purchaseId;
+          row_data[index].purchaseUserId = tran_data[index].purchase.userId;
+          row_data[index].purchaseProductId = tran_data[index].purchase.productId;
+          console.log(index , row_data);
+          //console.log(mockDataInvoices);
+          setRow_state(row_data);
+        });
+        
+      })
+      .catch(function (err) {
+        console.log(err);
+      });
+  }, []);
+
   const columns = [
     { field: "id", headerName: "ID" },
-    {
-      field: "affiliate_plan",
-      headerName: "Affiliate Plane",
-      
-    },
-    {
-      field: "affiliate_plan_purchase_date",
-      headerName: "Affiliate Plan Purchase Date",
-      
-    },
-    {
-      field: "affiliate_referral_id",
-      headerName: "Affiliate Referral Id",
-      
-    },
-    {
-      field: "affiliate_referral_link",
-      headerName: "Affiliate Referral Link",
-      
-    },
-    {
-      field: "affiliate_referral_name",
-      headerName: "Affiliate Referral Name",
-      
-    },
-    {
-      field: "affiliate_referral_plan",
-      headerName: "Affiliate Referral Plan",
-      
-    },
-    {
-      field: "affiliate_referral_user_id",
-      headerName: "Affiliate Referral User Id",
-      
-    },
-    {
-      field: "affiliate_status",
-      headerName: "Affiliate Status",
-      
-    },
-    {
-      field: "affiliate_url",
-      headerName: "Affiliate Url",
-      
-    },
-    {
-      field: "coach_id",
-      headerName: "Coach Id",
-      
-    },
-    {
-      field: "coach_name",
-      headerName: "Coach Name",
-      
-    },
-    {
-      field: "coach_user_id",
-      headerName: "Coach User Id",
-      
-    },
-    {
-      field: "customer_plan",
-      headerName: "Customer Plan",
-      
-    },
-    {
-      field: "customer_plan_purchase_date",
-      headerName: "Customer Plan Purchase Date",
-      
-    },
-    {
-      field: "customer_status",
-      headerName: "Customer Status",
-      
-    },
-    {
-      field: "email",      
-      headerName: "email",
-      
-    },
-    {
-      field: "has_coach_tier",      
-      headerName: "Has Coach Tier",
-      
-    },
-    {
-      field: "has_partner_tier",      
-      headerName: "Has Partner Tier",
-      
-    },
-    {
-      field: "mentor_id",      
-      headerName: "Mentor Id",
-      
-    },
-    {
-      field: "mentor_name",      
-      headerName: "Mentor name",
-      
-    },
-    {
-      field: "mentor_user_id",      
-      headerName: "Mentor User Id",
-      
-    },
     {
       field: "name",
       headerName: "name",
       
     },
     {
-      field: "partner_id",
-      headerName: "Partner Id",
+      field: "description",
+      headerName: "description",
       
     },
     {
-      field: "partner_name",
-      headerName: "Partner Name",
+      field: "amount",
+      headerName: "amount",
       
     },
     {
-      field: "partner_user_id",
-      headerName: "Partner User Id",
+      field: "dateCreated",
+      headerName: "dateCreated",
       
     },
     {
-      field: "phone_number",
-      headerName: "Phone Number",
+      field: "dateCleared",
+      headerName: "dateCleared",
       
     },
     {
-      field: "referred_by_affiliate",
-      headerName: "Referred By Affiliate",
+      field: "purchaseId",
+      headerName: "purchaseId",
       
     },
     {
-      field: "transaction_total",
-      headerName: "Transaction Total",
+      field: "purchaseUserId",
+      headerName: "purchaseUserId",
       
     },
     {
-      field: "user_id",
-      headerName: "User Id",
+      field: "purchaseProductId",
+      headerName: "purchaseProductId",
       
     },
-    
+    {
+      field: "commissionId",
+      headerName: "commissionId",
+      
+    },
+    {
+      field: "commissionUserId",
+      headerName: "commissionUserId",
+      
+    },
+    {
+      field: "commissionProductId",
+      headerName: "commissionProductId",
+      
+    },
+    {
+      field: "accountId",
+      headerName: "accountId",
+      
+    },
+    {
+      field: "accountName",
+      headerName: "accountName",
+      
+    },
+    {
+      field: "accountBalance",
+      headerName: "accountBalance",
+      
+    },
+    {
+      field: "accountUserId",
+      headerName: "accountUserId",
+    }
   ];
+
+
 
   return (
     <Box m="20px">
@@ -194,7 +169,7 @@ const Transactions = () => {
       >        
         <DataGrid
           checkboxSelection
-          rows={mockDataInvoices}
+          rows={row_state}
           columns={columns}
           components={{ Toolbar: GridToolbar }}
         />
