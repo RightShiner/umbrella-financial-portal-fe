@@ -25,16 +25,16 @@ const Dashboard = () => {
   const colors = tokens(theme.palette.mode);
 
   const [commpaid, setCommpaid] = useState("12361");
-  
-  let tran_data= "22";
 
-    
+  let tran_data = "22";
+
+
 
   // console.log(obj.items.filter(v => v.tags.some(k => k.name === 'Aflevering2')););
   useEffect(() => {
     axios({
       method: 'post',
-      url: 'http://localhost:3003/totalcom'
+      url: 'https://umbrella.rest.ghlmanager.com/totalcom'
     })
       .then(function (response) {
         tran_data = JSON.stringify(response.data.transactionTotal);
@@ -45,7 +45,7 @@ const Dashboard = () => {
         console.log(err);
       });
   }, []);
-      
+
   return (
     <Box m="20px">
       {/* HEADER */}
@@ -330,7 +330,7 @@ const Dashboard = () => {
           p="30px"
         >
           <Typography variant="h5" fontWeight="600">
-          Top 5 Most Successful Services in this timeperiod pie graphy
+            Top 5 Most Successful Services in this timeperiod pie graphy
           </Typography>
           <Box
             display="flex"

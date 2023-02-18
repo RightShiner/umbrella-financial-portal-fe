@@ -4,26 +4,32 @@ import * as yup from "yup";
 import useMediaQuery from "@mui/material/useMediaQuery";
 import Header from "../../components/Header";
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
 
-const Login = () => {
+const Login = ({ setUser, setSessionToken }) => {
   const isNonMobile = useMediaQuery("(min-width:600px)");
+  const navigate = useNavigate();
 
   const handleFormSubmit = async (event) => {
     event.preventDefault();
     const data = {
-      email: event.target.email.value,
+      username: event.target.email.value,
       password: event.target.password.value
     };
     axios({
       method: 'post',
-      url: 'http://localhost:3003/user/login',
+      url: `https://umbrella.rest.ghlmanager.com/users/login`,
       data: data
     })
       .then(function (response) {
-        console.log(response.data.status);
-        if (response.data.success == "success") {
-          alert("Login Success");
+        console.log(response.data);
+        if (response.data.status !== "success") {
+          throw new Error("error logging in");
         }
+        setSessionToken(response.data.sessionToken);
+        const user = response.data.user;
+        setUser(user);
+        navigate("/sales");
       })
       .catch(function (err) {
         console.log(err.response);

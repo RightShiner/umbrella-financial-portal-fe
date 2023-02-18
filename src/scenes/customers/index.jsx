@@ -1,4 +1,4 @@
-import { useState, useEffect} from 'react';
+import { useState, useEffect } from 'react';
 import axios from 'axios';
 
 import { Box } from "@mui/material";
@@ -12,14 +12,14 @@ const Contacts = () => {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
   const [row_state, setRow_state] = useState(mockDataContacts);
-  
-  let cust_data= [];
+
+  let cust_data = [];
   let row_data = [];
 
   useEffect(() => {
     axios({
       method: 'post',
-      url: 'http://localhost:3003/customerInit'
+      url: 'https://umbrella.rest.ghlmanager.com/customerInit'
     })
       .then(function (response) {
         //tran_data = JSON.stringify(response.data);
@@ -49,18 +49,18 @@ const Contacts = () => {
           row_data[index].keyword = cust_data[index].keyword;
           row_data[index].dateLastActivity = cust_data[index].dateLastActivity;
           row_data[index].umbrellaUserId = cust_data[index].umbrellaUserId;
-          console.log(index , row_data);
+          console.log(index, row_data);
           //console.log(mockDataInvoices);
           setRow_state(row_data);
         });
-        
+
       })
       .catch(function (err) {
         console.log(err);
       });
   }, []);
 
-  const columns = [   
+  const columns = [
     { field: "id", headerName: "ID", flex: 0.5 },
     { field: "firstName", headerName: "firstName" },
     { field: "lastName", headerName: "lastName" },
@@ -75,7 +75,7 @@ const Contacts = () => {
     { field: "assignedUserId", headerName: "assignedUserId" },
     { field: "addressId", headerName: "addressId" },
     { field: "website", headerName: "website" },
-    { field: "dateOfBirth", headerName: "dateOfBirth" },    
+    { field: "dateOfBirth", headerName: "dateOfBirth" },
     { field: "dateAdded", headerName: "dateAdded" },
     { field: "dateUpdated", headerName: "dateUpdated" },
     { field: "ssn", headerName: "ssn" },
