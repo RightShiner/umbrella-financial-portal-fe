@@ -1,5 +1,6 @@
-import { useState } from "react";
-import { Routes, Route } from "react-router-dom";
+import { createContext, useContext, useState } from "react";
+import { Routes, Route, useNavigate, useLocation } from "react-router-dom";
+import { useEffect } from "react";
 import Topbar from "./scenes/global/Topbar";
 import Sidebar from "./scenes/global/Sidebar";
 import Dashboard from "./scenes/dashboard";
@@ -17,36 +18,47 @@ import Geography from "./scenes/geography";
 import { CssBaseline, ThemeProvider } from "@mui/material";
 import { ColorModeContext, useMode } from "./theme";
 import Calendar from "./scenes/calendar/calendar";
+import MainLayout from "./layouts/MainLayout";
+import { UserContext } from "./contexts/UserContext";
+import Sales from "./scenes/sales";
 
 function App() {
   const [theme, colorMode] = useMode();
   const [isSidebar, setIsSidebar] = useState(true);
+  const navigate = useNavigate();
+  const location = useLocation();
+  const [user, setUser] = useState(null);
+  const [sessionToken, setSessionToken] = useState(null);
+
+  useEffect(() => {
+    if ((user == null || sessionToken == null) && location.pathname !== "/login") {
+      navigate("/login");
+    }
+  }, [location]);
 
   return (
     <ColorModeContext.Provider value={colorMode}>
       <ThemeProvider theme={theme}>
         <CssBaseline />
-        <div className="app">
-          <Sidebar isSidebar={isSidebar} />
-          <main className="content">
-            <Topbar setIsSidebar={setIsSidebar} />
-            <Routes>
-              <Route path="/" element={<Dashboard />} />
-              <Route path="/team" element={<Team />} />
-              <Route path="/reports" element={<Reports />} />
-              <Route path="/transactions" element={<Transactions />} />
-              <Route path="/customers" element={<Customers />} />
-              <Route path="/form" element={<Form />} />
-              <Route path="/login" element={<Login />} />
-              <Route path="/bar" element={<Bar />} />
-              <Route path="/pie" element={<Pie />} />
-              <Route path="/line" element={<Line />} />
-              <Route path="/faq" element={<FAQ />} />
-              <Route path="/calendar" element={<Calendar />} />
-              <Route path="/geography" element={<Geography />} />
-            </Routes>
-          </main>
-        </div>
+        <UserContext.Provider value={{ user, sessionToken }}>
+          <Routes>
+            <Route path="/" element={<MainLayout isSidebar={isSidebar} setIsSidebar={value => setIsSidebar(value)}><Dashboard /></MainLayout>} />
+            <Route path="/sales" element={<MainLayout isSidebar={isSidebar} setIsSidebar={value => setIsSidebar(value)}><Sales /></MainLayout>} />
+            {/*<Route path="/team" element={<Team />} />
+            <Route path="/transactions" element={<MainLayout isSidebar={isSidebar} setIsSidebar={value => setIsSidebar(value)}><Transactions /></MainLayout>} />
+            <Route path="/reports" element={<Reports />} />
+            <Route path="/customers" element={<Customers />} />
+            <Route path="/form" element={<Form />} />
+            <Route path="/login" element={<Login />} />
+            <Route path="/bar" element={<Bar />} />
+            <Route path="/pie" element={<Pie />} />
+            <Route path="/line" element={<Line />} />
+            <Route path="/faq" element={<FAQ />} />
+            <Route path="/calendar" element={<Calendar />} />
+            <Route path="/geography" element={<Geography />} />*/}
+            <Route path="/login" element={<Login setUser={value => setUser(value)} setSessionToken={value => setSessionToken(value)} />} />
+          </Routes>
+        </UserContext.Provider>
       </ThemeProvider>
     </ColorModeContext.Provider>
   );
