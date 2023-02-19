@@ -15,6 +15,8 @@ import Line from "./scenes/line";
 import Pie from "./scenes/pie";
 import FAQ from "./scenes/faq";
 import Geography from "./scenes/geography";
+import Contacts from "./scenes/contacts";
+import Detail from "./scenes/detail";
 import { CssBaseline, ThemeProvider } from "@mui/material";
 import { ColorModeContext, useMode } from "./theme";
 import Calendar from "./scenes/calendar/calendar";
@@ -31,7 +33,10 @@ function App() {
   const [sessionToken, setSessionToken] = useState(null);
 
   useEffect(() => {
-    if ((user == null || sessionToken == null) && location.pathname !== "/login") {
+    if (
+      (user == null || sessionToken == null) &&
+      location.pathname !== "/login"
+    ) {
       navigate("/login");
     }
   }, [location]);
@@ -42,8 +47,28 @@ function App() {
         <CssBaseline />
         <UserContext.Provider value={{ user, sessionToken }}>
           <Routes>
-            <Route path="/" element={<MainLayout isSidebar={isSidebar} setIsSidebar={value => setIsSidebar(value)}><Dashboard /></MainLayout>} />
-            <Route path="/sales" element={<MainLayout isSidebar={isSidebar} setIsSidebar={value => setIsSidebar(value)}><Sales /></MainLayout>} />
+            <Route
+              path="/"
+              element={
+                <MainLayout
+                  isSidebar={isSidebar}
+                  setIsSidebar={(value) => setIsSidebar(value)}
+                >
+                  <Dashboard />
+                </MainLayout>
+              }
+            />
+            <Route
+              path="/sales"
+              element={
+                <MainLayout
+                  isSidebar={isSidebar}
+                  setIsSidebar={(value) => setIsSidebar(value)}
+                >
+                  <Sales />
+                </MainLayout>
+              }
+            />
             {/*<Route path="/team" element={<Team />} />
             <Route path="/transactions" element={<MainLayout isSidebar={isSidebar} setIsSidebar={value => setIsSidebar(value)}><Transactions /></MainLayout>} />
             <Route path="/reports" element={<Reports />} />
@@ -56,7 +81,28 @@ function App() {
             <Route path="/faq" element={<FAQ />} />
             <Route path="/calendar" element={<Calendar />} />
             <Route path="/geography" element={<Geography />} />*/}
-            <Route path="/login" element={<Login setUser={value => setUser(value)} setSessionToken={value => setSessionToken(value)} />} />
+
+            <Route
+              path="/login"
+              element={
+                <Login
+                  setUser={(value) => setUser(value)}
+                  setSessionToken={(value) => setSessionToken(value)}
+                />
+              }
+            />
+            <Route path="/detail" element={<Detail />} />
+            {/* <Route
+              path="/login"
+              element={
+                <MainLayout
+                  isSidebar={isSidebar}
+                  setIsSidebar={(value) => setIsSidebar(value)}
+                >
+                  <Detail />
+                </MainLayout>
+              }
+            /> */}
           </Routes>
         </UserContext.Provider>
       </ThemeProvider>

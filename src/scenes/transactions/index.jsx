@@ -1,12 +1,12 @@
-import { useState, useEffect, useContext } from 'react';
-import axios from 'axios';
+import { useState, useEffect, useContext } from "react";
+import axios from "axios";
 
 import { Box, useTheme } from "@mui/material";
 import { DataGrid, GridToolbar } from "@mui/x-data-grid";
 import { tokens } from "../../theme";
 import { mockDataInvoices } from "../../data/mockData";
 import Header from "../../components/Header";
-import { UserContext } from '../../contexts/UserContext';
+import { UserContext } from "../../contexts/UserContext";
 
 const Transactions = () => {
   const theme = useTheme();
@@ -20,18 +20,18 @@ const Transactions = () => {
 
   useEffect(() => {
     axios({
-      method: 'get',
+      method: "get",
       headers: {
-        "Authorization": `Bearer ${sessionToken}`
+        Authorization: `Bearer ${sessionToken}`,
       },
-      url: `https://umbrella.rest.ghlmanager.com/sales`
+      url: `https://umbrella.rest.ghlmanager.com/sales`,
     })
       .then(function (response) {
         tran_data = response.data.sales;
         console.log(tran_data);
         row_data = new Array(tran_data.length);
         for (const [index, transaction] of tran_data.entries()) {
-          console.log(transaction)
+          console.log(transaction);
           row_data[index] = {};
           for (const [key, value] of Object.entries(transaction)) {
             console.log(row_data);
@@ -39,10 +39,10 @@ const Transactions = () => {
             console.log(transaction);
             console.log(value);
             row_data[index][key] = value;
-          };
+          }
           console.log(row_data);
           setRow_state(row_data);
-        };
+        }
       })
       .catch(function (err) {
         console.log(err);
@@ -64,13 +64,11 @@ const Transactions = () => {
     {
       field: "purchasePrice",
       headerName: "amount",
-
     },
     {
       field: "dateCreated",
       headerName: "dateCreated",
-
-    },/*
+    } /*
     {
       field: "dateCleared",
       headerName: "dateCleared",
@@ -124,10 +122,8 @@ const Transactions = () => {
     {
       field: "accountUserId",
       headerName: "accountUserId",
-    }*/
+    }*/,
   ];
-
-
 
   return (
     <Box m="20px">
@@ -170,7 +166,6 @@ const Transactions = () => {
           columns={columns}
           components={{ Toolbar: GridToolbar }}
         />
-
       </Box>
     </Box>
   );

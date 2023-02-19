@@ -1,12 +1,16 @@
 export const validate = (data, type) => {
   const errors = {};
 
-  if (!data.email) {
-    errors.email = "Email is Required!";
-  } else if (!/^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/.test(String(data.email).toLowerCase())) {
-    errors.email = "Email address is invalid!";
+  if (!data.username) {
+    errors.username = "Email is Required!";
+  } else if (
+    !/^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/.test(
+      String(data.username).toLowerCase()
+    )
+  ) {
+    errors.username = "Email address is invalid!";
   } else {
-    delete errors.email;
+    delete errors.username;
   }
 
   if (!data.password) {

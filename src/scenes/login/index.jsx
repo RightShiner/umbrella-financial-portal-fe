@@ -1,32 +1,34 @@
 import React, { useEffect, useState } from "react";
-//Icon
-// import userIcon from "../../img/user.svg";
-// import emailIcon from "../../img/email.svg";
-// import passwordIcon from "../../img/password.svg";
-// Validate
-import { validate } from "./validate";
-// Styles
-import styles from "./login.module.css";
-import "react-toastify/dist/ReactToastify.css";
-// Toast
+import { useNavigate } from "react-router-dom";
 import { ToastContainer, toast } from "react-toastify";
-import { notify } from "./toast";
-//
 import { Link } from "react-router-dom";
-// Axios
 import axios from "axios";
 
-import Header from "../../components/Header";
+import useMediaQuery from "@mui/material/useMediaQuery";
 import { Box, Button, TextField } from "@mui/material";
+
+import Header from "../../components/Header";
+import { validate } from "./validate";
+import styles from "./login.module.css";
+import "react-toastify/dist/ReactToastify.css";
+import { notify } from "./toast";
 import "./index.css";
 
-const Login = () => {
+import EmailIcon from "@mui/icons-material/Email";
+
+//Icon
+// import userIcon from "../../img/user.svg";
+// import usernameIcon from "../../img/username.svg";
+// import passwordIcon from "../../img/password.svg";
+// Validate
+// Styles
+
+const Login = ({ setUser, setSessionToken }) => {
+  const navigate = useNavigate();
+
   const [data, setData] = useState({
-    name: "",
-    email: "",
+    username: "",
     password: "",
-    confirmPassword: "",
-    IsAccepted: false,
   });
 
   const [errors, setErrors] = useState({});
@@ -37,11 +39,7 @@ const Login = () => {
   }, [data, touched]);
 
   const changeHandler = (event) => {
-    if (event.target.name === "IsAccepted") {
-      setData({ ...data, [event.target.name]: event.target.checked });
-    } else {
-      setData({ ...data, [event.target.name]: event.target.value });
-    }
+    setData({ ...data, [event.target.name]: event.target.value });
   };
 
   const focusHandler = (event) => {
@@ -51,37 +49,32 @@ const Login = () => {
   const submitHandler = (event) => {
     event.preventDefault();
     if (!Object.keys(errors).length) {
-      // Pushing data to database usuing PHP script
-      const urlApi = "http://localhost:3003/users/login";
       const pushData = async () => {
-        const responseA = axios({
+        axios({
           method: "post",
-          url: urlApi,
-          data: data,
+          headers: {
+            "Content-Type": "application/json",
+          },
+          url: `https://umbrella.rest.ghlmanager.com/users/login`,
+          data: JSON.stringify(data),
         })
           .then(function (response) {
-            console.log(response.data.message);
             notify("Login successed!", "success");
+            setSessionToken(response.data.sessionToken);
+            const user = response.data.user;
+            setUser(user);
+            navigate("/sales");
           })
           .catch(function (err) {
-            console.log(err.response.data.message);
             notify(err.response.data.message);
           });
-        // const response = await toast.promise(responseA, {
-        //   pending: "Check your data",
-        //   success: "Success!",
-        //   error: "error",
-        // });
       };
       pushData();
     } else {
       notify("Please Check fileds again", "error");
       setTouched({
-        name: true,
-        email: true,
+        username: true,
         password: true,
-        confirmPassword: true,
-        IsAccepted: false,
       });
     }
   };
@@ -97,26 +90,28 @@ const Login = () => {
         <div>
           <div
             className={
-              errors.email && touched.email
+              errors.username && touched.username
                 ? styles.unCompleted
-                : !errors.email && touched.email
+                : !errors.username && touched.username
                 ? styles.completed
                 : undefined
             }
           >
+            {/* <Box display="flex" justifyContent="center">
+              <EmailIcon color="success" /> */}
             <input
               type="text"
-              name="email"
-              value={data.email}
+              name="username"
+              value={data.username}
               placeholder="E-mail"
               onChange={changeHandler}
               onFocus={focusHandler}
               autoComplete="off"
             />
-            {/* <img src={emailIcon} alt="" /> */}
+            {/* </Box> */}
           </div>
-          {errors.email && touched.email && (
-            <span className={styles.error}>{errors.email}</span>
+          {errors.username && touched.username && (
+            <span className={styles.error}>{errors.username}</span>
           )}
         </div>
         <div>
