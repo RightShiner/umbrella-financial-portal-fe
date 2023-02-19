@@ -29,6 +29,7 @@ const Login = ({ setUser, setSessionToken }) => {
         setSessionToken(response.data.sessionToken);
         const user = response.data.user;
         setUser(user);
+        localStorage.setItem('token', response.data.sessionToken);
         navigate("/sales");
       })
       .catch(function (err) {
