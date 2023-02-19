@@ -40,7 +40,7 @@ function App() {
     <ColorModeContext.Provider value={colorMode}>
       <ThemeProvider theme={theme}>
         <CssBaseline />
-        <UserContext.Provider value={{ user, sessionToken }}>
+        <UserContext.Provider value={{ user, sessionToken, setUser, setSessionToken }}>
           <Routes>
             <Route path="/" element={<MainLayout isSidebar={isSidebar} setIsSidebar={value => setIsSidebar(value)}><Dashboard /></MainLayout>} />
             <Route path="/sales" element={<MainLayout isSidebar={isSidebar} setIsSidebar={value => setIsSidebar(value)}><Sales /></MainLayout>} />

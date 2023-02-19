@@ -11,12 +11,16 @@ import PersonOutlinedIcon from "@mui/icons-material/PersonOutlined";
 import SearchIcon from "@mui/icons-material/Search";
 import MenuItem from '@mui/material/MenuItem';
 import Menu from '@mui/material/Menu';
+import { UserContext } from '../../contexts/UserContext';
+
+
 
 
 const Topbar = () => {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
   const colorMode = useContext(ColorModeContext);
+  const { user, sessionToken, setUser, setSessionToken } = useContext(UserContext);
 
   const [anchorEl, setAnchorEl] = React.useState(null);
   const handleClick = (event) => {
@@ -28,7 +32,9 @@ const Topbar = () => {
   };
 
   const logedout = () => {
-    localStorage.removeItem("token");
+    localStorage.removeItem("sessionToken");
+    setSessionToken(null);
+    setUser(null);
     setAnchorEl(null);
   };
 
