@@ -23,7 +23,7 @@ import EmailIcon from "@mui/icons-material/Email";
 // Validate
 // Styles
 
-const Login = ({ setUser, setSessionToken }) => {
+const Login = ({ setUser, setSessionToken, saletemp }) => {
   const navigate = useNavigate();
 
   const [data, setData] = useState({
@@ -60,6 +60,7 @@ const Login = ({ setUser, setSessionToken }) => {
         })
           .then(function (response) {
             notify("Login successed!", "success");
+            console.log(response.data.sessionToken);
             setSessionToken(response.data.sessionToken);
             const user = response.data.user;
             setUser(user);
