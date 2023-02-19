@@ -1,150 +1,156 @@
-import { Box, Button, TextField } from "@mui/material";
-import { Formik } from "formik";
-import * as yup from "yup";
-import useMediaQuery from "@mui/material/useMediaQuery";
-import Header from "../../components/Header";
+import React, { useEffect, useState } from "react";
+//Icon
+// import userIcon from "../../img/user.svg";
+// import emailIcon from "../../img/email.svg";
+// import passwordIcon from "../../img/password.svg";
+// Validate
+import { validate } from "./validate";
+// Styles
+import styles from "./login.module.css";
+import "react-toastify/dist/ReactToastify.css";
+// Toast
+import { ToastContainer, toast } from "react-toastify";
+import { notify } from "./toast";
+//
+import { Link } from "react-router-dom";
+// Axios
 import axios from "axios";
-import { useNavigate } from "react-router-dom";
 
-const Login = ({ setUser, setSessionToken }) => {
-  const isNonMobile = useMediaQuery("(min-width:600px)");
-  const navigate = useNavigate();
+import Header from "../../components/Header";
+import { Box, Button, TextField } from "@mui/material";
+import "./index.css";
 
-  const handleFormSubmit = async (event) => {
+const Login = () => {
+  const [data, setData] = useState({
+    name: "",
+    email: "",
+    password: "",
+    confirmPassword: "",
+    IsAccepted: false,
+  });
+
+  const [errors, setErrors] = useState({});
+  const [touched, setTouched] = useState({});
+
+  useEffect(() => {
+    setErrors(validate(data, "Login"));
+  }, [data, touched]);
+
+  const changeHandler = (event) => {
+    if (event.target.name === "IsAccepted") {
+      setData({ ...data, [event.target.name]: event.target.checked });
+    } else {
+      setData({ ...data, [event.target.name]: event.target.value });
+    }
+  };
+
+  const focusHandler = (event) => {
+    setTouched({ ...touched, [event.target.name]: true });
+  };
+
+  const submitHandler = (event) => {
     event.preventDefault();
-    const data = {
-      username: event.target.email.value,
-      password: event.target.password.value
-    };
-    axios({
-      method: 'post',
-      url: `https://umbrella.rest.ghlmanager.com/users/login`,
-      data: data
-    })
-      .then(function (response) {
-        console.log(response.data);
-        if (response.data.status !== "success") {
-          throw new Error("error logging in");
+    if (!Object.keys(errors).length) {
+      // Pushing data to database usuing PHP script
+      const urlApi = `https://lightem.senatorhost.com/login-react/index.php?email=${data.email.toLowerCase()}&password=${
+        data.password
+      }&register=true`;
+      const pushData = async () => {
+        const responseA = axios.get(urlApi);
+        const response = await toast.promise(responseA, {
+          pending: "Check your data",
+          success: "Checked!",
+          error: "Something went wrong!",
+        });
+        if (response.data.ok) {
+          notify("You signed Up successfully", "success");
+        } else {
+          notify(
+            "You have already registered, log in to your account",
+            "warning"
+          );
         }
-        setSessionToken(response.data.sessionToken);
-        const user = response.data.user;
-        setUser(user);
-        navigate("/sales");
-      })
-      .catch(function (err) {
-        console.log(err.response);
+      };
+      pushData();
+    } else {
+      notify("Please Check fileds again", "error");
+      setTouched({
+        name: true,
+        email: true,
+        password: true,
+        confirmPassword: true,
+        IsAccepted: false,
       });
+    }
   };
 
   return (
-    <Box m="20px">
-      <Header title="Login" subtitle="" />
-
-      <Formik
-        // onSubmit={handleFormSubmit}
-        initialValues={initialValues}
-        validationSchema={checkoutSchema}
+    <div className={styles.container}>
+      <form
+        className={styles.formLogin}
+        onSubmit={submitHandler}
+        autoComplete="off"
       >
-        {({
-          values,
-          errors,
-          touched,
-          handleBlur,
-          handleChange,
-          handleSubmit,
-        }) => (
-          <form onSubmit={handleFormSubmit}>
-            <Box
-              display="grid"
-              gap="30px"
-              gridTemplateColumns="repeat(4, minmax(0, 1fr))"
-              sx={{
-                "& > div": { gridColumn: isNonMobile ? undefined : "span 4" },
-              }}
-            >
-              <TextField
-                fullWidth
-                variant="filled"
-                type="text"
-                label="Email"
-                onBlur={handleBlur}
-                onChange={handleChange}
-                value={values.email}
-                name="email"
-                error={!!touched.email && !!errors.email}
-                helperText={touched.email && errors.email}
-                sx={{ gridColumn: "span 4" }}
-              />
-              <TextField
-                fullWidth
-                variant="filled"
-                type="password"
-                label="Password"
-                onBlur={handleBlur}
-                onChange={handleChange}
-                value={values.password}
-                name="password"
-                error={!!touched.password && !!errors.password}
-                helperText={touched.password && errors.password}
-                sx={{ gridColumn: "span 4" }}
-              />
-            </Box>
-            <Box display="flex" justifyContent="end" mt="20px" gap="10px">
-              <Button type="submit" color="secondary" variant="contained">
-                Cancel
-              </Button>
-              <Button type="submit" color="secondary" variant="contained" >
-                Login
-              </Button>
-            </Box>
-          </form>
-        )}
-      </Formik>
-    </Box>
+        <h2>Login</h2>
+        <div>
+          <div
+            className={
+              errors.email && touched.email
+                ? styles.unCompleted
+                : !errors.email && touched.email
+                ? styles.completed
+                : undefined
+            }
+          >
+            <input
+              type="text"
+              name="email"
+              value={data.email}
+              placeholder="E-mail"
+              onChange={changeHandler}
+              onFocus={focusHandler}
+              autoComplete="off"
+            />
+            {/* <img src={emailIcon} alt="" /> */}
+          </div>
+          {errors.email && touched.email && (
+            <span className={styles.error}>{errors.email}</span>
+          )}
+        </div>
+        <div>
+          <div
+            className={
+              errors.password && touched.password
+                ? styles.unCompleted
+                : !errors.password && touched.password
+                ? styles.completed
+                : undefined
+            }
+          >
+            <input
+              type="password"
+              name="password"
+              value={data.password}
+              placeholder="Password"
+              onChange={changeHandler}
+              onFocus={focusHandler}
+              autoComplete="off"
+            />
+            {/* <img src={passwordIcon} alt="" /> */}
+          </div>
+          {errors.password && touched.password && (
+            <span className={styles.error}>{errors.password}</span>
+          )}
+        </div>
+        <Box display="flex" justifyContent="end" mt="20px" gap="10px">
+          <Button type="submit" color="secondary" variant="contained">
+            Login
+          </Button>
+        </Box>
+      </form>
+      <ToastContainer />
+    </div>
   );
-};
-
-const phoneRegExp =
-  /^((\+[1-9]{1,4}[ -]?)|(\([0-9]{2,3}\)[ -]?)|([0-9]{2,4})[ -]?)*?[0-9]{3,4}[ -]?[0-9]{3,4}$/;
-
-const checkoutSchema = yup.object().shape({
-  firstName: yup.string().required("required"),
-  lastName: yup.string().required("required"),
-  email: yup.string().email("invalid email").required("required"),
-  contact: yup
-    .string()
-    .matches(phoneRegExp, "Phone number is not valid")
-    .required("required"),
-  address1: yup.string().required("required"),
-  address2: yup.string().required("required"),
-  profilePhotos: yup.string().required("required"),
-  city: yup.string().required("required"),
-  state: yup.string().required("required"),
-  zipcode: yup.string().required("required"),
-  uIGID: yup.string().required("required"),
-  affiliateID: yup.string().required("required"),
-  aboutMeDescription: yup.string().required("required"),
-  dateOfBirth: yup.string().required("required"),
-  billingInformation: yup.string().required("required"),
-
-});
-const initialValues = {
-  firstName: "",
-  lastName: "",
-  email: "",
-  contact: "",
-  password: "",
-  address1: "",
-  address2: "",
-  profilePhotos: "",
-  city: "",
-  state: "",
-  zipcode: "",
-  uIGID: "",
-  affiliateID: "",
-  aboutMeDescription: "",
-  dateOfBirth: "",
-  billingInformation: "",
 };
 
 export default Login;
