@@ -31,6 +31,7 @@ function App() {
   const location = useLocation();
   const [user, setUser] = useState(null);
   const [sessionToken, setSessionToken] = useState(null);
+  const [saletemp, setSaletemp] = useState(null);
 
   useEffect(() => {
     if (
@@ -45,7 +46,7 @@ function App() {
     <ColorModeContext.Provider value={colorMode}>
       <ThemeProvider theme={theme}>
         <CssBaseline />
-        <UserContext.Provider value={{ user, sessionToken }}>
+        <UserContext.Provider value={{ user, sessionToken, saletemp }}>
           <Routes>
             <Route
               path="/"
@@ -65,7 +66,7 @@ function App() {
                   isSidebar={isSidebar}
                   setIsSidebar={(value) => setIsSidebar(value)}
                 >
-                  <Sales />
+                  <Sales setSaletemp={(value) => setSaletemp(value)} />
                 </MainLayout>
               }
             />
@@ -91,9 +92,9 @@ function App() {
                 />
               }
             />
-            <Route path="/detail" element={<Detail />} />
-            {/* <Route
-              path="/login"
+
+            <Route
+              path="/detail"
               element={
                 <MainLayout
                   isSidebar={isSidebar}
@@ -102,7 +103,7 @@ function App() {
                   <Detail />
                 </MainLayout>
               }
-            /> */}
+            />
           </Routes>
         </UserContext.Provider>
       </ThemeProvider>

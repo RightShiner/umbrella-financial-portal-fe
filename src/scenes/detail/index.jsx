@@ -14,6 +14,7 @@ import { DataGrid, GridToolbar } from "@mui/x-data-grid";
 import Typography from "@mui/material/Typography";
 import { tokens } from "../../theme";
 import { UserContext } from "../../contexts/UserContext";
+import { SaleContext } from "../../contexts/SaleContext";
 
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
@@ -27,17 +28,21 @@ const Detail = () => {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
   const [sales, setSales] = useState([]);
-  const { user, sessionToken } = useContext(UserContext);
+  const [sellingUser, setSellingUser] = useState([]);
+  const { user, sessionToken, saletemp } = useContext(UserContext);
 
   useEffect(() => {
-    setSales([
-      {
-        id: "1",
-        purchasePrice: "5000",
-        sellingUserName: "1",
-        purchasingUserName: "customer",
-      },
-    ]);
+    setSales([saletemp]);
+    setSellingUser([saletemp.sellingUser]);
+    console.log(sellingUser);
+    // setSales([
+    //   {
+    //     id: "1",
+    //     purchasePrice: "5000",
+    //     sellingUserName: "1",
+    //     purchasingUserName: "customer",
+    //   },
+    // ]);
   }, []);
 
   const columns = [
@@ -80,9 +85,168 @@ const Detail = () => {
                 <TableHead>
                   <TableRow>
                     <TableCell>id</TableCell>
+                    <TableCell align="right">sellingUserId</TableCell>
+                    <TableCell align="right">purchasingUserId</TableCell>
+                    <TableCell align="right">productId</TableCell>
                     <TableCell align="right">purchasePrice</TableCell>
-                    <TableCell align="right">sellingUserName</TableCell>
-                    <TableCell align="right">purchasingUserName</TableCell>
+                    <TableCell align="right">trialStartDate</TableCell>
+                    <TableCell align="right">billingStartDate</TableCell>
+                    <TableCell align="right">dateCreated</TableCell>
+                    <TableCell align="right">dateUpdated</TableCell>
+                    <TableCell align="right">dateCancelled</TableCell>
+                    <TableCell align="right">commissionPlanId</TableCell>
+                  </TableRow>
+                </TableHead>
+                <TableBody>
+                  {sales.map((row) => (
+                    <TableRow
+                      key={row.id}
+                      sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
+                    >
+                      <TableCell component="th" scope="row">
+                        {row.id}
+                      </TableCell>
+                      <TableCell align="right">{row.sellingUserId}</TableCell>
+                      <TableCell align="right">
+                        {row.purchasingUserId}
+                      </TableCell>
+                      <TableCell align="right">{row.productId}</TableCell>
+                      <TableCell align="right">{row.purchasePrice}</TableCell>
+                      <TableCell align="right">{row.trialStartDate}</TableCell>
+                      <TableCell align="right">
+                        {row.billingStartDate}
+                      </TableCell>
+                      <TableCell align="right">{row.dateCreated}</TableCell>
+                      <TableCell align="right">{row.dateUpdated}</TableCell>
+                      <TableCell align="right">{row.dateCancelled}</TableCell>
+                      <TableCell align="right">
+                        {row.commissionPlanId}
+                      </TableCell>
+                    </TableRow>
+                  ))}
+                </TableBody>
+              </Table>
+            </TableContainer>
+          </Typography>
+        </AccordionDetails>
+      </Accordion>
+
+      <Accordion defaultExpanded>
+        <AccordionSummary expandIcon={<ExpandMoreIcon />}>
+          <Typography color={colors.greenAccent[500]} variant="h5">
+            SellingUser Infomation
+          </Typography>
+        </AccordionSummary>
+        <AccordionDetails>
+          <Typography>
+            <TableContainer component={Paper}>
+              <Table
+                sx={{
+                  minWidth: 650,
+                }}
+                aria-label="simple table"
+              >
+                <TableHead>
+                  <TableRow>
+                    <TableCell>id</TableCell>
+                    <TableCell align="right">uigUserId</TableCell>
+                    <TableCell align="right">type</TableCell>
+                    <TableCell align="right">role</TableCell>
+                    <TableCell align="right">hashPassword</TableCell>
+                    <TableCell align="right">level1ReferredByUserId</TableCell>
+                    <TableCell align="right">level2ReferredByUserId</TableCell>
+                    <TableCell align="right">level3ReferredByUserId</TableCell>
+                    <TableCell align="right">affiliateStatus</TableCell>
+                    <TableCell align="right">affiliateUrl</TableCell>
+                    <TableCell align="right">email</TableCell>
+                    <TableCell align="right">phoneNumber</TableCell>
+                    <TableCell align="right">username</TableCell>
+                    <TableCell align="right">dateOfBirth</TableCell>
+                    <TableCell align="right">primaryGhlLocationId</TableCell>
+                    <TableCell align="right">ghlUserId</TableCell>
+                    <TableCell align="right">
+                      ghlSuperCorporateContactId
+                    </TableCell>
+                    <TableCell align="right">salesAccountId</TableCell>
+                    <TableCell align="right">dateCreated</TableCell>
+                    <TableCell align="right">dateUpdated</TableCell>
+                  </TableRow>
+                </TableHead>
+                <TableBody>
+                  {sellingUser.map((row) => (
+                    <TableRow
+                      key={row.id}
+                      sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
+                    >
+                      <TableCell component="th" scope="row">
+                        {row.id}
+                      </TableCell>
+                      <TableCell align="right">{row.uigUserId}</TableCell>
+                      <TableCell align="right">{row.type}</TableCell>
+                      <TableCell align="right">{row.role}</TableCell>
+                      <TableCell align="right">{row.hashPassword}</TableCell>
+                      <TableCell align="right">
+                        {row.level1ReferredByUserId}
+                      </TableCell>
+                      <TableCell align="right">
+                        {row.level2ReferredByUserId}
+                      </TableCell>
+                      <TableCell align="right">
+                        {row.level3ReferredByUserId}
+                      </TableCell>
+                      <TableCell align="right">{row.affiliateStatus}</TableCell>
+                      <TableCell align="right">{row.affiliateUrl}</TableCell>
+                      <TableCell align="right">{row.email}</TableCell>
+                      <TableCell align="right">{row.phoneNumber}</TableCell>
+                      <TableCell align="right">{row.username}</TableCell>
+                      <TableCell align="right">{row.dateOfBirth}</TableCell>
+                      <TableCell align="right">
+                        {row.primaryGhlLocationId}
+                      </TableCell>
+                      <TableCell align="right">{row.ghlUserId}</TableCell>
+                      <TableCell align="right">
+                        {row.ghlSuperCorporateContactId}
+                      </TableCell>
+                      <TableCell align="right">{row.salesAccountId}</TableCell>
+                      <TableCell align="right">{row.dateCreated}</TableCell>
+                      <TableCell align="right">{row.dateUpdated}</TableCell>
+                    </TableRow>
+                  ))}
+                </TableBody>
+              </Table>
+            </TableContainer>
+          </Typography>
+        </AccordionDetails>
+      </Accordion>
+
+      <Accordion defaultExpanded>
+        <AccordionSummary expandIcon={<ExpandMoreIcon />}>
+          <Typography color={colors.greenAccent[500]} variant="h5">
+            Commission Plan Infomation
+          </Typography>
+        </AccordionSummary>
+        <AccordionDetails>
+          <Typography>
+            <TableContainer component={Paper}>
+              <Table
+                sx={{
+                  minWidth: 650,
+                }}
+                aria-label="simple table"
+              >
+                <TableHead>
+                  <TableRow>
+                    <TableCell>id</TableCell>
+                    <TableCell align="right">sellingUserId</TableCell>
+                    <TableCell align="right">purchasingUserId</TableCell>
+                    <TableCell align="right">productId</TableCell>
+                    <TableCell align="right">purchasePrice</TableCell>
+                    <TableCell align="right">trialStartDate</TableCell>
+                    <TableCell align="right">billingStartDate</TableCell>
+                    <TableCell align="right">dateCreated</TableCell>
+                    <TableCell align="right">dateUpdated</TableCell>
+                    <TableCell align="right">dateCancelled</TableCell>
+                    <TableCell align="right">commissionPlanId</TableCell>
                   </TableRow>
                 </TableHead>
                 <TableBody>
@@ -104,34 +268,6 @@ const Detail = () => {
                 </TableBody>
               </Table>
             </TableContainer>
-          </Typography>
-        </AccordionDetails>
-      </Accordion>
-
-      <Accordion defaultExpanded>
-        <AccordionSummary expandIcon={<ExpandMoreIcon />}>
-          <Typography color={colors.greenAccent[500]} variant="h5">
-            Product Infomation
-          </Typography>
-        </AccordionSummary>
-        <AccordionDetails>
-          <Typography>
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse
-            malesuada lacus ex, sit amet blandit leo lobortis eget.
-          </Typography>
-        </AccordionDetails>
-      </Accordion>
-
-      <Accordion defaultExpanded>
-        <AccordionSummary expandIcon={<ExpandMoreIcon />}>
-          <Typography color={colors.greenAccent[500]} variant="h5">
-            Commission Plan Infomation
-          </Typography>
-        </AccordionSummary>
-        <AccordionDetails>
-          <Typography>
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse
-            malesuada lacus ex, sit amet blandit leo lobortis eget.
           </Typography>
         </AccordionDetails>
       </Accordion>
