@@ -12,12 +12,13 @@ import SearchIcon from "@mui/icons-material/Search";
 import MenuItem from '@mui/material/MenuItem';
 import Menu from '@mui/material/Menu';
 import { UserContext } from '../../contexts/UserContext';
-
+import { useNavigate } from "react-router-dom";
 
 
 
 const Topbar = () => {
   const theme = useTheme();
+  const navigate = useNavigate();
   const colors = tokens(theme.palette.mode);
   const colorMode = useContext(ColorModeContext);
   const { user, sessionToken, setUser, setSessionToken } = useContext(UserContext);
@@ -36,6 +37,7 @@ const Topbar = () => {
     setSessionToken(null);
     setUser(null);
     setAnchorEl(null);
+    navigate("/login");
   };
 
   return (
