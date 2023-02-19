@@ -30,13 +30,12 @@ function App() {
   const navigate = useNavigate();
   const location = useLocation();
   const [user, setUser] = useState(null);
-  const [sessionToken, setSessionToken] = useState(null);
+  const [sessionToken, setSessionToken] = useState(
+    localStorage.getItem("sessionToken") || null
+  );
 
   useEffect(() => {
-    if (
-      (user == null || sessionToken == null) &&
-      location.pathname !== "/login"
-    ) {
+    if ((sessionToken == null) && location.pathname !== "/login") {
       navigate("/login");
     }
   }, [location]);
@@ -45,7 +44,7 @@ function App() {
     <ColorModeContext.Provider value={colorMode}>
       <ThemeProvider theme={theme}>
         <CssBaseline />
-        <UserContext.Provider value={{ user, sessionToken }}>
+        <UserContext.Provider value={{ user, sessionToken, setUser, setSessionToken }}>
           <Routes>
             <Route
               path="/"
