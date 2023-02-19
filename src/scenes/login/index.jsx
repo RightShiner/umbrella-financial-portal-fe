@@ -52,24 +52,26 @@ const Login = () => {
     event.preventDefault();
     if (!Object.keys(errors).length) {
       // Pushing data to database usuing PHP script
-      const urlApi = `https://lightem.senatorhost.com/login-react/index.php?email=${data.email.toLowerCase()}&password=${
-        data.password
-      }&register=true`;
+      const urlApi = "http://localhost:3003/users/login";
       const pushData = async () => {
-        const responseA = axios.get(urlApi);
-        const response = await toast.promise(responseA, {
-          pending: "Check your data",
-          success: "Checked!",
-          error: "Something went wrong!",
-        });
-        if (response.data.ok) {
-          notify("You signed Up successfully", "success");
-        } else {
-          notify(
-            "You have already registered, log in to your account",
-            "warning"
-          );
-        }
+        const responseA = axios({
+          method: "post",
+          url: urlApi,
+          data: data,
+        })
+          .then(function (response) {
+            console.log(response.data.message);
+            notify("Login successed!", "success");
+          })
+          .catch(function (err) {
+            console.log(err.response.data.message);
+            notify(err.response.data.message);
+          });
+        // const response = await toast.promise(responseA, {
+        //   pending: "Check your data",
+        //   success: "Success!",
+        //   error: "error",
+        // });
       };
       pushData();
     } else {
