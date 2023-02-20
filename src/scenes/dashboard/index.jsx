@@ -22,10 +22,31 @@ import { mockTransactions } from "../../data/mockData";
 import { getCommissionData } from "../../services/dashboard";
 import { UserContext } from "../../contexts/UserContext";
 
+//datepicker
+import { Dayjs } from 'dayjs';
+import TextField from '@mui/material/TextField';
+import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
+import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
+import { DatePicker } from '@mui/x-date-pickers/DatePicker';
+
+//grid
+import Grid from '@mui/material/Grid';
+import { styled } from '@mui/material/styles';
+import Paper from '@mui/material/Paper';
+
+//select Field
+import InputLabel from '@mui/material/InputLabel';
+import MenuItem from '@mui/material/MenuItem';
+import FormHelperText from '@mui/material/FormHelperText';
+import FormControl from '@mui/material/FormControl';
+import Select from '@mui/material/Select';
+
 const Dashboard = () => {
   const { user, sessionToken, saletemp } = useContext(UserContext);
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
+  const [filterDate, setFilterDate] = useState(null);
+
 
   const [totalCommPaid, setTotalCommPaid] = useState("12361");
   const [totalCom, setTotalCom] = useState("12361");
@@ -49,12 +70,25 @@ const Dashboard = () => {
     }
     fetchData();
   }, []);
+
+  //select Field
+  const [filterField, setFilterField] = useState('');
+  const handleChangeFilterField = (event) => {
+    setFilterField(event.target.value);
+  };
+
+  const [filterOperator, setFilterOperator] = useState('');
+  const handleChangeFilterOperator = (event) => {
+    setFilterOperator(event.target.value);
+  };
+
+
+
   return (
     <Box m="20px">
       {/* HEADER */}
       <Box display="flex" justifyContent="space-between" alignItems="center">
         <Header title="DASHBOARD" subtitle="Welcome to your dashboard" />
-
         <Box>
           <Button
             sx={{
@@ -70,6 +104,82 @@ const Dashboard = () => {
           </Button>
         </Box>
       </Box>
+
+      {/* filter */}
+      <Box
+        sx={{ background: '#1f2a40' }}
+        mb="20px"
+        p="20px"
+      >
+        <Header title="" subtitle="Filter" />
+        <Grid container spacing={3}>
+          <Grid item xs={4}>
+            Fields
+            <div>
+              <FormControl sx={{ m: 1, minWidth: 120 }}>
+                <Select
+                  value={filterField}
+                  onChange={handleChangeFilterField}
+                  displayEmpty
+                  inputProps={{ 'aria-label': 'Without label' }}
+                >
+                  <MenuItem value="">
+                    <em>None</em>
+                  </MenuItem>
+                  <MenuItem value={0}>Date</MenuItem>
+                  <MenuItem value={1}>Commission</MenuItem>
+                  <MenuItem value={2}>Revenue</MenuItem>
+                  <MenuItem value={3}>Sales</MenuItem>
+                </Select>
+              </FormControl>
+            </div>
+          </Grid>
+          <Grid item xs={4}>
+            Operator
+            <div>
+              <FormControl sx={{ m: 1, minWidth: 120 }}>
+                <Select
+                  value={filterOperator}
+                  onChange={handleChangeFilterOperator}
+                  displayEmpty
+                  inputProps={{ 'aria-label': 'Without label' }}
+                >
+                  <MenuItem value="">
+                    <em>None</em>
+                  </MenuItem>
+                  <MenuItem value={0}>contains</MenuItem>
+                  <MenuItem value={1}>equals</MenuItem>
+                  <MenuItem value={2}>starts with</MenuItem>
+                  <MenuItem value={3}>ends with</MenuItem>
+                  <MenuItem value={4}>is empty</MenuItem>
+                  <MenuItem value={5}>is not empty</MenuItem>
+                  <MenuItem value={6}>is any of</MenuItem>              </Select>
+              </FormControl>
+            </div>
+          </Grid>
+          <Grid item xs={4}>
+            Value
+            <div>
+              {filterField == 0 ?
+                <LocalizationProvider dateAdapter={AdapterDayjs}>
+                  <DatePicker
+                    label=""
+                    value={filterDate}
+                    onChange={(newValue) => {
+                      setFilterDate(newValue);
+                    }}
+                    renderInput={(params) => <TextField {...params} />}
+                  />
+                </LocalizationProvider>
+                :
+                <TextField id="outlined-basic" label="Outlined" variant="outlined" />
+              }
+
+            </div>
+          </Grid>
+        </Grid>
+      </Box>
+      {/* end of filter */}
 
       {/* GRID & CHARTS */}
       <Box
@@ -421,7 +531,7 @@ const Dashboard = () => {
           </Box>
         </Box>
       </Box>
-    </Box>
+    </Box >
   );
 };
 
