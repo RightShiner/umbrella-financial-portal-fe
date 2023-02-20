@@ -188,7 +188,7 @@ const Dashboard = () => {
         spacing={2}
       >
         {/* Row1 */}
-        <Grid item xs={6} sm={6} md={3} >
+        <Grid item sm={6} md={6} lg={3} >
           <Box
             backgroundColor={colors.primary[400]}
             display="flex"
@@ -209,7 +209,7 @@ const Dashboard = () => {
             />
           </Box>
         </Grid>
-        <Grid item xs={6} sm={6} md={3} >
+        <Grid item sm={6} md={6} lg={3}>
           <Box
             gridColumn="span 3"
             backgroundColor={colors.primary[400]}
@@ -232,7 +232,7 @@ const Dashboard = () => {
           </Box>
 
         </Grid>
-        <Grid item xs={6} sm={6} md={3} >
+        <Grid item sm={6} md={6} lg={3}>
           <Box
             gridColumn="span 3"
             backgroundColor={colors.primary[400]}
@@ -255,7 +255,7 @@ const Dashboard = () => {
           </Box>
 
         </Grid>
-        <Grid item xs={6} sm={6} md={3} >
+        <Grid item sm={6} md={6} lg={3}>
           <Box
             gridColumn="span 3"
             backgroundColor={colors.primary[400]}
@@ -279,7 +279,7 @@ const Dashboard = () => {
         </Grid>
 
         {/* Row2 */}
-        <Grid item xs={6} sm={6} md={3} >
+        <Grid item sm={6} md={6} lg={3}>
           <Box
             gridColumn="span 3"
             backgroundColor={colors.primary[400]}
@@ -301,7 +301,7 @@ const Dashboard = () => {
             />
           </Box>
         </Grid>
-        <Grid item xs={6} sm={6} md={3} >
+        <Grid item sm={6} md={6} lg={3}>
           <Box
             gridColumn="span 3"
             backgroundColor={colors.primary[400]}
@@ -324,7 +324,7 @@ const Dashboard = () => {
           </Box>
 
         </Grid>
-        <Grid item xs={6} sm={6} md={3} >
+        <Grid item sm={6} md={6} lg={3}>
           <Box
             gridColumn="span 3"
             backgroundColor={colors.primary[400]}
@@ -347,7 +347,7 @@ const Dashboard = () => {
           </Box>
 
         </Grid>
-        <Grid item xs={6} sm={6} md={3} >
+        <Grid item sm={6} md={6} lg={3}>
           <Box
             gridColumn="span 3"
             backgroundColor={colors.primary[400]}
@@ -371,7 +371,7 @@ const Dashboard = () => {
         </Grid>
 
         {/* Row3 */}
-        <Grid item xs={12} sm={12} md={8} >
+        <Grid item sm={12} md={12} lg={8}>
           <Box
             gridColumn="span 8"
             gridRow="span 2"
@@ -414,7 +414,7 @@ const Dashboard = () => {
             </Box>
           </Box>
         </Grid>
-        <Grid item xs={12} sm={12} md={4} >
+        <Grid item sm={12} md={12} lg={4}>
           <Box
             gridColumn="span 4"
             gridRow="span 2"
@@ -469,7 +469,7 @@ const Dashboard = () => {
         </Grid>
 
         {/* Row4 */}
-        <Grid item xs={12} sm={12} md={6} >
+        <Grid item sm={12} md={12} lg={4}>
           <Box
             gridColumn="span 6"
             backgroundColor={colors.primary[400]}
@@ -489,7 +489,7 @@ const Dashboard = () => {
             />
           </Box>
         </Grid>
-        <Grid item xs={12} sm={12} md={6} >
+        <Grid item sm={12} md={12} lg={4}>
           <Box
             gridColumn="span 6"
             backgroundColor={colors.primary[400]}
@@ -511,7 +511,7 @@ const Dashboard = () => {
         </Grid>
 
         {/* Row5 */}
-        <Grid item xs={12} sm={12} md={4} >
+        <Grid item sm={12} md={12} lg={4}>
           <Box
             gridColumn="span 4"
             gridRow="span 2"
@@ -540,7 +540,7 @@ const Dashboard = () => {
             </Box>
           </Box>
         </Grid>
-        <Grid item xs={12} sm={12} md={4} >
+        <Grid item sm={12} md={12} lg={4}>
           <Box
             gridColumn="span 4"
             gridRow="span 2"
@@ -559,7 +559,7 @@ const Dashboard = () => {
             </Box>
           </Box>
         </Grid>
-        <Grid item xs={12} sm={12} md={4} >
+        <Grid item sm={12} md={12} lg={4}>
           <Box
             gridColumn="span 4"
             gridRow="span 2"
