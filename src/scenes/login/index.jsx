@@ -15,7 +15,7 @@ import { notify } from "./toast";
 import "./index.css";
 
 import EmailIcon from "@mui/icons-material/Email";
-import CircularProgress from '@mui/material/CircularProgress';
+import CircularProgress from "@mui/material/CircularProgress";
 
 //Icon
 // import userIcon from "../../img/user.svg";
@@ -69,7 +69,7 @@ const Login = ({ setUser, setSessionToken, saletemp }) => {
             setUser(user);
             localStorage.setItem("sessionToken", response.data.sessionToken);
             setLoading(false);
-            navigate("/sales");
+            navigate("/");
           })
           .catch(function (err) {
             setLoading(false);
@@ -88,9 +88,10 @@ const Login = ({ setUser, setSessionToken, saletemp }) => {
 
   return (
     <div className={styles.container}>
-      {loading ?
+      {loading ? (
         <CircularProgress color="success" />
-        : <form
+      ) : (
+        <form
           className={styles.formLogin}
           onSubmit={submitHandler}
           autoComplete="off"
@@ -102,8 +103,8 @@ const Login = ({ setUser, setSessionToken, saletemp }) => {
                 errors.username && touched.username
                   ? styles.unCompleted
                   : !errors.username && touched.username
-                    ? styles.completed
-                    : undefined
+                  ? styles.completed
+                  : undefined
               }
             >
               {/* <Box display="flex" justifyContent="center">
@@ -129,8 +130,8 @@ const Login = ({ setUser, setSessionToken, saletemp }) => {
                 errors.password && touched.password
                   ? styles.unCompleted
                   : !errors.password && touched.password
-                    ? styles.completed
-                    : undefined
+                  ? styles.completed
+                  : undefined
               }
             >
               <input
@@ -154,7 +155,7 @@ const Login = ({ setUser, setSessionToken, saletemp }) => {
             </Button>
           </Box>
         </form>
-      }
+      )}
       <ToastContainer />
       {/* <CircularProgress color="success" /> */}
     </div>

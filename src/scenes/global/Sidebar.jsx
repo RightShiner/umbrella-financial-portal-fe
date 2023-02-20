@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { ProSidebar, Menu, MenuItem } from "react-pro-sidebar";
 import { Box, IconButton, Typography, useTheme } from "@mui/material";
 import { Link } from "react-router-dom";
@@ -18,8 +18,13 @@ import MenuOutlinedIcon from "@mui/icons-material/MenuOutlined";
 import MapOutlinedIcon from "@mui/icons-material/MapOutlined";
 import axios from "axios";
 
+//avata and logo
 import User from '../../img/user.png';
 import Logo2 from '../../img/logo2.png';
+
+//media query
+import useMediaQuery from '@mui/material/useMediaQuery';
+
 
 const Item = ({ title, to, icon, selected, setSelected }) => {
   const theme = useTheme();
@@ -41,9 +46,18 @@ const Item = ({ title, to, icon, selected, setSelected }) => {
 
 const Sidebar = () => {
   const theme = useTheme();
+  const matches = useMediaQuery(theme.breakpoints.up('sm'));
+
   const colors = tokens(theme.palette.mode);
-  const [isCollapsed, setIsCollapsed] = useState(false);
+  const [isCollapsed, setIsCollapsed] = useState(!matches);
   const [selected, setSelected] = useState("Dashboard");
+
+  useEffect(() => {
+    //Runs only on the first render
+    setIsCollapsed(!matches);
+  }, [matches]);
+
+
 
   return (
     <Box
@@ -130,6 +144,14 @@ const Sidebar = () => {
           )}
 
           <Box paddingLeft={isCollapsed ? undefined : "10%"}>
+            <Item
+              title="Dashboard"
+              to="/"
+              icon={<HomeOutlinedIcon />}
+              selected={selected}
+              setSelected={setSelected}
+            />
+
             <Item
               title="Sales"
               to="/sales"
