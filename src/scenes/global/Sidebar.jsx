@@ -18,6 +18,9 @@ import MenuOutlinedIcon from "@mui/icons-material/MenuOutlined";
 import MapOutlinedIcon from "@mui/icons-material/MapOutlined";
 import axios from "axios";
 
+import User from '../../img/user.png';
+import Logo2 from '../../img/logo2.png';
+
 const Item = ({ title, to, icon, selected, setSelected }) => {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
@@ -80,9 +83,18 @@ const Sidebar = () => {
                 alignItems="center"
                 ml="15px"
               >
-                <Typography variant="h3" color={colors.grey[100]}>
+                {/* <Typography variant="h3" color={colors.grey[100]}>
                   UIG
-                </Typography>
+                </Typography> */}
+
+                <img
+                  alt="logo"
+                  src={Logo2}
+                  style={{ cursor: "pointer" }}
+                />
+
+
+
                 <IconButton onClick={() => setIsCollapsed(!isCollapsed)}>
                   <MenuOutlinedIcon />
                 </IconButton>
@@ -97,7 +109,7 @@ const Sidebar = () => {
                   alt="profile-user"
                   width="100px"
                   height="100px"
-                  src={`../../assets/user.png`}
+                  src={User}
                   style={{ cursor: "pointer", borderRadius: "50%" }}
                 />
               </Box>
