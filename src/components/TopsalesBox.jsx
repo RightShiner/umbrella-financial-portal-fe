@@ -8,7 +8,7 @@ const TopsalesBox = ({ title, name1, description1, name2, description2, name3, d
 
   return (
     <Box width="100%" m="0 30px" >
-      <Box display="flex" justifyContent="space-between">
+      <Box display="flex" justifyContent="space-between" mb={3}>
         <Box>
           <Typography
             variant="h4"
@@ -22,14 +22,14 @@ const TopsalesBox = ({ title, name1, description1, name2, description2, name3, d
       <Box m="2px">
         <Stack
           direction='row'
-          divider={<Divider orientation='vertical' flexItem/>}
+          divider={<Divider orientation='vertical' flexItem />}
           justifyContent='space-between'
         >
           <Box>
-            <Typography variant="h6" sx={{ color: colors.grey[400]}}>
+            <Typography variant="h6" sx={{ color: colors.grey[400] }} mb={1}>
               1ST PLACE
             </Typography>
-            <Typography variant="h3" sx={{ color: colors.primary }}>
+            <Typography variant="h3" sx={{ color: colors.primary }} mb={1}>
               {name1}
             </Typography>
             <Typography variant="h6" sx={{ color: colors.greenAccent[500] }}>
@@ -38,10 +38,10 @@ const TopsalesBox = ({ title, name1, description1, name2, description2, name3, d
           </Box>
 
           <Box ml="10px">
-            <Typography variant="h6" sx={{ color: colors.grey[400]}}>
+            <Typography variant="h6" sx={{ color: colors.grey[400] }} mb={1}>
               2ND PLACE
             </Typography>
-            <Typography variant="h3" sx={{ color: colors.primary }}>
+            <Typography variant="h3" sx={{ color: colors.primary }} mb={1}>
               {name2}
             </Typography>
             <Typography variant="h6" sx={{ color: colors.greenAccent[500] }}>
@@ -49,10 +49,10 @@ const TopsalesBox = ({ title, name1, description1, name2, description2, name3, d
             </Typography>
           </Box>
           <Box ml="10px">
-            <Typography variant="h6" sx={{ color: colors.grey[400]}}>
+            <Typography variant="h6" sx={{ color: colors.grey[400] }} mb={1}>
               3RD PLACE
             </Typography>
-            <Typography variant="h3" sx={{ color: colors.primary }}>
+            <Typography variant="h3" sx={{ color: colors.primary }} mb={1}>
               {name3}
             </Typography>
             <Typography variant="h6" sx={{ color: colors.greenAccent[500] }}>
@@ -62,7 +62,7 @@ const TopsalesBox = ({ title, name1, description1, name2, description2, name3, d
 
         </Stack>
       </Box>
-    </Box>
+    </Box >
   );
 };
 

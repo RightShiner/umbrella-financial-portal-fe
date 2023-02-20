@@ -182,356 +182,405 @@ const Dashboard = () => {
       {/* end of filter */}
 
       {/* GRID & CHARTS */}
-      <Box
-        display="grid"
-        gridTemplateColumns="repeat(12, 1fr)"
-        gridAutoRows="140px"
-        gap="20px"
-      >
-        {/* ROW 1 */}
-        <Box
-          gridColumn="span 3"
-          backgroundColor={colors.primary[400]}
-          display="flex"
-          alignItems="center"
-          justifyContent="center"
-        >
-          <StatBox
-            title={totalCommPaid}
-            subtitle="Total Commission Due to be paid out based on total sum of transactions"
-            progress="0.75"
-            increase="+14%"
-            icon={
-              <EmailIcon
-                sx={{ color: colors.greenAccent[600], fontSize: "26px" }}
-              />
-            }
-          />
-        </Box>
-        <Box
-          gridColumn="span 3"
-          backgroundColor={colors.primary[400]}
-          display="flex"
-          alignItems="center"
-          justifyContent="center"
-        >
-          <StatBox
-            title={totalCom}
-            subtitle="Total commission Due based on total sum of transactions"
-            progress="0.50"
-            increase="+21%"
-            icon={
-              <PointOfSaleIcon
-                sx={{ color: colors.greenAccent[600], fontSize: "26px" }}
-              />
-            }
-          />
-        </Box>
-        <Box
-          gridColumn="span 3"
-          backgroundColor={colors.primary[400]}
-          display="flex"
-          alignItems="center"
-          justifyContent="center"
-        >
-          <StatBox
-            title={avgCom}
-            subtitle="Avg commission amount."
-            progress="0.30"
-            increase="+5%"
-            icon={
-              <PersonAddIcon
-                sx={{ color: colors.greenAccent[600], fontSize: "26px" }}
-              />
-            }
-          />
-        </Box>
-        <Box
-          gridColumn="span 3"
-          backgroundColor={colors.primary[400]}
-          display="flex"
-          alignItems="center"
-          justifyContent="center"
-        >
-          <StatBox
-            title={towardsGoal}
-            subtitle="% towards goal that was seet in the profile section"
-            progress="0.80"
-            increase="+43%"
-            icon={
-              <TrafficIcon
-                sx={{ color: colors.greenAccent[600], fontSize: "26px" }}
-              />
-            }
-          />
-        </Box>
-        {/* ROW 2 */}
-        <Box
-          gridColumn="span 3"
-          backgroundColor={colors.primary[400]}
-          display="flex"
-          alignItems="center"
-          justifyContent="center"
-        >
-          <StatBox
-            title={akaRev}
-            subtitle="aka Revenue"
-            progress="0.75"
-            increase="+14%"
-            icon={
-              <EmailIcon
-                sx={{ color: colors.greenAccent[600], fontSize: "26px" }}
-              />
-            }
-          />
-        </Box>
-        <Box
-          gridColumn="span 3"
-          backgroundColor={colors.primary[400]}
-          display="flex"
-          alignItems="center"
-          justifyContent="center"
-        >
-          <StatBox
-            title={akaSales}
-            subtitle="aka Sales"
-            progress="0.50"
-            increase="+21%"
-            icon={
-              <PointOfSaleIcon
-                sx={{ color: colors.greenAccent[600], fontSize: "26px" }}
-              />
-            }
-          />
-        </Box>
-        <Box
-          gridColumn="span 3"
-          backgroundColor={colors.primary[400]}
-          display="flex"
-          alignItems="center"
-          justifyContent="center"
-        >
-          <StatBox
-            title={akaDeli}
-            subtitle="aka Delinquents"
-            progress="0.30"
-            increase="+5%"
-            icon={
-              <PersonAddIcon
-                sx={{ color: colors.greenAccent[600], fontSize: "26px" }}
-              />
-            }
-          />
-        </Box>
-        <Box
-          gridColumn="span 3"
-          backgroundColor={colors.primary[400]}
-          display="flex"
-          alignItems="center"
-          justifyContent="center"
-        >
-          <StatBox
-            title={akaProj}
-            subtitle="aka Projections"
-            progress="0.80"
-            increase="+43%"
-            icon={
-              <TrafficIcon
-                sx={{ color: colors.greenAccent[600], fontSize: "26px" }}
-              />
-            }
-          />
-        </Box>
 
-        {/* ROW 3 */}
-        <Box
-          gridColumn="span 8"
-          gridRow="span 2"
-          backgroundColor={colors.primary[400]}
-        >
+      <Grid
+        container
+        spacing={2}
+      >
+        {/* Row1 */}
+        <Grid item xs={6} sm={6} md={3} >
           <Box
-            mt="25px"
-            p="0 30px"
-            display="flex "
-            justifyContent="space-between"
-            alignItems="center"
-          >
-            <Box>
-              <Typography
-                variant="h5"
-                fontWeight="600"
-                color={colors.grey[100]}
-              >
-                Revenue Generated
-              </Typography>
-              <Typography
-                variant="h3"
-                fontWeight="bold"
-                color={colors.greenAccent[500]}
-              >
-                $59,342.32
-              </Typography>
-            </Box>
-            <Box>
-              <IconButton>
-                <DownloadOutlinedIcon
-                  sx={{ fontSize: "26px", color: colors.greenAccent[500] }}
-                />
-              </IconButton>
-            </Box>
-          </Box>
-          <Box height="250px" m="-20px 0 0 0">
-            <LineChart isDashboard={true} />
-          </Box>
-        </Box>
-        <Box
-          gridColumn="span 4"
-          gridRow="span 2"
-          backgroundColor={colors.primary[400]}
-          overflow="auto"
-        >
-          <Box
+            backgroundColor={colors.primary[400]}
             display="flex"
-            justifyContent="space-between"
             alignItems="center"
-            borderBottom={`4px solid ${colors.primary[500]}`}
-            colors={colors.grey[100]}
-            p="15px"
+            justifyContent="center"
+            sx={{ height: '140px' }}
           >
-            <Typography color={colors.grey[100]} variant="h5" fontWeight="600">
-              Recent Transactions
-            </Typography>
+            <StatBox
+              title={totalCommPaid}
+              subtitle="Total Commission Due to be paid out based on total sum of transactions"
+              progress="0.75"
+              increase="+14%"
+              icon={
+                <EmailIcon
+                  sx={{ color: colors.greenAccent[600], fontSize: "26px" }}
+                />
+              }
+            />
           </Box>
-          {mockTransactions.map((transaction, i) => (
+        </Grid>
+        <Grid item xs={6} sm={6} md={3} >
+          <Box
+            gridColumn="span 3"
+            backgroundColor={colors.primary[400]}
+            display="flex"
+            alignItems="center"
+            justifyContent="center"
+            sx={{ height: '140px' }}
+          >
+            <StatBox
+              title={totalCom}
+              subtitle="Total commission Due based on total sum of transactions"
+              progress="0.50"
+              increase="+21%"
+              icon={
+                <PointOfSaleIcon
+                  sx={{ color: colors.greenAccent[600], fontSize: "26px" }}
+                />
+              }
+            />
+          </Box>
+
+        </Grid>
+        <Grid item xs={6} sm={6} md={3} >
+          <Box
+            gridColumn="span 3"
+            backgroundColor={colors.primary[400]}
+            display="flex"
+            alignItems="center"
+            justifyContent="center"
+            sx={{ height: '140px' }}
+          >
+            <StatBox
+              title={avgCom}
+              subtitle="Avg commission amount."
+              progress="0.30"
+              increase="+5%"
+              icon={
+                <PersonAddIcon
+                  sx={{ color: colors.greenAccent[600], fontSize: "26px" }}
+                />
+              }
+            />
+          </Box>
+
+        </Grid>
+        <Grid item xs={6} sm={6} md={3} >
+          <Box
+            gridColumn="span 3"
+            backgroundColor={colors.primary[400]}
+            display="flex"
+            alignItems="center"
+            justifyContent="center"
+            sx={{ height: '140px' }}
+          >
+            <StatBox
+              title={towardsGoal}
+              subtitle="% towards goal that was seet in the profile section"
+              progress="0.80"
+              increase="+43%"
+              icon={
+                <TrafficIcon
+                  sx={{ color: colors.greenAccent[600], fontSize: "26px" }}
+                />
+              }
+            />
+          </Box>
+        </Grid>
+
+        {/* Row2 */}
+        <Grid item xs={6} sm={6} md={3} >
+          <Box
+            gridColumn="span 3"
+            backgroundColor={colors.primary[400]}
+            display="flex"
+            alignItems="center"
+            justifyContent="center"
+            sx={{ height: '140px' }}
+          >
+            <StatBox
+              title={akaRev}
+              subtitle="aka Revenue"
+              progress="0.75"
+              increase="+14%"
+              icon={
+                <EmailIcon
+                  sx={{ color: colors.greenAccent[600], fontSize: "26px" }}
+                />
+              }
+            />
+          </Box>
+        </Grid>
+        <Grid item xs={6} sm={6} md={3} >
+          <Box
+            gridColumn="span 3"
+            backgroundColor={colors.primary[400]}
+            display="flex"
+            alignItems="center"
+            justifyContent="center"
+            sx={{ height: '140px' }}
+          >
+            <StatBox
+              title={akaSales}
+              subtitle="aka Sales"
+              progress="0.50"
+              increase="+21%"
+              icon={
+                <PointOfSaleIcon
+                  sx={{ color: colors.greenAccent[600], fontSize: "26px" }}
+                />
+              }
+            />
+          </Box>
+
+        </Grid>
+        <Grid item xs={6} sm={6} md={3} >
+          <Box
+            gridColumn="span 3"
+            backgroundColor={colors.primary[400]}
+            display="flex"
+            alignItems="center"
+            justifyContent="center"
+            sx={{ height: '140px' }}
+          >
+            <StatBox
+              title={akaDeli}
+              subtitle="aka Delinquents"
+              progress="0.30"
+              increase="+5%"
+              icon={
+                <PersonAddIcon
+                  sx={{ color: colors.greenAccent[600], fontSize: "26px" }}
+                />
+              }
+            />
+          </Box>
+
+        </Grid>
+        <Grid item xs={6} sm={6} md={3} >
+          <Box
+            gridColumn="span 3"
+            backgroundColor={colors.primary[400]}
+            display="flex"
+            alignItems="center"
+            justifyContent="center"
+            sx={{ height: '140px' }}
+          >
+            <StatBox
+              title={akaProj}
+              subtitle="aka Projections"
+              progress="0.80"
+              increase="+43%"
+              icon={
+                <TrafficIcon
+                  sx={{ color: colors.greenAccent[600], fontSize: "26px" }}
+                />
+              }
+            />
+          </Box>
+        </Grid>
+
+        {/* Row3 */}
+        <Grid item xs={12} sm={12} md={8} >
+          <Box
+            gridColumn="span 8"
+            gridRow="span 2"
+            backgroundColor={colors.primary[400]}
+            sx={{ height: '300px' }}
+          >
             <Box
-              key={`${transaction.txId}-${i}`}
+              // mt="25px"
+              p="0 30px"
+              display="flex "
+              justifyContent="space-between"
+              alignItems="center"
+            >
+              <Box>
+                <Typography
+                  variant="h5"
+                  fontWeight="600"
+                  color={colors.grey[100]}
+                >
+                  Revenue Generated
+                </Typography>
+                <Typography
+                  variant="h3"
+                  fontWeight="bold"
+                  color={colors.greenAccent[500]}
+                >
+                  $59,342.32
+                </Typography>
+              </Box>
+              <Box>
+                <IconButton>
+                  <DownloadOutlinedIcon
+                    sx={{ fontSize: "26px", color: colors.greenAccent[500] }}
+                  />
+                </IconButton>
+              </Box>
+            </Box>
+            <Box height="250px" m="-20px 0 0 0">
+              <LineChart isDashboard={true} />
+            </Box>
+          </Box>
+        </Grid>
+        <Grid item xs={12} sm={12} md={4} >
+          <Box
+            gridColumn="span 4"
+            gridRow="span 2"
+            backgroundColor={colors.primary[400]}
+            overflow="auto"
+            sx={{ height: '300px' }}
+          >
+            <Box
               display="flex"
               justifyContent="space-between"
               alignItems="center"
               borderBottom={`4px solid ${colors.primary[500]}`}
+              colors={colors.grey[100]}
               p="15px"
             >
-              <Box>
-                <Typography
-                  color={colors.greenAccent[500]}
-                  variant="h5"
-                  fontWeight="600"
-                >
-                  {transaction.txId}
-                </Typography>
-                <Typography color={colors.grey[100]}>
-                  {transaction.user}
-                </Typography>
-              </Box>
-              <Box color={colors.grey[100]}>{transaction.date}</Box>
-              <Box
-                backgroundColor={colors.greenAccent[500]}
-                p="5px 10px"
-                borderRadius="4px"
-              >
-                ${transaction.cost}
-              </Box>
+              <Typography color={colors.grey[100]} variant="h5" fontWeight="600">
+                Recent Transactions
+              </Typography>
             </Box>
-          ))}
-        </Box>
-        {/* ROW 4 */}
-        <Box
-          gridColumn="span 6"
-          backgroundColor={colors.primary[400]}
-          display="flex"
-          alignItems="center"
-          justifyContent="center"
-        >
-          <TopsalesBox
-            title="TOP SALES RESP FOR 06-2020"
-            name1="Pam Beesly"
-            description1="$70,428.00(74% heigher than previous month)"
-            name2="Dwight Schrute"
-            description2="$42,428.00(241% heigher than previous month)"
-            name3="Ryan Howard"
-            description3="$32,428.00(45% heigher than previous month)"
-          />
-        </Box>
-        <Box
-          gridColumn="span 6"
-          backgroundColor={colors.primary[400]}
-          display="flex"
-          alignItems="center"
-          justifyContent="center"
-        >
-          <TopsalesBox
-            title="TOP SALES RESP FOR 07-2020"
-            name1="Ryan Howard"
-            description1="$70,428.00(74% heigher than previous month)"
-            name2="Dwight Schrute"
-            description2="$42,428.00(241% heigher than previous month)"
-            name3="Pam Beesly"
-            description3="$32,428.00(45% heigher than previous month)"
-          />
-        </Box>
+            {mockTransactions.map((transaction, i) => (
+              <Box
+                key={`${transaction.txId}-${i}`}
+                display="flex"
+                justifyContent="space-between"
+                alignItems="center"
+                borderBottom={`4px solid ${colors.primary[500]}`}
+                p="15px"
+              >
+                <Box>
+                  <Typography
+                    color={colors.greenAccent[500]}
+                    variant="h5"
+                    fontWeight="600"
+                  >
+                    {transaction.txId}
+                  </Typography>
+                  <Typography color={colors.grey[100]}>
+                    {transaction.user}
+                  </Typography>
+                </Box>
+                <Box color={colors.grey[100]}>{transaction.date}</Box>
+                <Box
+                  backgroundColor={colors.greenAccent[500]}
+                  p="5px 10px"
+                  borderRadius="4px"
+                >
+                  ${transaction.cost}
+                </Box>
+              </Box>
+            ))}
+          </Box>
+        </Grid>
 
-        {/* ROW 5 */}
-        <Box
-          gridColumn="span 4"
-          gridRow="span 2"
-          backgroundColor={colors.primary[400]}
-          p="30px"
-        >
-          <Typography variant="h5" fontWeight="600">
-            Top 5 Most Successful Services in this timeperiod pie graphy
-          </Typography>
+        {/* Row4 */}
+        <Grid item xs={12} sm={12} md={6} >
           <Box
+            gridColumn="span 6"
+            backgroundColor={colors.primary[400]}
             display="flex"
-            flexDirection="column"
             alignItems="center"
-            mt="25px"
+            justifyContent="center"
+            sx={{ height: '200px' }}
           >
-            <ProgressCircle size="125" />
+            <TopsalesBox
+              title="TOP SALES RESP FOR 06-2020"
+              name1="Pam Beesly"
+              description1="$70,428.00(74% heigher than previous month)"
+              name2="Dwight Schrute"
+              description2="$42,428.00(241% heigher than previous month)"
+              name3="Ryan Howard"
+              description3="$32,428.00(45% heigher than previous month)"
+            />
+          </Box>
+        </Grid>
+        <Grid item xs={12} sm={12} md={6} >
+          <Box
+            gridColumn="span 6"
+            backgroundColor={colors.primary[400]}
+            display="flex"
+            alignItems="center"
+            justifyContent="center"
+            sx={{ height: '200px' }}
+          >
+            <TopsalesBox
+              title="TOP SALES RESP FOR 07-2020"
+              name1="Ryan Howard"
+              description1="$70,428.00(74% heigher than previous month)"
+              name2="Dwight Schrute"
+              description2="$42,428.00(241% heigher than previous month)"
+              name3="Pam Beesly"
+              description3="$32,428.00(45% heigher than previous month)"
+            />
+          </Box>
+        </Grid>
+
+        {/* Row5 */}
+        <Grid item xs={12} sm={12} md={4} >
+          <Box
+            gridColumn="span 4"
+            gridRow="span 2"
+            backgroundColor={colors.primary[400]}
+            p="30px"
+            sx={{ height: '300px' }}
+          >
+            <Typography variant="h5" fontWeight="600">
+              Top 5 Most Successful Services in this timeperiod pie graphy
+            </Typography>
+            <Box
+              display="flex"
+              flexDirection="column"
+              alignItems="center"
+              mt="25px"
+            >
+              <ProgressCircle size="125" />
+              <Typography
+                variant="h5"
+                color={colors.greenAccent[500]}
+                sx={{ mt: "15px" }}
+              >
+                $48,352 revenue generated
+              </Typography>
+              <Typography>Includes extra misc expenditures and costs</Typography>
+            </Box>
+          </Box>
+        </Grid>
+        <Grid item xs={12} sm={12} md={4} >
+          <Box
+            gridColumn="span 4"
+            gridRow="span 2"
+            backgroundColor={colors.primary[400]}
+            sx={{ height: '300px' }}
+          >
             <Typography
               variant="h5"
-              color={colors.greenAccent[500]}
-              sx={{ mt: "15px" }}
+              fontWeight="600"
+              sx={{ padding: "30px 30px 0 30px" }}
             >
-              $48,352 revenue generated
+              # Customers trend line by service through timeframe
             </Typography>
-            <Typography>Includes extra misc expenditures and costs</Typography>
+            <Box height="250px" mt="-20px">
+              <BarChart isDashboard={true} />
+            </Box>
           </Box>
-        </Box>
-        <Box
-          gridColumn="span 4"
-          gridRow="span 2"
-          backgroundColor={colors.primary[400]}
-        >
-          <Typography
-            variant="h5"
-            fontWeight="600"
-            sx={{ padding: "30px 30px 0 30px" }}
+        </Grid>
+        <Grid item xs={12} sm={12} md={4} >
+          <Box
+            gridColumn="span 4"
+            gridRow="span 2"
+            backgroundColor={colors.primary[400]}
+            padding="30px"
+            sx={{ height: '300px' }}
           >
-            # Customers trend line by service through timeframe
-          </Typography>
-          <Box height="250px" mt="-20px">
-            <BarChart isDashboard={true} />
+            <Typography
+              variant="h5"
+              fontWeight="600"
+              sx={{ marginBottom: "15px" }}
+            >
+              Geography Based Traffic
+            </Typography>
+            <Box height="200px">
+              <GeographyChart isDashboard={true} />
+            </Box>
           </Box>
-        </Box>
-        <Box
-          gridColumn="span 4"
-          gridRow="span 2"
-          backgroundColor={colors.primary[400]}
-          padding="30px"
-        >
-          <Typography
-            variant="h5"
-            fontWeight="600"
-            sx={{ marginBottom: "15px" }}
-          >
-            Geography Based Traffic
-          </Typography>
-          <Box height="200px">
-            <GeographyChart isDashboard={true} />
-          </Box>
-        </Box>
-      </Box>
-    </Box >
+        </Grid>
+      </Grid>
+    </Box>
   );
 };
 
