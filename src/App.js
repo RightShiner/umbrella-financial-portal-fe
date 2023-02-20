@@ -35,6 +35,8 @@ function App() {
   );
   const [saletemp, setSaletemp] = useState(null);
 
+  const [selectedTransaction, setSelectedTransaction] = useState(null);
+
 
   useEffect(() => {
     if ((sessionToken == null) && location.pathname !== "/login") {
@@ -67,6 +69,17 @@ function App() {
                   setIsSidebar={(value) => setIsSidebar(value)}
                 >
                   <Sales setSaletemp={(value) => setSaletemp(value)} />
+                </MainLayout>
+              }
+            />
+            <Route
+              path="/transactions"
+              element={
+                <MainLayout
+                  isSidebar={isSidebar}
+                  setIsSidebar={(value) => setIsSidebar(value)}
+                >
+                  <Transactions setSelectedTransaction={(value) => setSelectedTransaction(value)} />
                 </MainLayout>
               }
             />

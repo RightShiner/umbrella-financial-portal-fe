@@ -1,4 +1,5 @@
 import { useState, useEffect, useContext } from "react";
+import { useNavigate } from "react-router-dom";
 import axios from "axios";
 
 import { Box, useTheme } from "@mui/material";
@@ -8,41 +9,35 @@ import { mockDataInvoices } from "../../data/mockData";
 import Header from "../../components/Header";
 import { UserContext } from "../../contexts/UserContext";
 
-const Transactions = () => {
+const Transactions = ({ setSelectedTransaction }) => {
+  const { user, sessionToken, saletemp } = useContext(UserContext);
+  const navigate = useNavigate();
+
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
-  const [row_state, setRow_state] = useState([]);
-  console.log(useContext(UserContext));
-  const { user, sessionToken } = useContext(UserContext);
-
-  let tran_data = [];
-  let row_data = [];
+  const [transactions, setTransactions] = useState([]);
+  const [selectedRow, setSelectedRow] = useState(null);
 
   useEffect(() => {
     axios({
       method: "get",
+      url: `https://umbrella.rest.ghlmanager.com/transactions`,
       headers: {
         Authorization: `Bearer ${sessionToken}`,
       },
-      url: `https://umbrella.rest.ghlmanager.com/sales`,
     })
       .then(function (response) {
-        tran_data = response.data.sales;
-        console.log(tran_data);
-        row_data = new Array(tran_data.length);
-        for (const [index, transaction] of tran_data.entries()) {
-          console.log(transaction);
-          row_data[index] = {};
-          for (const [key, value] of Object.entries(transaction)) {
-            console.log(row_data);
-            console.log(index);
-            console.log(transaction);
-            console.log(value);
-            row_data[index][key] = value;
-          }
-          console.log(row_data);
-          setRow_state(row_data);
+        const transactionData = response.data.transactions;
+        console.log(response);
+        for (const [index, transaction] of transactionData.entries()) {
+          transaction.amount = Number(transaction.amount);
+          transaction.sellingUserName = transaction.sale.sellingUser.name;
+          transaction.purchasingUserName = transaction.sale.purchasingUser.name;
+          transaction.purchasePrice = Number(transaction.sale.purchasePrice);
+          transaction.productName = transaction.sale.product.name;
+          transaction.dateCreated = new Date(transaction.dateCreated);
         }
+        setTransactions(transactionData);
       })
       .catch(function (err) {
         console.log(err);
@@ -51,78 +46,35 @@ const Transactions = () => {
 
   const columns = [
     { field: "id", headerName: "ID" },
-    /*{
-      field: "name",
-      headerName: "name",
-  
+    {
+      field: "amount", headerName: "Amount"
     },
     {
-      field: "description",
-      headerName: "description",
-  
-    },*/
+      field: "name", headerName: "Name"
+    },
+    {
+      field: "description", headerName: "Description"
+    },
     {
       field: "purchasePrice",
-      headerName: "amount",
+      headerName: "Purchase Price",
+    },
+    {
+      field: "sellingUserName",
+      headerName: "Selling User",
+    },
+    {
+      field: "purchasingUserName",
+      headerName: "Customer",
+    },
+    {
+      field: "productName",
+      headerName: "Product"
     },
     {
       field: "dateCreated",
-      headerName: "dateCreated",
-    } /*
-    {
-      field: "dateCleared",
-      headerName: "dateCleared",
-
-    },
-    {
-      field: "purchaseId",
-      headerName: "purchaseId",
-
-    },
-    {
-      field: "purchaseUserId",
-      headerName: "purchaseUserId",
-
-    },
-    {
-      field: "purchaseProductId",
-      headerName: "purchaseProductId",
-
-    },
-    {
-      field: "commissionId",
-      headerName: "commissionId",
-
-    },
-    {
-      field: "commissionUserId",
-      headerName: "commissionUserId",
-
-    },
-    {
-      field: "commissionProductId",
-      headerName: "commissionProductId",
-
-    },
-    {
-      field: "accountId",
-      headerName: "accountId",
-
-    },
-    {
-      field: "accountName",
-      headerName: "accountName",
-
-    },
-    {
-      field: "accountBalance",
-      headerName: "accountBalance",
-
-    },
-    {
-      field: "accountUserId",
-      headerName: "accountUserId",
-    }*/,
+      headerName: "Date"
+    }
   ];
 
   return (
@@ -162,7 +114,7 @@ const Transactions = () => {
       >
         <DataGrid
           checkboxSelection
-          rows={row_state}
+          rows={transactions}
           columns={columns}
           components={{ Toolbar: GridToolbar }}
         />

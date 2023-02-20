@@ -33,6 +33,8 @@ const Sales = ({ setSaletemp }) => {
           sale.sellingUserName = sale.sellingUser.name;
           sale.purchasingUserName = sale.purchasingUser.name;
           sale.purchasePrice = Number(sale.purchasePrice);
+          sale.productName = sale.product.name;
+          sale.dateCreated = new Date(sale.dateCreated);
         }
         setSales(salesData);
       })
@@ -191,6 +193,14 @@ const Sales = ({ setSaletemp }) => {
       field: "purchasingUserName",
       headerName: "Customer",
     },
+    {
+      field: "productName",
+      headerName: "Product"
+    },
+    {
+      field: "dateCreated",
+      headerName: "Date"
+    }
   ];
 
   return (
