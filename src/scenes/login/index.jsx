@@ -15,6 +15,7 @@ import { notify } from "./toast";
 import "./index.css";
 
 import EmailIcon from "@mui/icons-material/Email";
+import CircularProgress from '@mui/material/CircularProgress';
 
 //Icon
 // import userIcon from "../../img/user.svg";
@@ -33,6 +34,7 @@ const Login = ({ setUser, setSessionToken, saletemp }) => {
 
   const [errors, setErrors] = useState({});
   const [touched, setTouched] = useState({});
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     setErrors(validate(data, "Login"));
@@ -49,6 +51,7 @@ const Login = ({ setUser, setSessionToken, saletemp }) => {
   const submitHandler = (event) => {
     event.preventDefault();
     if (!Object.keys(errors).length) {
+      setLoading(true);
       const pushData = async () => {
         axios({
           method: "post",
@@ -65,9 +68,11 @@ const Login = ({ setUser, setSessionToken, saletemp }) => {
             const user = response.data.user;
             setUser(user);
             localStorage.setItem("sessionToken", response.data.sessionToken);
+            setLoading(false);
             navigate("/sales");
           })
           .catch(function (err) {
+            setLoading(false);
             notify(err.response.data.message);
           });
       };
@@ -83,71 +88,75 @@ const Login = ({ setUser, setSessionToken, saletemp }) => {
 
   return (
     <div className={styles.container}>
-      <form
-        className={styles.formLogin}
-        onSubmit={submitHandler}
-        autoComplete="off"
-      >
-        <h2>Login</h2>
-        <div>
-          <div
-            className={
-              errors.username && touched.username
-                ? styles.unCompleted
-                : !errors.username && touched.username
-                  ? styles.completed
-                  : undefined
-            }
-          >
-            {/* <Box display="flex" justifyContent="center">
+      {loading ?
+        <CircularProgress color="success" />
+        : <form
+          className={styles.formLogin}
+          onSubmit={submitHandler}
+          autoComplete="off"
+        >
+          <h2>Login</h2>
+          <div>
+            <div
+              className={
+                errors.username && touched.username
+                  ? styles.unCompleted
+                  : !errors.username && touched.username
+                    ? styles.completed
+                    : undefined
+              }
+            >
+              {/* <Box display="flex" justifyContent="center">
               <EmailIcon color="success" /> */}
-            <input
-              type="text"
-              name="username"
-              value={data.username}
-              placeholder="E-mail"
-              onChange={changeHandler}
-              onFocus={focusHandler}
-              autoComplete="off"
-            />
-            {/* </Box> */}
+              <input
+                type="text"
+                name="username"
+                value={data.username}
+                placeholder="E-mail"
+                onChange={changeHandler}
+                onFocus={focusHandler}
+                autoComplete="off"
+              />
+              {/* </Box> */}
+            </div>
+            {errors.username && touched.username && (
+              <span className={styles.error}>{errors.username}</span>
+            )}
           </div>
-          {errors.username && touched.username && (
-            <span className={styles.error}>{errors.username}</span>
-          )}
-        </div>
-        <div>
-          <div
-            className={
-              errors.password && touched.password
-                ? styles.unCompleted
-                : !errors.password && touched.password
-                  ? styles.completed
-                  : undefined
-            }
-          >
-            <input
-              type="password"
-              name="password"
-              value={data.password}
-              placeholder="Password"
-              onChange={changeHandler}
-              onFocus={focusHandler}
-              autoComplete="off"
-            />
-            {/* <img src={passwordIcon} alt="" /> */}
+          <div>
+            <div
+              className={
+                errors.password && touched.password
+                  ? styles.unCompleted
+                  : !errors.password && touched.password
+                    ? styles.completed
+                    : undefined
+              }
+            >
+              <input
+                type="password"
+                name="password"
+                value={data.password}
+                placeholder="Password"
+                onChange={changeHandler}
+                onFocus={focusHandler}
+                autoComplete="off"
+              />
+              {/* <img src={passwordIcon} alt="" /> */}
+            </div>
+            {errors.password && touched.password && (
+              <span className={styles.error}>{errors.password}</span>
+            )}
           </div>
-          {errors.password && touched.password && (
-            <span className={styles.error}>{errors.password}</span>
-          )}
-        </div>
-        <Box display="flex" justifyContent="end" mt="20px" gap="10px">
-          <Button type="submit" color="secondary" variant="contained">
-            Login
-          </Button>
-        </Box>
-      </form>
+          <Box display="flex" justifyContent="end" mt="20px" gap="10px">
+            <Button type="submit" color="secondary" variant="contained">
+              Login
+            </Button>
+          </Box>
+        </form>
+      }
       <ToastContainer />
+      {/* <CircularProgress color="success" /> */}
     </div>
   );
 };
