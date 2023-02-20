@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useContext } from "react";
 import axios from "axios";
 
 import { Box, Button, IconButton, Typography, useTheme } from "@mui/material";
@@ -19,34 +19,36 @@ import TopsalesBox from "../../components/TopsalesBox";
 import ProgressCircle from "../../components/ProgressCircle";
 
 import { mockTransactions } from "../../data/mockData";
-
+import { getCommissionData } from "../../services/dashboard";
+import { UserContext } from "../../contexts/UserContext";
 
 const Dashboard = () => {
+  const { user, sessionToken, saletemp } = useContext(UserContext);
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
 
-  const [commpaid, setCommpaid] = useState("12361");
-
-  let tran_data = "22";
-
-
-
-  // console.log(obj.items.filter(v => v.tags.some(k => k.name === 'Aflevering2')););
+  const [totalCommPaid, setTotalCommPaid] = useState("12361");
+  const [totalCom, setTotalCom] = useState("12361");
+  const [avgCom, setAvgCom] = useState("12361");
+  const [towardsGoal, setTowardsGoal] = useState("12361");
+  const [akaRev, setAkaRev] = useState("12361");
+  const [akaSales, setAkaSales] = useState("12361");
+  const [akaDeli, setAkaDeli] = useState("12361");
+  const [akaProj, setAkaProj] = useState("12361");
   useEffect(() => {
-    axios({
-      method: 'post',
-      url: 'https://umbrella.rest.ghlmanager.com/totalcom'
-    })
-      .then(function (response) {
-        tran_data = JSON.stringify(response.data.transactionTotal);
-        tran_data = tran_data.replace(/"/g, '');
-        setCommpaid((parseInt(tran_data) * 0.14).toString());
-      })
-      .catch(function (err) {
-        console.log(err);
-      });
+    async function fetchData() {
+      const response = await getCommissionData(sessionToken);
+      setTotalCommPaid(response.totalComPaid);
+      setTotalCom(response.totalCom);
+      setAvgCom(response.avgCom);
+      setTowardsGoal(response.towardsGoal);
+      setAkaRev(response.akaRev);
+      setAkaSales(response.akaSales);
+      setAkaDeli(response.akaDeli);
+      setAkaProj(response.akaProj);
+    }
+    fetchData();
   }, []);
-
   return (
     <Box m="20px">
       {/* HEADER */}
@@ -85,7 +87,7 @@ const Dashboard = () => {
           justifyContent="center"
         >
           <StatBox
-            title={commpaid}
+            title={totalCommPaid}
             subtitle="Total Commission Due to be paid out based on total sum of transactions"
             progress="0.75"
             increase="+14%"
@@ -104,7 +106,7 @@ const Dashboard = () => {
           justifyContent="center"
         >
           <StatBox
-            title="431,225"
+            title={totalCom}
             subtitle="Total commission Due based on total sum of transactions"
             progress="0.50"
             increase="+21%"
@@ -123,7 +125,7 @@ const Dashboard = () => {
           justifyContent="center"
         >
           <StatBox
-            title="32,441"
+            title={avgCom}
             subtitle="Avg commission amount."
             progress="0.30"
             increase="+5%"
@@ -142,7 +144,7 @@ const Dashboard = () => {
           justifyContent="center"
         >
           <StatBox
-            title="1,325,134"
+            title={towardsGoal}
             subtitle="% towards goal that was seet in the profile section"
             progress="0.80"
             increase="+43%"
@@ -162,7 +164,7 @@ const Dashboard = () => {
           justifyContent="center"
         >
           <StatBox
-            title="12,361"
+            title={akaRev}
             subtitle="aka Revenue"
             progress="0.75"
             increase="+14%"
@@ -181,7 +183,7 @@ const Dashboard = () => {
           justifyContent="center"
         >
           <StatBox
-            title="431,225"
+            title={akaSales}
             subtitle="aka Sales"
             progress="0.50"
             increase="+21%"
@@ -200,7 +202,7 @@ const Dashboard = () => {
           justifyContent="center"
         >
           <StatBox
-            title="32,441"
+            title={akaDeli}
             subtitle="aka Delinquents"
             progress="0.30"
             increase="+5%"
@@ -219,7 +221,7 @@ const Dashboard = () => {
           justifyContent="center"
         >
           <StatBox
-            title="1,325,134"
+            title={akaProj}
             subtitle="aka Projections"
             progress="0.80"
             increase="+43%"
