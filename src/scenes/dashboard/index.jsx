@@ -3,10 +3,16 @@ import axios from "axios";
 
 import { Box, Button, IconButton, Typography, useTheme } from "@mui/material";
 import DownloadOutlinedIcon from "@mui/icons-material/DownloadOutlined";
-import EmailIcon from "@mui/icons-material/Email";
 import PointOfSaleIcon from "@mui/icons-material/PointOfSale";
-import PersonAddIcon from "@mui/icons-material/PersonAdd";
+import ForestIcon from "@mui/icons-material/Forest";
+import FortIcon from "@mui/icons-material/Fort";
+import GamesIcon from "@mui/icons-material/Games";
+import GrassIcon from "@mui/icons-material/Grass";
+import HandshakeIcon from "@mui/icons-material/Handshake";
+import HubIcon from "@mui/icons-material/Hub";
 import TrafficIcon from "@mui/icons-material/Traffic";
+
+
 
 import { tokens } from "../../theme";
 
@@ -202,7 +208,7 @@ const Dashboard = () => {
               progress="0.75"
               increase="+14%"
               icon={
-                <EmailIcon
+                <ForestIcon
                   sx={{ color: colors.greenAccent[600], fontSize: "26px" }}
                 />
               }
@@ -247,7 +253,7 @@ const Dashboard = () => {
               progress="0.30"
               increase="+5%"
               icon={
-                <PersonAddIcon
+                <HubIcon
                   sx={{ color: colors.greenAccent[600], fontSize: "26px" }}
                 />
               }
@@ -294,7 +300,7 @@ const Dashboard = () => {
               progress="0.75"
               increase="+14%"
               icon={
-                <EmailIcon
+                <FortIcon
                   sx={{ color: colors.greenAccent[600], fontSize: "26px" }}
                 />
               }
@@ -316,7 +322,7 @@ const Dashboard = () => {
               progress="0.50"
               increase="+21%"
               icon={
-                <PointOfSaleIcon
+                <GamesIcon
                   sx={{ color: colors.greenAccent[600], fontSize: "26px" }}
                 />
               }
@@ -339,7 +345,7 @@ const Dashboard = () => {
               progress="0.30"
               increase="+5%"
               icon={
-                <PersonAddIcon
+                <GrassIcon
                   sx={{ color: colors.greenAccent[600], fontSize: "26px" }}
                 />
               }
@@ -362,7 +368,7 @@ const Dashboard = () => {
               progress="0.80"
               increase="+43%"
               icon={
-                <TrafficIcon
+                <HandshakeIcon
                   sx={{ color: colors.greenAccent[600], fontSize: "26px" }}
                 />
               }
