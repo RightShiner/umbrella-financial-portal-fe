@@ -72,7 +72,7 @@ function App() {
                 </MainLayout>
               }
             />
-            <Route
+            {/* <Route
               path="/transactions"
               element={
                 <MainLayout
@@ -82,7 +82,7 @@ function App() {
                   <Transactions setSelectedTransaction={(value) => setSelectedTransaction(value)} />
                 </MainLayout>
               }
-            />
+            /> */}
             {/*<Route path="/team" element={<Team />} />
             <Route path="/transactions" element={<MainLayout isSidebar={isSidebar} setIsSidebar={value => setIsSidebar(value)}><Transactions /></MainLayout>} />
             <Route path="/reports" element={<Reports />} />
