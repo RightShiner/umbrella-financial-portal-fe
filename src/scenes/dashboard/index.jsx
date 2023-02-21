@@ -46,7 +46,9 @@ import MenuItem from '@mui/material/MenuItem';
 import FormHelperText from '@mui/material/FormHelperText';
 import FormControl from '@mui/material/FormControl';
 import Select from '@mui/material/Select';
+const mapFilters = (field, operator, value, filters = {}) => {
 
+}
 const Dashboard = () => {
   const { user, sessionToken, saletemp } = useContext(UserContext);
   const theme = useTheme();
@@ -62,9 +64,11 @@ const Dashboard = () => {
   const [akaSales, setAkaSales] = useState("12361");
   const [akaDeli, setAkaDeli] = useState("12361");
   const [akaProj, setAkaProj] = useState("12361");
+
   useEffect(() => {
     async function fetchData() {
-      const response = await getCommissionData(sessionToken);
+      const filters = mapFilters(filterField, filterOperator)
+      const response = await getCommissionData(sessionToken, filters);
       setTotalCommPaid(response.totalComPaid);
       setTotalCom(response.totalCom);
       setAvgCom(response.avgCom);
