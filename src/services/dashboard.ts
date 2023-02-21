@@ -1,6 +1,10 @@
 import axios from "axios";
 
-export const getCommissionData = async (sessionToken) => {
+type Filters = {
+  transaction: any
+  sale: any
+}
+export const getCommissionData = async (sessionToken: string, filters: Filters) => {
   const headers = {
     Authorization: `Bearer ${sessionToken}`,
   };
@@ -14,10 +18,19 @@ export const getCommissionData = async (sessionToken) => {
   let akaDeli = "";
   let akaProj = "";
 
+  let transactionQueryString = "";
+  if (filters.transaction != null) {
+    transactionQueryString = `?filters=${btoa(JSON.stringify(filters.transaction))}`;
+  }
+  let saleQueryString = "";
+  if (filters.sale != null) {
+    saleQueryString = `?filters=${btoa(JSON.stringify(filters.sale))}`;
+  }
+
   await axios({
     method: "get",
     headers: headers,
-    url: "https://umbrella.rest.ghlmanager.com/statistics/commission/total",
+    url: `https://umbrella.rest.ghlmanager.com/statistics/commission/total${transactionQueryString}`,
   })
     .then(function (response) {
       totalComPaid = response.data.result;
@@ -29,7 +42,7 @@ export const getCommissionData = async (sessionToken) => {
   await axios({
     method: "get",
     headers: headers,
-    url: "https://umbrella.rest.ghlmanager.com/statistics/commission/total",
+    url: `https://umbrella.rest.ghlmanager.com/statistics/commission/total${transactionQueryString}`,
   })
     .then(function (response) {
       totalCom = response.data.result;
@@ -41,7 +54,7 @@ export const getCommissionData = async (sessionToken) => {
   await axios({
     method: "get",
     headers: headers,
-    url: "https://umbrella.rest.ghlmanager.com/statistics/commission/average",
+    url: `https://umbrella.rest.ghlmanager.com/statistics/commission/average${transactionQueryString}`,
   })
     .then(function (response) {
       avgCom = response.data.result;
@@ -53,7 +66,7 @@ export const getCommissionData = async (sessionToken) => {
   await axios({
     method: "get",
     headers: headers,
-    url: "https://umbrella.rest.ghlmanager.com/statistics/commission/total",
+    url: `https://umbrella.rest.ghlmanager.com/statistics/commission/total${transactionQueryString}`,
   })
     .then(function (response) {
       towardsGoal = response.data.result;
@@ -65,7 +78,7 @@ export const getCommissionData = async (sessionToken) => {
   await axios({
     method: "get",
     headers: headers,
-    url: "https://umbrella.rest.ghlmanager.com/statistics/revenue/total",
+    url: `https://umbrella.rest.ghlmanager.com/statistics/revenue/total${saleQueryString}`,
   })
     .then(function (response) {
       akaRev = response.data.result;
@@ -77,7 +90,7 @@ export const getCommissionData = async (sessionToken) => {
   await axios({
     method: "get",
     headers: headers,
-    url: "https://umbrella.rest.ghlmanager.com/statistics/sales/total",
+    url: `https://umbrella.rest.ghlmanager.com/statistics/sales/total${saleQueryString}`,
   })
     .then(function (response) {
       akaSales = response.data.result;
@@ -86,29 +99,9 @@ export const getCommissionData = async (sessionToken) => {
       console.log(err);
     });
 
-  await axios({
-    method: "get",
-    headers: headers,
-    url: "https://umbrella.rest.ghlmanager.com/statistics/commission/total",
-  })
-    .then(function (response) {
-      akaDeli = response.data.result;
-    })
-    .catch(function (err) {
-      console.log(err);
-    });
+  akaDeli = "Coming Soon"
 
-  await axios({
-    method: "get",
-    headers: headers,
-    url: "https://umbrella.rest.ghlmanager.com/statistics/commission/total",
-  })
-    .then(function (response) {
-      akaProj = response.data.result;
-    })
-    .catch(function (err) {
-      console.log(err);
-    });
+  akaProj = "Coming Soon"
 
   return {
     totalComPaid,
