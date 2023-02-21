@@ -475,7 +475,7 @@ const Dashboard = () => {
         </Grid>
 
         {/* Row4 */}
-        <Grid item sm={12} md={12} lg={4}>
+        <Grid item sm={12} md={12} lg={6}>
           <Box
             gridColumn="span 6"
             backgroundColor={colors.primary[400]}
@@ -495,7 +495,7 @@ const Dashboard = () => {
             />
           </Box>
         </Grid>
-        <Grid item sm={12} md={12} lg={4}>
+        <Grid item sm={12} md={12} lg={6}>
           <Box
             gridColumn="span 6"
             backgroundColor={colors.primary[400]}
