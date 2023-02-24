@@ -46,12 +46,53 @@ import MenuItem from '@mui/material/MenuItem';
 import FormHelperText from '@mui/material/FormHelperText';
 import FormControl from '@mui/material/FormControl';
 import Select from '@mui/material/Select';
+import moment from "moment/moment";
+const transactionFieldMap = new Map([
+  ["amount", "amount"],
+  ["dateCreated", "dateCreated"]
+]);
+const saleFieldMap = new Map([
+  ["amount", "purchasePrice"],
+  ["dateCreated", "dateCreated"]
+]);
+const mapTransactionFilter = (field, operator, value, filter = {}) => {
+  field = transactionFieldMap.get(field);
+  if (field == null) return;
+  if (value.type === "DateRange") {
+    filter[field] = {
+      gte: new Date(value.startDate),
+      lte: new Date(value.endDate)
+    };
+  } else if (typeof value === "string" || typeof value === "number") {
+    filter[field] = {};
+    filter[field][operator] = value;
+  }
+  return filter;
+}
+const mapSaleFilter = (field, operator, value, filter = {}) => {
+  field = saleFieldMap.get(field);
+  if (field == null) return;
 
+  if (value.type === "DateRange") {
+    filter[field] = {
+      gte: new Date(value.startDate),
+      lte: new Date(value.endDate)
+    };
+  } else if (typeof value === "string" || typeof value === "number") {
+    filter[field] = {};
+    filter[field][operator] = value;
+  }
+  return filter;
+}
+const mapFilters = (field, operator, value, filters = {}) => {
+  filters.transaction = mapTransactionFilter(field, operator, value, filters.transaction);
+  filters.sale = mapSaleFilter(field, operator, value, filters.transaction);
+  return filters;
+}
 const Dashboard = () => {
   const { user, sessionToken, saletemp } = useContext(UserContext);
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
-  const [filterDate, setFilterDate] = useState(null);
 
 
   const [totalCommPaid, setTotalCommPaid] = useState("12361");
@@ -62,9 +103,25 @@ const Dashboard = () => {
   const [akaSales, setAkaSales] = useState("12361");
   const [akaDeli, setAkaDeli] = useState("12361");
   const [akaProj, setAkaProj] = useState("12361");
+
+  //select Field
+  const [filterField, setFilterField] = useState("");
+  const handleChangeFilterField = (event) => {
+    setFilterField(event.target.value);
+  };
+
+  const [filterOperator, setFilterOperator] = useState("");
+
+  const [filterValue, setFilterValue] = useState("");
+
+  const handleChangeFilterOperator = (event) => {
+    setFilterOperator(event.target.value);
+  };
+
   useEffect(() => {
     async function fetchData() {
-      const response = await getCommissionData(sessionToken);
+      const filters = mapFilters(filterField, filterOperator, filterValue)
+      const response = await getCommissionData(sessionToken, filters);
       setTotalCommPaid(response.totalComPaid);
       setTotalCom(response.totalCom);
       setAvgCom(response.avgCom);
@@ -75,20 +132,20 @@ const Dashboard = () => {
       setAkaProj(response.akaProj);
     }
     fetchData();
-  }, []);
+  }, [filterField, filterOperator, filterValue]);
 
-  //select Field
-  const [filterField, setFilterField] = useState('');
-  const handleChangeFilterField = (event) => {
-    setFilterField(event.target.value);
-  };
+  useEffect(() => {
+    if (filterField === "dateCreated" && filterOperator === "DateRange") {
+      setFilterValue({
+        type: "DateRange",
+        startDate: new Date(),
+        endDate: new Date(),
+      });
+      setFilterOperator("DateRange");
+    }
+  }, [filterField])
 
-  const [filterOperator, setFilterOperator] = useState('');
-  const handleChangeFilterOperator = (event) => {
-    setFilterOperator(event.target.value);
-  };
-
-
+  console.log(filterField);
 
   return (
     <Box m="20px">
@@ -132,10 +189,9 @@ const Dashboard = () => {
                   <MenuItem value="">
                     <em>None</em>
                   </MenuItem>
-                  <MenuItem value={0}>Date</MenuItem>
-                  <MenuItem value={1}>Commission</MenuItem>
-                  <MenuItem value={2}>Revenue</MenuItem>
-                  <MenuItem value={3}>Sales</MenuItem>
+                  <MenuItem value={"dateCreated"}>Date</MenuItem>
+                  {/*<MenuItem value={"userId"}>User</MenuItem>
+                  <MenuItem value={"productId"}>Product</MenuItem>*/}
                 </Select>
               </FormControl>
             </div>
@@ -153,26 +209,44 @@ const Dashboard = () => {
                   <MenuItem value="">
                     <em>None</em>
                   </MenuItem>
-                  <MenuItem value={0}>contains</MenuItem>
-                  <MenuItem value={1}>equals</MenuItem>
-                  <MenuItem value={2}>starts with</MenuItem>
-                  <MenuItem value={3}>ends with</MenuItem>
-                  <MenuItem value={4}>is empty</MenuItem>
-                  <MenuItem value={5}>is not empty</MenuItem>
-                  <MenuItem value={6}>is any of</MenuItem>              </Select>
+                  {
+                    filterField === "dateCreated" ? <MenuItem value={"DateRange"}>date range</MenuItem> : <>
+                      <MenuItem value={"contains"}>contains</MenuItem>
+                      <MenuItem value={"equals"}>equals</MenuItem>
+                      <MenuItem value={"startsWith"}>starts with</MenuItem>
+                      <MenuItem value={"endsWith"}>ends with</MenuItem>
+                    </>
+                  }
+                  {/*<MenuItem value={5}>is empty</MenuItem>
+                  <MenuItem value={6}>is not empty</MenuItem>
+                <MenuItem value={7}>is any of</MenuItem>*/}              </Select>
               </FormControl>
             </div>
           </Grid>
           <Grid item xs={4}>
             Value
             <div>
-              {filterField == 0 ?
+              {filterField === "dateCreated" ?
                 <LocalizationProvider dateAdapter={AdapterDayjs}>
                   <DatePicker
-                    label=""
-                    value={filterDate}
+                    label="Start Date"
+                    value={filterValue.startDate}
                     onChange={(newValue) => {
-                      setFilterDate(newValue);
+                      const tempFilterValue = filterValue == null || typeof filterValue === "string" ? { type: "DateRange" } : Object.assign({}, filterValue);
+                      tempFilterValue.startDate = moment(newValue.toDate()).format("YYYY-MM-DD");
+                      console.log(tempFilterValue);
+                      setFilterValue(tempFilterValue);
+                    }}
+                    renderInput={(params) => <TextField {...params} />}
+                  />
+                  <DatePicker
+                    label="End Date"
+                    value={filterValue.endDate}
+                    onChange={(newValue) => {
+                      const tempFilterValue = filterValue == null || typeof filterValue === "string" ? { type: "DateRange" } : Object.assign({}, filterValue);
+                      tempFilterValue.endDate = moment(newValue.toDate()).format("YYYY-MM-DD");
+                      console.log(tempFilterValue);
+                      setFilterValue(tempFilterValue);
                     }}
                     renderInput={(params) => <TextField {...params} />}
                   />
