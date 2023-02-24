@@ -1,3 +1,6 @@
 .env
 node_modules/*
 build/*
+.git
+yarn.lock
+yarn-error.log
