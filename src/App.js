@@ -106,7 +106,14 @@ function App() {
                 </MainLayout>
               }
             />
-            {/*<Route path="/team" element={<Team />} />
+            <Route path="/team" element={
+              <MainLayout
+                isSidebar={isSidebar}
+                setIsSidebar={(value) => setIsSidebar(value)}
+              >
+                <Team />
+              </MainLayout>} />
+            {/*
             <Route path="/transactions" element={<MainLayout isSidebar={isSidebar} setIsSidebar={value => setIsSidebar(value)}><Transactions /></MainLayout>} />
             <Route path="/reports" element={<Reports />} />
             <Route path="/customers" element={<Customers />} />
