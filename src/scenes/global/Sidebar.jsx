@@ -166,6 +166,14 @@ const Sidebar = () => {
               selected={selected}
               setSelected={setSelected}
             />
+                        <Item
+              title="Calendar"
+              to="/calendar"
+              icon={<CalendarTodayOutlinedIcon />}
+              selected={selected}
+              setSelected={setSelected}
+            />
+
             {/*
             <Typography
               variant="h6"
