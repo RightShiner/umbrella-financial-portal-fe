@@ -39,6 +39,10 @@ const Topbar = () => {
     setAnchorEl(null);
     navigate("/login");
   };
+  const handleProfile = () => {
+    setAnchorEl(null);
+    navigate("/profile");
+  };
 
   return (
     <Box display="flex" justifyContent="space-between" p={2}>
@@ -89,7 +93,7 @@ const Topbar = () => {
           onClose={handleClose}
           sx={{ mt: '35px' }}
         >
-          <MenuItem onClick={handleClose}>Profile</MenuItem>
+          <MenuItem onClick={handleProfile}>Profile</MenuItem>
           <MenuItem onClick={handleClose}>My account</MenuItem>
           <MenuItem onClick={logedout}>Logout</MenuItem>
         </Menu>
