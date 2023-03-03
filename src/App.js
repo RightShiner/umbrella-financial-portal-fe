@@ -16,6 +16,7 @@ import Pie from "./scenes/pie";
 import FAQ from "./scenes/faq";
 import Geography from "./scenes/geography";
 import Contacts from "./scenes/contacts";
+import Profile from "./scenes/profile";
 import Detail from "./scenes/detail";
 import { CssBaseline, ThemeProvider } from "@mui/material";
 import { ColorModeContext, useMode } from "./theme";
@@ -80,6 +81,17 @@ function App() {
                   setIsSidebar={(value) => setIsSidebar(value)}
                 >
                   <Transactions setSelectedTransaction={(value) => setSelectedTransaction(value)} />
+                </MainLayout>
+              }
+            />
+            <Route
+              path="/profile"
+              element={
+                <MainLayout
+                  isSidebar={isSidebar}
+                  setIsSidebar={(value) => setIsSidebar(value)}
+                >
+                  <Profile setSelectedTransaction={(value) => setSelectedTransaction(value)} />
                 </MainLayout>
               }
             />

@@ -49,7 +49,7 @@ import Select from '@mui/material/Select';
 import moment from "moment/moment";
 const transactionFieldMap = new Map([
   ["amount", "amount"],
-  ["dateCreated", "dateCreated"]
+  ["dateCreated", "sale.dateCreated"]
 ]);
 const saleFieldMap = new Map([
   ["amount", "purchasePrice"],
@@ -58,13 +58,28 @@ const saleFieldMap = new Map([
 const mapTransactionFilter = (field, operator, value, filter = {}) => {
   field = transactionFieldMap.get(field);
   if (field == null) return;
+  let subfields = [];
+  if (field.includes(".")) {
+    subfields = field.split(".");
+    subfields.splice(0, 1);
+    field = subfields[0];
+  }
+  filter[field] = {};
+  let fieldReference = filter[field];
+  for (const subfield of subfields) {
+    console.log(fieldReference);
+    if (fieldReference[subfield] == null) {
+      fieldReference[subfield] = {};
+    }
+    fieldReference = fieldReference[subfield]
+  }
   if (value.type === "DateRange") {
-    filter[field] = {
+    fieldReference = {
       gte: new Date(value.startDate),
       lte: new Date(value.endDate)
     };
   } else if (typeof value === "string" || typeof value === "number") {
-    filter[field] = {};
+    fieldReference = {};
     filter[field][operator] = value;
   }
   return filter;
@@ -119,8 +134,10 @@ const Dashboard = () => {
   };
 
   useEffect(() => {
+    console.log("useEffect3");
     async function fetchData() {
-      const filters = mapFilters(filterField, filterOperator, filterValue)
+      const filters = mapFilters(filterField, filterOperator, filterValue);
+      console.log(filters);
       const response = await getCommissionData(sessionToken, filters);
       setTotalCommPaid(response.totalComPaid);
       setTotalCom(response.totalCom);
@@ -132,7 +149,7 @@ const Dashboard = () => {
       setAkaProj(response.akaProj);
     }
     fetchData();
-  }, [filterField, filterOperator, filterValue]);
+  }, [sessionToken, filterField, filterOperator, filterValue]);
 
   useEffect(() => {
     if (filterField === "dateCreated" && filterOperator === "DateRange") {
@@ -143,7 +160,7 @@ const Dashboard = () => {
       });
       setFilterOperator("DateRange");
     }
-  }, [filterField])
+  }, [filterField, filterOperator])
 
   console.log(filterField);
 
