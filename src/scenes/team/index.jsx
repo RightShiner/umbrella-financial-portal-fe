@@ -8,12 +8,18 @@ import Header from "../../components/Header";
 import { useContext, useEffect, useState } from "react";
 import axios from "axios";
 import { UserContext } from "../../contexts/UserContext";
+import { useNavigate } from "react-router-dom";
 
 const Team = () => {
   const { user, sessionToken, saletemp } = useContext(UserContext);
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
   const [users, setUsers] = useState([]);
+  const navigate = useNavigate();
+  const handleRowClick = (params) => {
+    const id = params.row.id;
+    navigate(`/team/${id}/details`);
+  }
   useEffect(() => {
     const include = {
       accounts: {
@@ -172,7 +178,7 @@ const Team = () => {
           },
         }}
       >
-        <DataGrid checkboxSelection rows={users} columns={columns} />
+        <DataGrid checkboxSelection rows={users} columns={columns} onRowClick={handleRowClick} />
       </Box>
     </Box>
   );

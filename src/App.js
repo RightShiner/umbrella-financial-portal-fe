@@ -17,20 +17,23 @@ import FAQ from "./scenes/faq";
 import Geography from "./scenes/geography";
 import Contacts from "./scenes/contacts";
 import Profile from "./scenes/profile";
-import Detail from "./scenes/detail";
+import SaleDetail from "./scenes/SaleDetail";
 import { CssBaseline, ThemeProvider } from "@mui/material";
 import { ColorModeContext, useMode } from "./theme";
 import Calendar from "./scenes/calendar/calendar";
 import MainLayout from "./layouts/MainLayout";
 import { UserContext } from "./contexts/UserContext";
 import Sales from "./scenes/sales";
+import TeamMemberDetails from "./scenes/team/details";
 
 function App() {
   const [theme, colorMode] = useMode();
   const [isSidebar, setIsSidebar] = useState(true);
   const navigate = useNavigate();
   const location = useLocation();
-  const [user, setUser] = useState(null);
+  const [user, setUser] = useState(
+    (localStorage.getItem("user") || null) == null ? null : JSON.parse(localStorage.getItem("user"))
+  );
   const [sessionToken, setSessionToken] = useState(
     localStorage.getItem("sessionToken") || null
   );
@@ -113,6 +116,13 @@ function App() {
               >
                 <Team />
               </MainLayout>} />
+            <Route path="/team/:userId/details" element={
+              <MainLayout
+                isSidebar={isSidebar}
+                setIsSidebar={(value) => setIsSidebar(value)}
+              >
+                <TeamMemberDetails />
+              </MainLayout>} />
             {/*
             <Route path="/transactions" element={<MainLayout isSidebar={isSidebar} setIsSidebar={value => setIsSidebar(value)}><Transactions /></MainLayout>} />
             <Route path="/reports" element={<Reports />} />
@@ -143,7 +153,7 @@ function App() {
                   isSidebar={isSidebar}
                   setIsSidebar={(value) => setIsSidebar(value)}
                 >
-                  <Detail />
+                  <SaleDetail />
                 </MainLayout>
               }
             />

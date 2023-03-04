@@ -1,12 +1,11 @@
 import { ResponsiveLine } from "@nivo/line";
 import { useTheme } from "@mui/material";
 import { tokens } from "../theme";
-import { mockLineData as data } from "../data/mockData";
 
-const LineChart = ({ isCustomLineColors = false, isDashboard = false }) => {
+const LineChart = ({ data, isCustomLineColors = false, isDashboard = false }) => {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
-
+  console.log("data", data);
   return (
     <ResponsiveLine
       data={data}
@@ -45,26 +44,24 @@ const LineChart = ({ isCustomLineColors = false, isDashboard = false }) => {
       }}
       colors={isDashboard ? { datum: "color" } : { scheme: "nivo" }} // added
       margin={{ top: 50, right: 110, bottom: 50, left: 60 }}
-      xScale={{ type: "point" }}
-      yScale={{
-        type: "linear",
-        min: "auto",
-        max: "auto",
-        stacked: true,
-        reverse: false,
+      xScale={{
+        type: 'time',
+        format: '%Y-%m-%d',
+        precision: 'second',
       }}
+      yScale={{
+        type: "linear"
+      }}
+      xFormat="time:%Y-%m-%d"
       yFormat=" >-.2f"
       curve="catmullRom"
       axisTop={null}
       axisRight={null}
       axisBottom={{
-        orient: "bottom",
-        tickSize: 0,
-        tickPadding: 5,
-        tickRotation: 0,
-        legend: isDashboard ? undefined : "transportation", // added
-        legendOffset: 36,
-        legendPosition: "middle",
+        format: '%b %d',
+        tickValues: 'every 2 days',
+        legend: 'time',
+        legendOffset: -12,
       }}
       axisLeft={{
         orient: "left",
