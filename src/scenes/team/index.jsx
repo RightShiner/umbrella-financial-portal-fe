@@ -1,15 +1,67 @@
 import { Box, Typography, useTheme } from "@mui/material";
 import { DataGrid } from "@mui/x-data-grid";
 import { tokens } from "../../theme";
-import { mockDataTeam } from "../../data/mockData";
 import AdminPanelSettingsOutlinedIcon from "@mui/icons-material/AdminPanelSettingsOutlined";
 import LockOpenOutlinedIcon from "@mui/icons-material/LockOpenOutlined";
 import SecurityOutlinedIcon from "@mui/icons-material/SecurityOutlined";
 import Header from "../../components/Header";
+import { useContext, useEffect, useState } from "react";
+import axios from "axios";
+import { UserContext } from "../../contexts/UserContext";
+import { useNavigate } from "react-router-dom";
 
 const Team = () => {
+  const { user, sessionToken, saletemp } = useContext(UserContext);
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
+  const [users, setUsers] = useState([]);
+  const navigate = useNavigate();
+  const handleRowClick = (params) => {
+    const id = params.row.id;
+    navigate(`/team/${id}/details`);
+  }
+  useEffect(() => {
+    const include = {
+      accounts: {
+        include: {
+          transactions: {
+            where: {
+              sale: {
+                dateCreated: {
+                  lt: new Date()
+                }
+              }
+            }
+          }
+        }
+      }
+    };
+    axios({
+      method: "get",
+      url: `https://umbrella.rest.ghlmanager.com/users?include=${btoa(JSON.stringify(include))}`,
+      headers: {
+        Authorization: `Bearer ${sessionToken}`,
+      },
+    })
+      .then(function (response) {
+        const usersData = response.data.users;
+        console.log(response);
+        for (const [index, user] of usersData.entries()) {
+          if (user.accounts) {
+            if (user.accounts.length > 0) {
+              if (user.accounts[0].transactions) {
+                user.totalCommissions = user.accounts[0].transactions.map(transaction => Number(transaction.amount)).reduce((partialSum, a) => partialSum + a, 0);
+              }
+            }
+
+          }
+        }
+        setUsers(usersData);
+      })
+      .catch(function (err) {
+        console.log(err);
+      });
+  }, []);
   const columns = [
     { field: "id", headerName: "ID" },
     {
@@ -19,14 +71,7 @@ const Team = () => {
       cellClassName: "name-column--cell",
     },
     {
-      field: "age",
-      headerName: "Age",
-      type: "number",
-      headerAlign: "left",
-      align: "left",
-    },
-    {
-      field: "phone",
+      field: "phoneNumber",
       headerName: "Phone Number",
       flex: 1,
     },
@@ -36,10 +81,15 @@ const Team = () => {
       flex: 1,
     },
     {
-      field: "accessLevel",
-      headerName: "Access Level",
+      field: "totalCommissions",
+      headerName: "Commissions",
       flex: 1,
-      renderCell: ({ row: { access } }) => {
+    },
+    {
+      field: "role",
+      headerName: "Role",
+      flex: 1,
+      renderCell: ({ row: { role } }) => {
         return (
           <Box
             width="60%"
@@ -48,19 +98,47 @@ const Team = () => {
             display="flex"
             justifyContent="center"
             backgroundColor={
-              access === "admin"
+              role === "ADMIN"
                 ? colors.greenAccent[600]
-                : access === "manager"
-                ? colors.greenAccent[700]
-                : colors.greenAccent[700]
+                : role === "manager"
+                  ? colors.greenAccent[700]
+                  : colors.greenAccent[700]
             }
             borderRadius="4px"
           >
-            {access === "admin" && <AdminPanelSettingsOutlinedIcon />}
-            {access === "manager" && <SecurityOutlinedIcon />}
-            {access === "user" && <LockOpenOutlinedIcon />}
+            {role === "ADMIN" && <AdminPanelSettingsOutlinedIcon />}
+            {/*access === "manager" && <SecurityOutlinedIcon />*/}
+            {role === "USER" && <LockOpenOutlinedIcon />}
             <Typography color={colors.grey[100]} sx={{ ml: "5px" }}>
-              {access}
+              {role}
+            </Typography>
+          </Box>
+        );
+      },
+    },
+    {
+      field: "type",
+      headerName: "Type",
+      flex: 1,
+      renderCell: ({ row: { type } }) => {
+        return (
+          <Box
+            width="60%"
+            m="0 auto"
+            p="5px"
+            display="flex"
+            justifyContent="center"
+            backgroundColor={
+              type === "CORPORATE_PARTNER"
+                ? colors.greenAccent[600]
+                : type === "PARTNER"
+                  ? colors.greenAccent[700]
+                  : colors.greenAccent[700]
+            }
+            borderRadius="4px"
+          >
+            <Typography color={colors.grey[100]} sx={{ ml: "5px" }}>
+              {type}
             </Typography>
           </Box>
         );
@@ -100,7 +178,7 @@ const Team = () => {
           },
         }}
       >
-        <DataGrid checkboxSelection rows={mockDataTeam} columns={columns} />
+        <DataGrid checkboxSelection rows={users} columns={columns} onRowClick={handleRowClick} />
       </Box>
     </Box>
   );

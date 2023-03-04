@@ -68,6 +68,7 @@ const Login = ({ setUser, setSessionToken, saletemp }) => {
             const user = response.data.user;
             setUser(user);
             localStorage.setItem("sessionToken", response.data.sessionToken);
+            localStorage.setItem("user", JSON.stringify(response.data.user));
             setLoading(false);
             navigate("/");
           })
@@ -103,8 +104,8 @@ const Login = ({ setUser, setSessionToken, saletemp }) => {
                 errors.username && touched.username
                   ? styles.unCompleted
                   : !errors.username && touched.username
-                  ? styles.completed
-                  : undefined
+                    ? styles.completed
+                    : undefined
               }
             >
               {/* <Box display="flex" justifyContent="center">
@@ -130,8 +131,8 @@ const Login = ({ setUser, setSessionToken, saletemp }) => {
                 errors.password && touched.password
                   ? styles.unCompleted
                   : !errors.password && touched.password
-                  ? styles.completed
-                  : undefined
+                    ? styles.completed
+                    : undefined
               }
             >
               <input

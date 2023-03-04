@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
 import { ProSidebar, Menu, MenuItem } from "react-pro-sidebar";
 import { Box, IconButton, Typography, useTheme } from "@mui/material";
 import { Link } from "react-router-dom";
@@ -24,6 +24,7 @@ import Logo2 from '../../img/logo2.png';
 
 //media query
 import useMediaQuery from '@mui/material/useMediaQuery';
+import { UserContext } from "../../contexts/UserContext";
 
 
 const Item = ({ title, to, icon, selected, setSelected }) => {
@@ -46,6 +47,9 @@ const Item = ({ title, to, icon, selected, setSelected }) => {
 
 const Sidebar = () => {
   const theme = useTheme();
+  const { user } = useContext(UserContext);
+  console.log(user);
+
   const matches = useMediaQuery(theme.breakpoints.up('sm'));
 
   const colors = tokens(theme.palette.mode);
@@ -166,7 +170,7 @@ const Sidebar = () => {
               selected={selected}
               setSelected={setSelected}
             />
-                        <Item
+            <Item
               title="Calendar"
               to="/calendar"
               icon={<CalendarTodayOutlinedIcon />}
@@ -174,6 +178,13 @@ const Sidebar = () => {
               setSelected={setSelected}
             />
 
+            {user === null ? null : user.role === "ADMIN" ? <Item
+              title="Team"
+              to="/team"
+              icon={<PeopleOutlinedIcon />}
+              selected={selected}
+              setSelected={setSelected}
+            /> : null}
             {/*
             <Typography
               variant="h6"
@@ -182,13 +193,6 @@ const Sidebar = () => {
             >
               Data
             </Typography>
-            <Item
-              title="Manage Team"
-              to="/team"
-              icon={<PeopleOutlinedIcon />}
-              selected={selected}
-              setSelected={setSelected}
-            />
             <Item
               title="Customers"
               to="/customers"

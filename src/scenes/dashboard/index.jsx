@@ -25,7 +25,7 @@ import TopsalesBox from "../../components/TopsalesBox";
 import ProgressCircle from "../../components/ProgressCircle";
 
 import { mockTransactions } from "../../data/mockData";
-import { getCommissionData } from "../../services/dashboard";
+import { getCommissionData, getRevenueTimeSeriesData, getSalesLeaderboard, getSalesLeaderBoard, getTransactionsTimeSeriesData } from "../../services/dashboard";
 import { UserContext } from "../../contexts/UserContext";
 
 //datepicker
@@ -110,14 +110,10 @@ const Dashboard = () => {
   const colors = tokens(theme.palette.mode);
 
 
-  const [totalCommPaid, setTotalCommPaid] = useState("12361");
-  const [totalCom, setTotalCom] = useState("12361");
-  const [avgCom, setAvgCom] = useState("12361");
-  const [towardsGoal, setTowardsGoal] = useState("12361");
-  const [akaRev, setAkaRev] = useState("12361");
-  const [akaSales, setAkaSales] = useState("12361");
-  const [akaDeli, setAkaDeli] = useState("12361");
-  const [akaProj, setAkaProj] = useState("12361");
+  const [commissionStatistics, setCommissionStatistics] = useState({});
+  const [revenueTimeSeriesData, setRevenueTimeSeriesData] = useState([]);
+  const [transactionsTimeSeriesData, setTransactionsTimeSeriesData] = useState([]);
+  const [usersForLeaderboards, setUsersForLeaderboards] = useState([]);
 
   //select Field
   const [filterField, setFilterField] = useState("");
@@ -138,15 +134,12 @@ const Dashboard = () => {
     async function fetchData() {
       const filters = mapFilters(filterField, filterOperator, filterValue);
       console.log(filters);
-      const response = await getCommissionData(sessionToken, filters);
-      setTotalCommPaid(response.totalComPaid);
-      setTotalCom(response.totalCom);
-      setAvgCom(response.avgCom);
-      setTowardsGoal(response.towardsGoal);
-      setAkaRev(response.akaRev);
-      setAkaSales(response.akaSales);
-      setAkaDeli(response.akaDeli);
-      setAkaProj(response.akaProj);
+      await Promise.all([
+        getCommissionData(sessionToken, filters).then(result => setCommissionStatistics(result)),
+        getRevenueTimeSeriesData(sessionToken, filters).then(result => setRevenueTimeSeriesData(result)),
+        getTransactionsTimeSeriesData(sessionToken, filters).then(result => setTransactionsTimeSeriesData(result)),
+        getSalesLeaderboard(sessionToken, filters).then(result => setUsersForLeaderboards(result))
+      ]);
     }
     fetchData();
   }, [sessionToken, filterField, filterOperator, filterValue]);
@@ -160,7 +153,8 @@ const Dashboard = () => {
       });
       setFilterOperator("DateRange");
     }
-  }, [filterField, filterOperator])
+  }, [filterField, filterOperator]);
+  console.log(revenueTimeSeriesData);
 
   console.log(filterField);
 
@@ -294,7 +288,7 @@ const Dashboard = () => {
             sx={{ height: '140px' }}
           >
             <StatBox
-              title={totalCommPaid}
+              title={commissionStatistics.totalCommissionPaid}
               subtitle="Total Commission Due to be paid out based on total sum of transactions"
               progress="0.75"
               increase="+14%"
@@ -316,7 +310,7 @@ const Dashboard = () => {
             sx={{ height: '140px' }}
           >
             <StatBox
-              title={totalCom}
+              title={commissionStatistics.totalCommission}
               subtitle="Total commission Due based on total sum of transactions"
               progress="0.50"
               increase="+21%"
@@ -339,7 +333,7 @@ const Dashboard = () => {
             sx={{ height: '140px' }}
           >
             <StatBox
-              title={avgCom}
+              title={commissionStatistics.averageCommission}
               subtitle="Avg commission amount."
               progress="0.30"
               increase="+5%"
@@ -362,7 +356,7 @@ const Dashboard = () => {
             sx={{ height: '140px' }}
           >
             <StatBox
-              title={towardsGoal}
+              title={commissionStatistics.amountTowardsGoalInProfileSection}
               subtitle="% towards goal that was seet in the profile section"
               progress="0.80"
               increase="+43%"
@@ -386,7 +380,7 @@ const Dashboard = () => {
             sx={{ height: '140px' }}
           >
             <StatBox
-              title={akaRev}
+              title={commissionStatistics.revenue}
               subtitle="aka Revenue"
               progress="0.75"
               increase="+14%"
@@ -408,7 +402,7 @@ const Dashboard = () => {
             sx={{ height: '140px' }}
           >
             <StatBox
-              title={akaSales}
+              title={commissionStatistics.saleCount}
               subtitle="aka Sales"
               progress="0.50"
               increase="+21%"
@@ -431,7 +425,7 @@ const Dashboard = () => {
             sx={{ height: '140px' }}
           >
             <StatBox
-              title={akaDeli}
+              title={commissionStatistics.delinquents}
               subtitle="aka Delinquents"
               progress="0.30"
               increase="+5%"
@@ -454,7 +448,7 @@ const Dashboard = () => {
             sx={{ height: '140px' }}
           >
             <StatBox
-              title={akaProj}
+              title={commissionStatistics.projections}
               subtitle="aka Projections"
               progress="0.80"
               increase="+43%"
@@ -495,7 +489,7 @@ const Dashboard = () => {
                   fontWeight="bold"
                   color={colors.greenAccent[500]}
                 >
-                  $59,342.32
+                  ${commissionStatistics.revenue}
                 </Typography>
               </Box>
               <Box>
@@ -507,7 +501,11 @@ const Dashboard = () => {
               </Box>
             </Box>
             <Box height="250px" m="-20px 0 0 0">
-              <LineChart isDashboard={true} />
+              <LineChart data={[{
+                color: tokens("dark").greenAccent[500],
+                id: "revenue",
+                data: revenueTimeSeriesData.map(sale => { return { x: `${sale.dateCreated.toISOString().split("T")[0]}`, y: sale.cumulativeRevenue } })
+              }]} isDashboard={true} />
             </Box>
           </Box>
         </Grid>
@@ -531,9 +529,9 @@ const Dashboard = () => {
                 Recent Transactions
               </Typography>
             </Box>
-            {mockTransactions.map((transaction, i) => (
+            {transactionsTimeSeriesData.map((transaction, i) => (
               <Box
-                key={`${transaction.txId}-${i}`}
+                key={transaction.id}
                 display="flex"
                 justifyContent="space-between"
                 alignItems="center"
@@ -546,19 +544,19 @@ const Dashboard = () => {
                     variant="h5"
                     fontWeight="600"
                   >
-                    {transaction.txId}
+                    {transaction.name}
                   </Typography>
                   <Typography color={colors.grey[100]}>
                     {transaction.user}
                   </Typography>
                 </Box>
-                <Box color={colors.grey[100]}>{transaction.date}</Box>
+                <Box color={colors.grey[100]}>{transaction.dateCreated.toISOString().split("T")[0]}</Box>
                 <Box
                   backgroundColor={colors.greenAccent[500]}
                   p="5px 10px"
                   borderRadius="4px"
                 >
-                  ${transaction.cost}
+                  ${transaction.amount}
                 </Box>
               </Box>
             ))}
@@ -566,7 +564,7 @@ const Dashboard = () => {
         </Grid>
 
         {/* Row4 */}
-        <Grid item sm={12} md={12} lg={6}>
+        <Grid item sm={12} md={12}>
           <Box
             gridColumn="span 6"
             backgroundColor={colors.primary[400]}
@@ -576,33 +574,8 @@ const Dashboard = () => {
             sx={{ height: '200px' }}
           >
             <TopsalesBox
-              title="TOP SALES RESP FOR 06-2020"
-              name1="Pam Beesly"
-              description1="$70,428.00(74% heigher than previous month)"
-              name2="Dwight Schrute"
-              description2="$42,428.00(241% heigher than previous month)"
-              name3="Ryan Howard"
-              description3="$32,428.00(45% heigher than previous month)"
-            />
-          </Box>
-        </Grid>
-        <Grid item sm={12} md={12} lg={6}>
-          <Box
-            gridColumn="span 6"
-            backgroundColor={colors.primary[400]}
-            display="flex"
-            alignItems="center"
-            justifyContent="center"
-            sx={{ height: '200px' }}
-          >
-            <TopsalesBox
-              title="TOP SALES RESP FOR 07-2020"
-              name1="Ryan Howard"
-              description1="$70,428.00(74% heigher than previous month)"
-              name2="Dwight Schrute"
-              description2="$42,428.00(241% heigher than previous month)"
-              name3="Pam Beesly"
-              description3="$32,428.00(45% heigher than previous month)"
+              users={usersForLeaderboards.slice(0, 3)}
+              title="TOP SALES REPS"
             />
           </Box>
         </Grid>

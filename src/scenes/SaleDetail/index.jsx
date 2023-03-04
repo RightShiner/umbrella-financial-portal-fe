@@ -24,7 +24,7 @@ import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
 
-const Detail = () => {
+const SaleDetail = () => {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
   const [sales, setSales] = useState([]);
@@ -458,4 +458,4 @@ const Detail = () => {
   );
 };
 
-export default Detail;
+export default SaleDetail;
