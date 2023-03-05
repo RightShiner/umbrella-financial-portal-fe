@@ -12,8 +12,6 @@ import HandshakeIcon from "@mui/icons-material/Handshake";
 import HubIcon from "@mui/icons-material/Hub";
 import TrafficIcon from "@mui/icons-material/Traffic";
 
-
-
 import { tokens } from "../../theme";
 
 import Header from "../../components/Header";
@@ -25,35 +23,40 @@ import TopsalesBox from "../../components/TopsalesBox";
 import ProgressCircle from "../../components/ProgressCircle";
 
 import { mockTransactions } from "../../data/mockData";
-import { getCommissionData, getRevenueTimeSeriesData, getSalesLeaderboard, getSalesLeaderBoard, getTransactionsTimeSeriesData } from "../../services/dashboard";
+import {
+  getCommissionData,
+  getRevenueTimeSeriesData,
+  getSalesLeaderboard,
+  getTransactionsTimeSeriesData,
+} from "../../services/dashboard";
 import { UserContext } from "../../contexts/UserContext";
 
 //datepicker
-import { Dayjs } from 'dayjs';
-import TextField from '@mui/material/TextField';
-import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
-import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
-import { DatePicker } from '@mui/x-date-pickers/DatePicker';
+import { Dayjs } from "dayjs";
+import TextField from "@mui/material/TextField";
+import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
+import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
+import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 
 //grid
-import Grid from '@mui/material/Grid';
-import { styled } from '@mui/material/styles';
-import Paper from '@mui/material/Paper';
+import Grid from "@mui/material/Grid";
+import { styled } from "@mui/material/styles";
+import Paper from "@mui/material/Paper";
 
 //select Field
-import InputLabel from '@mui/material/InputLabel';
-import MenuItem from '@mui/material/MenuItem';
-import FormHelperText from '@mui/material/FormHelperText';
-import FormControl from '@mui/material/FormControl';
-import Select from '@mui/material/Select';
+import InputLabel from "@mui/material/InputLabel";
+import MenuItem from "@mui/material/MenuItem";
+import FormHelperText from "@mui/material/FormHelperText";
+import FormControl from "@mui/material/FormControl";
+import Select from "@mui/material/Select";
 import moment from "moment/moment";
 const transactionFieldMap = new Map([
   ["amount", "amount"],
-  ["dateCreated", "sale.dateCreated"]
+  ["dateCreated", "sale.dateCreated"],
 ]);
 const saleFieldMap = new Map([
   ["amount", "purchasePrice"],
-  ["dateCreated", "dateCreated"]
+  ["dateCreated", "dateCreated"],
 ]);
 const mapTransactionFilter = (field, operator, value, filter = {}) => {
   field = transactionFieldMap.get(field);
@@ -71,19 +74,19 @@ const mapTransactionFilter = (field, operator, value, filter = {}) => {
     if (fieldReference[subfield] == null) {
       fieldReference[subfield] = {};
     }
-    fieldReference = fieldReference[subfield]
+    fieldReference = fieldReference[subfield];
   }
   if (value.type === "DateRange") {
     fieldReference = {
       gte: new Date(value.startDate),
-      lte: new Date(value.endDate)
+      lte: new Date(value.endDate),
     };
   } else if (typeof value === "string" || typeof value === "number") {
     fieldReference = {};
     filter[field][operator] = value;
   }
   return filter;
-}
+};
 const mapSaleFilter = (field, operator, value, filter = {}) => {
   field = saleFieldMap.get(field);
   if (field == null) return;
@@ -91,28 +94,34 @@ const mapSaleFilter = (field, operator, value, filter = {}) => {
   if (value.type === "DateRange") {
     filter[field] = {
       gte: new Date(value.startDate),
-      lte: new Date(value.endDate)
+      lte: new Date(value.endDate),
     };
   } else if (typeof value === "string" || typeof value === "number") {
     filter[field] = {};
     filter[field][operator] = value;
   }
   return filter;
-}
+};
 const mapFilters = (field, operator, value, filters = {}) => {
-  filters.transaction = mapTransactionFilter(field, operator, value, filters.transaction);
+  filters.transaction = mapTransactionFilter(
+    field,
+    operator,
+    value,
+    filters.transaction
+  );
   filters.sale = mapSaleFilter(field, operator, value, filters.transaction);
   return filters;
-}
+};
 const Dashboard = () => {
   const { user, sessionToken, saletemp } = useContext(UserContext);
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
 
-
   const [commissionStatistics, setCommissionStatistics] = useState({});
   const [revenueTimeSeriesData, setRevenueTimeSeriesData] = useState([]);
-  const [transactionsTimeSeriesData, setTransactionsTimeSeriesData] = useState([]);
+  const [transactionsTimeSeriesData, setTransactionsTimeSeriesData] = useState(
+    []
+  );
   const [usersForLeaderboards, setUsersForLeaderboards] = useState([]);
 
   //select Field
@@ -135,10 +144,18 @@ const Dashboard = () => {
       const filters = mapFilters(filterField, filterOperator, filterValue);
       console.log(filters);
       await Promise.all([
-        getCommissionData(sessionToken, filters).then(result => setCommissionStatistics(result)),
-        getRevenueTimeSeriesData(sessionToken, filters).then(result => setRevenueTimeSeriesData(result)),
-        getTransactionsTimeSeriesData(sessionToken, filters).then(result => setTransactionsTimeSeriesData(result)),
-        getSalesLeaderboard(sessionToken, filters).then(result => setUsersForLeaderboards(result))
+        getCommissionData(sessionToken, filters).then((result) =>
+          setCommissionStatistics(result)
+        ),
+        getRevenueTimeSeriesData(sessionToken, filters).then((result) => {
+          setRevenueTimeSeriesData(result);
+        }),
+        getTransactionsTimeSeriesData(sessionToken, filters).then((result) =>
+          setTransactionsTimeSeriesData(result)
+        ),
+        getSalesLeaderboard(sessionToken, filters).then((result) =>
+          setUsersForLeaderboards(result)
+        ),
       ]);
     }
     fetchData();
@@ -154,7 +171,7 @@ const Dashboard = () => {
       setFilterOperator("DateRange");
     }
   }, [filterField, filterOperator]);
-  console.log(revenueTimeSeriesData);
+  // console.log(`revenue data: ${revenueTimeSeriesData}`);
 
   console.log(filterField);
 
@@ -180,11 +197,7 @@ const Dashboard = () => {
       </Box>
 
       {/* filter */}
-      <Box
-        sx={{ background: '#1f2a40' }}
-        mb="20px"
-        p="20px"
-      >
+      <Box sx={{ background: "#1f2a40" }} mb="20px" p="20px">
         <Header title="" subtitle="Filter" />
         <Grid container spacing={3}>
           <Grid item xs={4}>
@@ -195,7 +208,7 @@ const Dashboard = () => {
                   value={filterField}
                   onChange={handleChangeFilterField}
                   displayEmpty
-                  inputProps={{ 'aria-label': 'Without label' }}
+                  inputProps={{ "aria-label": "Without label" }}
                 >
                   <MenuItem value="">
                     <em>None</em>
@@ -215,36 +228,42 @@ const Dashboard = () => {
                   value={filterOperator}
                   onChange={handleChangeFilterOperator}
                   displayEmpty
-                  inputProps={{ 'aria-label': 'Without label' }}
+                  inputProps={{ "aria-label": "Without label" }}
                 >
                   <MenuItem value="">
                     <em>None</em>
                   </MenuItem>
-                  {
-                    filterField === "dateCreated" ? <MenuItem value={"DateRange"}>date range</MenuItem> : <>
-                      <MenuItem value={"contains"}>contains</MenuItem>
-                      <MenuItem value={"equals"}>equals</MenuItem>
-                      <MenuItem value={"startsWith"}>starts with</MenuItem>
-                      <MenuItem value={"endsWith"}>ends with</MenuItem>
-                    </>
-                  }
+                  {filterField === "dateCreated"
+                    ? [<MenuItem value={"DateRange"}>date range</MenuItem>]
+                    : [
+                        <MenuItem value={"contains"}>contains</MenuItem>,
+                        <MenuItem value={"equals"}>equals</MenuItem>,
+                        <MenuItem value={"startsWith"}>starts with</MenuItem>,
+                        <MenuItem value={"endsWith"}>ends with</MenuItem>,
+                      ]}
                   {/*<MenuItem value={5}>is empty</MenuItem>
                   <MenuItem value={6}>is not empty</MenuItem>
-                <MenuItem value={7}>is any of</MenuItem>*/}              </Select>
+                <MenuItem value={7}>is any of</MenuItem>*/}{" "}
+                </Select>
               </FormControl>
             </div>
           </Grid>
           <Grid item xs={4}>
             Value
             <div>
-              {filterField === "dateCreated" ?
+              {filterField === "dateCreated" ? (
                 <LocalizationProvider dateAdapter={AdapterDayjs}>
                   <DatePicker
                     label="Start Date"
                     value={filterValue.startDate}
                     onChange={(newValue) => {
-                      const tempFilterValue = filterValue == null || typeof filterValue === "string" ? { type: "DateRange" } : Object.assign({}, filterValue);
-                      tempFilterValue.startDate = moment(newValue.toDate()).format("YYYY-MM-DD");
+                      const tempFilterValue =
+                        filterValue == null || typeof filterValue === "string"
+                          ? { type: "DateRange" }
+                          : Object.assign({}, filterValue);
+                      tempFilterValue.startDate = moment(
+                        newValue.toDate()
+                      ).format("YYYY-MM-DD");
                       console.log(tempFilterValue);
                       setFilterValue(tempFilterValue);
                     }}
@@ -254,18 +273,26 @@ const Dashboard = () => {
                     label="End Date"
                     value={filterValue.endDate}
                     onChange={(newValue) => {
-                      const tempFilterValue = filterValue == null || typeof filterValue === "string" ? { type: "DateRange" } : Object.assign({}, filterValue);
-                      tempFilterValue.endDate = moment(newValue.toDate()).format("YYYY-MM-DD");
+                      const tempFilterValue =
+                        filterValue == null || typeof filterValue === "string"
+                          ? { type: "DateRange" }
+                          : Object.assign({}, filterValue);
+                      tempFilterValue.endDate = moment(
+                        newValue.toDate()
+                      ).format("YYYY-MM-DD");
                       console.log(tempFilterValue);
                       setFilterValue(tempFilterValue);
                     }}
                     renderInput={(params) => <TextField {...params} />}
                   />
                 </LocalizationProvider>
-                :
-                <TextField id="outlined-basic" label="Outlined" variant="outlined" />
-              }
-
+              ) : (
+                <TextField
+                  id="outlined-basic"
+                  label="Outlined"
+                  variant="outlined"
+                />
+              )}
             </div>
           </Grid>
         </Grid>
@@ -274,18 +301,15 @@ const Dashboard = () => {
 
       {/* GRID & CHARTS */}
 
-      <Grid
-        container
-        spacing={2}
-      >
+      <Grid container spacing={2}>
         {/* Row1 */}
-        <Grid item sm={6} md={6} lg={3} >
+        <Grid item sm={6} md={6} lg={3}>
           <Box
             backgroundColor={colors.primary[400]}
             display="flex"
             alignItems="center"
             justifyContent="center"
-            sx={{ height: '140px' }}
+            sx={{ height: "140px" }}
           >
             <StatBox
               title={commissionStatistics.totalCommissionPaid}
@@ -307,7 +331,7 @@ const Dashboard = () => {
             display="flex"
             alignItems="center"
             justifyContent="center"
-            sx={{ height: '140px' }}
+            sx={{ height: "140px" }}
           >
             <StatBox
               title={commissionStatistics.totalCommission}
@@ -321,7 +345,6 @@ const Dashboard = () => {
               }
             />
           </Box>
-
         </Grid>
         <Grid item sm={6} md={6} lg={3}>
           <Box
@@ -330,7 +353,7 @@ const Dashboard = () => {
             display="flex"
             alignItems="center"
             justifyContent="center"
-            sx={{ height: '140px' }}
+            sx={{ height: "140px" }}
           >
             <StatBox
               title={commissionStatistics.averageCommission}
@@ -344,7 +367,6 @@ const Dashboard = () => {
               }
             />
           </Box>
-
         </Grid>
         <Grid item sm={6} md={6} lg={3}>
           <Box
@@ -353,7 +375,7 @@ const Dashboard = () => {
             display="flex"
             alignItems="center"
             justifyContent="center"
-            sx={{ height: '140px' }}
+            sx={{ height: "140px" }}
           >
             <StatBox
               title={commissionStatistics.amountTowardsGoalInProfileSection}
@@ -377,7 +399,7 @@ const Dashboard = () => {
             display="flex"
             alignItems="center"
             justifyContent="center"
-            sx={{ height: '140px' }}
+            sx={{ height: "140px" }}
           >
             <StatBox
               title={commissionStatistics.revenue}
@@ -399,7 +421,7 @@ const Dashboard = () => {
             display="flex"
             alignItems="center"
             justifyContent="center"
-            sx={{ height: '140px' }}
+            sx={{ height: "140px" }}
           >
             <StatBox
               title={commissionStatistics.saleCount}
@@ -413,7 +435,6 @@ const Dashboard = () => {
               }
             />
           </Box>
-
         </Grid>
         <Grid item sm={6} md={6} lg={3}>
           <Box
@@ -422,7 +443,7 @@ const Dashboard = () => {
             display="flex"
             alignItems="center"
             justifyContent="center"
-            sx={{ height: '140px' }}
+            sx={{ height: "140px" }}
           >
             <StatBox
               title={commissionStatistics.delinquents}
@@ -436,7 +457,6 @@ const Dashboard = () => {
               }
             />
           </Box>
-
         </Grid>
         <Grid item sm={6} md={6} lg={3}>
           <Box
@@ -445,7 +465,7 @@ const Dashboard = () => {
             display="flex"
             alignItems="center"
             justifyContent="center"
-            sx={{ height: '140px' }}
+            sx={{ height: "140px" }}
           >
             <StatBox
               title={commissionStatistics.projections}
@@ -467,7 +487,7 @@ const Dashboard = () => {
             gridColumn="span 8"
             gridRow="span 2"
             backgroundColor={colors.primary[400]}
-            sx={{ height: '300px' }}
+            sx={{ height: "300px" }}
           >
             <Box
               // mt="25px"
@@ -501,11 +521,21 @@ const Dashboard = () => {
               </Box>
             </Box>
             <Box height="250px" m="-20px 0 0 0">
-              <LineChart data={[{
-                color: tokens("dark").greenAccent[500],
-                id: "revenue",
-                data: revenueTimeSeriesData.map(sale => { return { x: `${sale.dateCreated.toISOString().split("T")[0]}`, y: sale.cumulativeRevenue } })
-              }]} isDashboard={true} />
+              <LineChart
+                data={[
+                  {
+                    color: tokens("dark").greenAccent[500],
+                    id: "revenue",
+                    data: revenueTimeSeriesData.map((sale) => {
+                      return {
+                        x: `${sale.dateCreated.toISOString().split("T")[0]}`,
+                        y: sale.cumulativeRevenue,
+                      };
+                    }),
+                  },
+                ]}
+                isDashboard={true}
+              />
             </Box>
           </Box>
         </Grid>
@@ -515,7 +545,7 @@ const Dashboard = () => {
             gridRow="span 2"
             backgroundColor={colors.primary[400]}
             overflow="auto"
-            sx={{ height: '300px' }}
+            sx={{ height: "300px" }}
           >
             <Box
               display="flex"
@@ -525,7 +555,11 @@ const Dashboard = () => {
               colors={colors.grey[100]}
               p="15px"
             >
-              <Typography color={colors.grey[100]} variant="h5" fontWeight="600">
+              <Typography
+                color={colors.grey[100]}
+                variant="h5"
+                fontWeight="600"
+              >
                 Recent Transactions
               </Typography>
             </Box>
@@ -550,7 +584,9 @@ const Dashboard = () => {
                     {transaction.user}
                   </Typography>
                 </Box>
-                <Box color={colors.grey[100]}>{transaction.dateCreated.toISOString().split("T")[0]}</Box>
+                <Box color={colors.grey[100]}>
+                  {transaction.dateCreated.toISOString().split("T")[0]}
+                </Box>
                 <Box
                   backgroundColor={colors.greenAccent[500]}
                   p="5px 10px"
@@ -571,7 +607,7 @@ const Dashboard = () => {
             display="flex"
             alignItems="center"
             justifyContent="center"
-            sx={{ height: '200px' }}
+            sx={{ height: "200px" }}
           >
             <TopsalesBox
               users={usersForLeaderboards.slice(0, 3)}
@@ -587,7 +623,7 @@ const Dashboard = () => {
             gridRow="span 2"
             backgroundColor={colors.primary[400]}
             p="30px"
-            sx={{ height: '300px' }}
+            sx={{ height: "300px" }}
           >
             <Typography variant="h5" fontWeight="600">
               Top 5 Most Successful Services in this timeperiod pie graphy
@@ -606,7 +642,9 @@ const Dashboard = () => {
               >
                 $48,352 revenue generated
               </Typography>
-              <Typography>Includes extra misc expenditures and costs</Typography>
+              <Typography>
+                Includes extra misc expenditures and costs
+              </Typography>
             </Box>
           </Box>
         </Grid>
@@ -615,7 +653,7 @@ const Dashboard = () => {
             gridColumn="span 4"
             gridRow="span 2"
             backgroundColor={colors.primary[400]}
-            sx={{ height: '300px' }}
+            sx={{ height: "300px" }}
           >
             <Typography
               variant="h5"
@@ -635,7 +673,7 @@ const Dashboard = () => {
             gridRow="span 2"
             backgroundColor={colors.primary[400]}
             padding="30px"
-            sx={{ height: '300px' }}
+            sx={{ height: "300px" }}
           >
             <Typography
               variant="h5"

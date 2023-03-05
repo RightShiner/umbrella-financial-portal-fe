@@ -2,7 +2,11 @@ import { ResponsiveLine } from "@nivo/line";
 import { useTheme } from "@mui/material";
 import { tokens } from "../theme";
 
-const LineChart = ({ data, isCustomLineColors = false, isDashboard = false }) => {
+const LineChart = ({
+  data,
+  isCustomLineColors = false,
+  isDashboard = false,
+}) => {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
   console.log("data", data);
@@ -45,12 +49,12 @@ const LineChart = ({ data, isCustomLineColors = false, isDashboard = false }) =>
       colors={isDashboard ? { datum: "color" } : { scheme: "nivo" }} // added
       margin={{ top: 50, right: 110, bottom: 50, left: 60 }}
       xScale={{
-        type: 'time',
-        format: '%Y-%m-%d',
-        precision: 'second',
+        type: "time",
+        format: "%Y-%m-%d",
+        precision: "second",
       }}
       yScale={{
-        type: "linear"
+        type: "linear",
       }}
       xFormat="time:%Y-%m-%d"
       yFormat=" >-.2f"
@@ -58,9 +62,9 @@ const LineChart = ({ data, isCustomLineColors = false, isDashboard = false }) =>
       axisTop={null}
       axisRight={null}
       axisBottom={{
-        format: '%b %d',
-        tickValues: 'every 2 days',
-        legend: 'time',
+        format: "%b %d",
+        tickValues: "every 2 days",
+        legend: "time",
         legendOffset: -12,
       }}
       axisLeft={{
