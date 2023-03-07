@@ -19,13 +19,12 @@ import MapOutlinedIcon from "@mui/icons-material/MapOutlined";
 import axios from "axios";
 
 //avata and logo
-import User from '../../img/user.png';
-import Logo2 from '../../img/logo2.png';
+import User from "../../img/user.png";
+import Logo2 from "../../img/logo2.png";
 
 //media query
-import useMediaQuery from '@mui/material/useMediaQuery';
+import useMediaQuery from "@mui/material/useMediaQuery";
 import { UserContext } from "../../contexts/UserContext";
-
 
 const Item = ({ title, to, icon, selected, setSelected }) => {
   const theme = useTheme();
@@ -50,7 +49,7 @@ const Sidebar = () => {
   const { user } = useContext(UserContext);
   console.log(user);
 
-  const matches = useMediaQuery(theme.breakpoints.up('sm'));
+  const matches = useMediaQuery(theme.breakpoints.up("sm"));
 
   const colors = tokens(theme.palette.mode);
   const [isCollapsed, setIsCollapsed] = useState(!matches);
@@ -60,8 +59,6 @@ const Sidebar = () => {
     //Runs only on the first render
     setIsCollapsed(!matches);
   }, [matches]);
-
-
 
   return (
     <Box
@@ -105,13 +102,7 @@ const Sidebar = () => {
                   UIG
                 </Typography> */}
 
-                <img
-                  alt="logo"
-                  src={Logo2}
-                  style={{ cursor: "pointer" }}
-                />
-
-
+                <img alt="logo" src={Logo2} style={{ cursor: "pointer" }} />
 
                 <IconButton onClick={() => setIsCollapsed(!isCollapsed)}>
                   <MenuOutlinedIcon />
@@ -177,14 +168,15 @@ const Sidebar = () => {
               selected={selected}
               setSelected={setSelected}
             />
-
-            {user === null ? null : user.role === "ADMIN" ? <Item
-              title="Team"
-              to="/team"
-              icon={<PeopleOutlinedIcon />}
-              selected={selected}
-              setSelected={setSelected}
-            /> : null}
+            {user === null ? null : user.role === "ADMIN" ? (
+              <Item
+                title="Team"
+                to="/team"
+                icon={<PeopleOutlinedIcon />}
+                selected={selected}
+                setSelected={setSelected}
+              />
+            ) : null}
             {/*
             <Typography
               variant="h6"

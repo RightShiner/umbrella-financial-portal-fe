@@ -1,5 +1,11 @@
 import { createContext, useContext, useState } from "react";
-import { Routes, Route, useNavigate, useLocation } from "react-router-dom";
+import {
+  Routes,
+  Route,
+  useNavigate,
+  useLocation,
+  Link,
+} from "react-router-dom";
 import { useEffect } from "react";
 import Topbar from "./scenes/global/Topbar";
 import Sidebar from "./scenes/global/Sidebar";
@@ -32,7 +38,9 @@ function App() {
   const navigate = useNavigate();
   const location = useLocation();
   const [user, setUser] = useState(
-    (localStorage.getItem("user") || null) == null ? null : JSON.parse(localStorage.getItem("user"))
+    (localStorage.getItem("user") || null) == null
+      ? null
+      : JSON.parse(localStorage.getItem("user"))
   );
   const [sessionToken, setSessionToken] = useState(
     localStorage.getItem("sessionToken") || null
@@ -41,9 +49,8 @@ function App() {
 
   const [selectedTransaction, setSelectedTransaction] = useState(null);
 
-
   useEffect(() => {
-    if ((sessionToken == null) && location.pathname !== "/login") {
+    if (sessionToken == null && location.pathname !== "/login") {
       navigate("/login");
     }
   }, [location]);
@@ -52,7 +59,9 @@ function App() {
     <ColorModeContext.Provider value={colorMode}>
       <ThemeProvider theme={theme}>
         <CssBaseline />
-        <UserContext.Provider value={{ user, sessionToken, setUser, setSessionToken, saletemp }}>
+        <UserContext.Provider
+          value={{ user, sessionToken, setUser, setSessionToken, saletemp }}
+        >
           <Routes>
             <Route
               path="/"
@@ -83,7 +92,11 @@ function App() {
                   isSidebar={isSidebar}
                   setIsSidebar={(value) => setIsSidebar(value)}
                 >
-                  <Transactions setSelectedTransaction={(value) => setSelectedTransaction(value)} />
+                  <Transactions
+                    setSelectedTransaction={(value) =>
+                      setSelectedTransaction(value)
+                    }
+                  />
                 </MainLayout>
               }
             />
@@ -94,7 +107,11 @@ function App() {
                   isSidebar={isSidebar}
                   setIsSidebar={(value) => setIsSidebar(value)}
                 >
-                  <Profile setSelectedTransaction={(value) => setSelectedTransaction(value)} />
+                  <Profile
+                    setSelectedTransaction={(value) =>
+                      setSelectedTransaction(value)
+                    }
+                  />
                 </MainLayout>
               }
             />
@@ -105,24 +122,40 @@ function App() {
                   isSidebar={isSidebar}
                   setIsSidebar={(value) => setIsSidebar(value)}
                 >
-                  <Calendar setSelectedTransaction={(value) => setSelectedTransaction(value)} />
+                  <Calendar
+                    setSelectedTransaction={(value) =>
+                      setSelectedTransaction(value)
+                    }
+                  />
                 </MainLayout>
               }
             />
-            <Route path="/team" element={
-              <MainLayout
-                isSidebar={isSidebar}
-                setIsSidebar={(value) => setIsSidebar(value)}
-              >
-                <Team />
-              </MainLayout>} />
-            <Route path="/team/:userId/details" element={
-              <MainLayout
-                isSidebar={isSidebar}
-                setIsSidebar={(value) => setIsSidebar(value)}
-              >
-                <TeamMemberDetails />
-              </MainLayout>} />
+            <Route
+              path="/shop"
+              element={<Link to="http://localhost:3000"></Link>}
+            />
+            <Route
+              path="/team"
+              element={
+                <MainLayout
+                  isSidebar={isSidebar}
+                  setIsSidebar={(value) => setIsSidebar(value)}
+                >
+                  <Team />
+                </MainLayout>
+              }
+            />
+            <Route
+              path="/team/:userId/details"
+              element={
+                <MainLayout
+                  isSidebar={isSidebar}
+                  setIsSidebar={(value) => setIsSidebar(value)}
+                >
+                  <TeamMemberDetails />
+                </MainLayout>
+              }
+            />
             {/*
             <Route path="/transactions" element={<MainLayout isSidebar={isSidebar} setIsSidebar={value => setIsSidebar(value)}><Transactions /></MainLayout>} />
             <Route path="/reports" element={<Reports />} />
