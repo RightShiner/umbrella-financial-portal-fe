@@ -75,7 +75,7 @@ const Topbar = () => {
         </IconButton>
         <IconButton
           onClick={() => {
-            window.open("http://localhost:3000", "_blank");
+            window.open("http://localhost:3000");
           }}
         >
           <StorefrontIcon />
