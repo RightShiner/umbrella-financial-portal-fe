@@ -30,6 +30,7 @@ import StatBox from "../../components/StatBox";
 import TopsalesBox from "../../components/TopsalesBox";
 import ProgressCircle from "../../components/ProgressCircle";
 import Videos from "../../components/Videos";
+import Info from "../../utilities/info_id_list";
 
 import { mockTransactions } from "../../data/mockData";
 import {
@@ -59,6 +60,7 @@ import FormHelperText from "@mui/material/FormHelperText";
 import FormControl from "@mui/material/FormControl";
 import Select from "@mui/material/Select";
 import moment from "moment/moment";
+
 const transactionFieldMap = new Map([
   ["amount", "amount"],
   ["dateCreated", "sale.dateCreated"],
@@ -79,7 +81,6 @@ const mapTransactionFilter = (field, operator, value, filter = {}) => {
   filter[field] = {};
   let fieldReference = filter[field];
   for (const subfield of subfields) {
-    console.log(fieldReference);
     if (fieldReference[subfield] == null) {
       fieldReference[subfield] = {};
     }
@@ -142,6 +143,7 @@ const Dashboard = () => {
   const [filterOperator, setFilterOperator] = useState("");
   const [filterValue, setFilterValue] = useState("");
   const [modalFlag, setModalFlag] = useState(false);
+  const [curInfo, setCurInfo] = useState();
 
   const style = {
     position: "absolute",
@@ -160,10 +162,8 @@ const Dashboard = () => {
   };
 
   useEffect(() => {
-    console.log("useEffect3");
     async function fetchData() {
       const filters = mapFilters(filterField, filterOperator, filterValue);
-      console.log(filters);
       await Promise.all([
         getCommissionData(sessionToken, filters).then((result) =>
           setCommissionStatistics(result)
@@ -192,12 +192,10 @@ const Dashboard = () => {
       setFilterOperator("DateRange");
     }
   }, [filterField, filterOperator]);
-  // console.log(`revenue data: ${revenueTimeSeriesData}`);
 
-  console.log(filterField);
-
-  const handleInfo = () => {
+  const handleInfo = (evt) => {
     setModalFlag(true);
+    setCurInfo(evt.currentTarget.id);
   };
 
   const handleModalClose = () => {
@@ -213,7 +211,7 @@ const Dashboard = () => {
         aria-describedby="parent-modal-description"
       >
         <Box sx={{ ...style, width: 400 }}>
-          <Videos />
+          <Videos desc={curInfo} />
         </Box>
       </Modal>
       {/* HEADER */}
@@ -237,13 +235,34 @@ const Dashboard = () => {
 
       {/* filter */}
       <Box sx={{ background: "#1f2a40" }} mb="20px" p="20px">
-        <Header title="" subtitle="Filter" />
+        <div>
+          <Grid container>
+            <Grid item xs={11} md={11}>
+              <Header title="" subtitle="Filter" />
+            </Grid>
+            <Grid item xs={1} md={1} align="right">
+              <InfoOutlinedIcon
+                onClick={handleInfo}
+                id={Info.dashboard.filter}
+              />
+            </Grid>
+          </Grid>
+        </div>
         <Grid container spacing={3}>
           <Grid item xs={4}>
-            Fields
-            <InfoOutlinedIcon onClick={handleInfo} />
             <div>
-              <FormControl sx={{ m: 1, minWidth: 120 }}>
+              <Grid container spacing={1}>
+                <Grid item>Fields</Grid>
+                <Grid item>
+                  <InfoOutlinedIcon
+                    onClick={handleInfo}
+                    id={Info.dashboard.fields}
+                  />
+                </Grid>
+              </Grid>
+            </div>
+            <div>
+              <FormControl sx={{ minWidth: 120 }}>
                 <Select
                   value={filterField}
                   onChange={handleChangeFilterField}
@@ -261,9 +280,16 @@ const Dashboard = () => {
             </div>
           </Grid>
           <Grid item xs={4}>
-            Operator
             <div>
-              <FormControl sx={{ m: 1, minWidth: 120 }}>
+              <Grid container spacing={1}>
+                <Grid item>Operator</Grid>
+                <Grid item>
+                  <InfoOutlinedIcon onClick={handleInfo} />
+                </Grid>
+              </Grid>
+            </div>
+            <div>
+              <FormControl sx={{ minWidth: 120 }}>
                 <Select
                   value={filterOperator}
                   onChange={handleChangeFilterOperator}
@@ -289,7 +315,14 @@ const Dashboard = () => {
             </div>
           </Grid>
           <Grid item xs={4}>
-            Value
+            <div>
+              <Grid container spacing={1}>
+                <Grid item>Value</Grid>
+                <Grid item>
+                  <InfoOutlinedIcon onClick={handleInfo} />
+                </Grid>
+              </Grid>
+            </div>
             <div>
               {filterField === "dateCreated" ? (
                 <LocalizationProvider dateAdapter={AdapterDayjs}>
@@ -304,7 +337,6 @@ const Dashboard = () => {
                       tempFilterValue.startDate = moment(
                         newValue.toDate()
                       ).format("YYYY-MM-DD");
-                      console.log(tempFilterValue);
                       setFilterValue(tempFilterValue);
                     }}
                     renderInput={(params) => <TextField {...params} />}
@@ -320,7 +352,6 @@ const Dashboard = () => {
                       tempFilterValue.endDate = moment(
                         newValue.toDate()
                       ).format("YYYY-MM-DD");
-                      console.log(tempFilterValue);
                       setFilterValue(tempFilterValue);
                     }}
                     renderInput={(params) => <TextField {...params} />}
@@ -351,17 +382,27 @@ const Dashboard = () => {
             justifyContent="center"
             sx={{ height: "140px" }}
           >
-            <StatBox
-              title={commissionStatistics.totalCommissionPaid}
-              subtitle="Total Commission Due to be paid out based on total sum of transactions"
-              progress="0.75"
-              increase="+14%"
-              icon={
-                <ForestIcon
-                  sx={{ color: colors.greenAccent[600], fontSize: "26px" }}
+            <Grid container spacing={4}>
+              <Grid item sm={10} lg={10} md={10}>
+                <StatBox
+                  title={commissionStatistics.totalCommissionPaid}
+                  subtitle="Total Commission Due to be paid out based on total sum of transactions"
+                  progress="0.75"
+                  increase="+14%"
+                  icon={
+                    <ForestIcon
+                      sx={{ color: colors.greenAccent[600], fontSize: "26px" }}
+                    />
+                  }
                 />
-              }
-            />
+              </Grid>
+              <Grid item sm={2} lg={2} md={2}>
+                <InfoOutlinedIcon
+                  onClick={handleInfo}
+                  id={Info.dashboard.totalCommissionPaid}
+                />
+              </Grid>
+            </Grid>
           </Box>
         </Grid>
         <Grid item sm={6} md={6} lg={3}>
@@ -373,17 +414,24 @@ const Dashboard = () => {
             justifyContent="center"
             sx={{ height: "140px" }}
           >
-            <StatBox
-              title={commissionStatistics.totalCommission}
-              subtitle="Total commission Due based on total sum of transactions"
-              progress="0.50"
-              increase="+21%"
-              icon={
-                <PointOfSaleIcon
-                  sx={{ color: colors.greenAccent[600], fontSize: "26px" }}
+            <Grid container spacing={4}>
+              <Grid item sm={10} lg={10} md={10}>
+                <StatBox
+                  title={commissionStatistics.totalCommission}
+                  subtitle="Total commission Due based on total sum of transactions"
+                  progress="0.50"
+                  increase="+21%"
+                  icon={
+                    <PointOfSaleIcon
+                      sx={{ color: colors.greenAccent[600], fontSize: "26px" }}
+                    />
+                  }
                 />
-              }
-            />
+              </Grid>
+              <Grid item sm={2} lg={2} md={2}>
+                <InfoOutlinedIcon onClick={handleInfo} />
+              </Grid>
+            </Grid>
           </Box>
         </Grid>
         <Grid item sm={6} md={6} lg={3}>
@@ -395,17 +443,24 @@ const Dashboard = () => {
             justifyContent="center"
             sx={{ height: "140px" }}
           >
-            <StatBox
-              title={commissionStatistics.averageCommission}
-              subtitle="Avg commission amount."
-              progress="0.30"
-              increase="+5%"
-              icon={
-                <HubIcon
-                  sx={{ color: colors.greenAccent[600], fontSize: "26px" }}
+            <Grid container spacing={4}>
+              <Grid item sm={10} lg={10} md={10}>
+                <StatBox
+                  title={commissionStatistics.averageCommission}
+                  subtitle="Avg commission amount."
+                  progress="0.30"
+                  increase="+5%"
+                  icon={
+                    <HubIcon
+                      sx={{ color: colors.greenAccent[600], fontSize: "26px" }}
+                    />
+                  }
                 />
-              }
-            />
+              </Grid>
+              <Grid item sm={2} lg={2} md={2}>
+                <InfoOutlinedIcon onClick={handleInfo} />
+              </Grid>
+            </Grid>
           </Box>
         </Grid>
         <Grid item sm={6} md={6} lg={3}>
@@ -417,17 +472,24 @@ const Dashboard = () => {
             justifyContent="center"
             sx={{ height: "140px" }}
           >
-            <StatBox
-              title={commissionStatistics.amountTowardsGoalInProfileSection}
-              subtitle="% towards goal that was seet in the profile section"
-              progress="0.80"
-              increase="+43%"
-              icon={
-                <TrafficIcon
-                  sx={{ color: colors.greenAccent[600], fontSize: "26px" }}
+            <Grid container spacing={4}>
+              <Grid item sm={10} lg={10} md={10}>
+                <StatBox
+                  title={commissionStatistics.amountTowardsGoalInProfileSection}
+                  subtitle="% towards goal that was seet in the profile section"
+                  progress="0.80"
+                  increase="+43%"
+                  icon={
+                    <TrafficIcon
+                      sx={{ color: colors.greenAccent[600], fontSize: "26px" }}
+                    />
+                  }
                 />
-              }
-            />
+              </Grid>
+              <Grid item sm={2} lg={2} md={2}>
+                <InfoOutlinedIcon onClick={handleInfo} />
+              </Grid>
+            </Grid>
           </Box>
         </Grid>
 
@@ -441,17 +503,24 @@ const Dashboard = () => {
             justifyContent="center"
             sx={{ height: "140px" }}
           >
-            <StatBox
-              title={commissionStatistics.revenue}
-              subtitle="aka Revenue"
-              progress="0.75"
-              increase="+14%"
-              icon={
-                <FortIcon
-                  sx={{ color: colors.greenAccent[600], fontSize: "26px" }}
+            <Grid container spacing={4}>
+              <Grid item sm={10} lg={10} md={10}>
+                <StatBox
+                  title={commissionStatistics.revenue}
+                  subtitle="aka Revenue"
+                  progress="0.75"
+                  increase="+14%"
+                  icon={
+                    <FortIcon
+                      sx={{ color: colors.greenAccent[600], fontSize: "26px" }}
+                    />
+                  }
                 />
-              }
-            />
+              </Grid>
+              <Grid item sm={2} lg={2} md={2}>
+                <InfoOutlinedIcon onClick={handleInfo} />
+              </Grid>
+            </Grid>
           </Box>
         </Grid>
         <Grid item sm={6} md={6} lg={3}>
@@ -463,17 +532,24 @@ const Dashboard = () => {
             justifyContent="center"
             sx={{ height: "140px" }}
           >
-            <StatBox
-              title={commissionStatistics.saleCount}
-              subtitle="aka Sales"
-              progress="0.50"
-              increase="+21%"
-              icon={
-                <GamesIcon
-                  sx={{ color: colors.greenAccent[600], fontSize: "26px" }}
+            <Grid container spacing={4}>
+              <Grid item sm={10} lg={10} md={10}>
+                <StatBox
+                  title={commissionStatistics.saleCount}
+                  subtitle="aka Sales"
+                  progress="0.50"
+                  increase="+21%"
+                  icon={
+                    <GamesIcon
+                      sx={{ color: colors.greenAccent[600], fontSize: "26px" }}
+                    />
+                  }
                 />
-              }
-            />
+              </Grid>
+              <Grid item sm={2} lg={2} md={2}>
+                <InfoOutlinedIcon onClick={handleInfo} />
+              </Grid>
+            </Grid>
           </Box>
         </Grid>
         <Grid item sm={6} md={6} lg={3}>
@@ -485,17 +561,24 @@ const Dashboard = () => {
             justifyContent="center"
             sx={{ height: "140px" }}
           >
-            <StatBox
-              title={commissionStatistics.delinquents}
-              subtitle="aka Delinquents"
-              progress="0.30"
-              increase="+5%"
-              icon={
-                <GrassIcon
-                  sx={{ color: colors.greenAccent[600], fontSize: "26px" }}
+            <Grid container spacing={4}>
+              <Grid item sm={10} lg={10} md={10}>
+                <StatBox
+                  title={commissionStatistics.delinquents}
+                  subtitle="aka Delinquents"
+                  progress="0.30"
+                  increase="+5%"
+                  icon={
+                    <GrassIcon
+                      sx={{ color: colors.greenAccent[600], fontSize: "26px" }}
+                    />
+                  }
                 />
-              }
-            />
+              </Grid>
+              <Grid item sm={2} lg={2} md={2}>
+                <InfoOutlinedIcon onClick={handleInfo} />
+              </Grid>
+            </Grid>
           </Box>
         </Grid>
         <Grid item sm={6} md={6} lg={3}>
@@ -507,17 +590,24 @@ const Dashboard = () => {
             justifyContent="center"
             sx={{ height: "140px" }}
           >
-            <StatBox
-              title={commissionStatistics.projections}
-              subtitle="aka Projections"
-              progress="0.80"
-              increase="+43%"
-              icon={
-                <HandshakeIcon
-                  sx={{ color: colors.greenAccent[600], fontSize: "26px" }}
+            <Grid container spacing={4}>
+              <Grid item sm={10} lg={10} md={10}>
+                <StatBox
+                  title={commissionStatistics.projections}
+                  subtitle="aka Projections"
+                  progress="0.80"
+                  increase="+43%"
+                  icon={
+                    <HandshakeIcon
+                      sx={{ color: colors.greenAccent[600], fontSize: "26px" }}
+                    />
+                  }
                 />
-              }
-            />
+              </Grid>
+              <Grid item sm={2} lg={2} md={2}>
+                <InfoOutlinedIcon onClick={handleInfo} />
+              </Grid>
+            </Grid>
           </Box>
         </Grid>
 
@@ -531,7 +621,7 @@ const Dashboard = () => {
           >
             <Box
               // mt="25px"
-              p="0 30px"
+              p="0 10px 0 30px"
               display="flex "
               justifyContent="space-between"
               alignItems="center"
@@ -558,6 +648,7 @@ const Dashboard = () => {
                     sx={{ fontSize: "26px", color: colors.greenAccent[500] }}
                   />
                 </IconButton>
+                <InfoOutlinedIcon onClick={handleInfo} />
               </Box>
             </Box>
             <Box height="250px" m="-20px 0 0 0">
@@ -588,20 +679,24 @@ const Dashboard = () => {
             sx={{ height: "300px" }}
           >
             <Box
-              display="flex"
-              justifyContent="space-between"
-              alignItems="center"
               borderBottom={`4px solid ${colors.primary[500]}`}
               colors={colors.grey[100]}
               p="15px"
             >
-              <Typography
-                color={colors.grey[100]}
-                variant="h5"
-                fontWeight="600"
-              >
-                Recent Transactions
-              </Typography>
+              <Grid container spacing={2}>
+                <Grid item sm={10} md={10} lg={10}>
+                  <Typography
+                    color={colors.grey[100]}
+                    variant="h5"
+                    fontWeight="600"
+                  >
+                    Recent Transactions
+                  </Typography>
+                </Grid>
+                <Grid item sm={2} md={2} lg={2} align="right">
+                  <InfoOutlinedIcon onClick={handleInfo} />
+                </Grid>
+              </Grid>
             </Box>
             {transactionsTimeSeriesData.map((transaction, i) => (
               <Box
@@ -649,10 +744,17 @@ const Dashboard = () => {
             justifyContent="center"
             sx={{ height: "200px" }}
           >
-            <TopsalesBox
-              users={usersForLeaderboards.slice(0, 3)}
-              title="TOP SALES REPS"
-            />
+            <Grid container spacing={2}>
+              <Grid item sm={10} md={10} lg={10}>
+                <TopsalesBox
+                  users={usersForLeaderboards.slice(0, 3)}
+                  title="TOP SALES REPS"
+                />
+              </Grid>
+              <Grid item sm={2} md={2} lg={2} align="right" padding={2}>
+                <InfoOutlinedIcon onClick={handleInfo} />
+              </Grid>
+            </Grid>
           </Box>
         </Grid>
 
@@ -665,9 +767,17 @@ const Dashboard = () => {
             p="30px"
             sx={{ height: "300px" }}
           >
-            <Typography variant="h5" fontWeight="600">
-              Top 5 Most Successful Services in this timeperiod pie graphy
-            </Typography>
+            <Grid container spacing={2}>
+              <Grid item sm={10} md={10} lg={10}>
+                <Typography variant="h5" fontWeight="600">
+                  Top 5 Most Successful Services in this timeperiod pie graphy
+                </Typography>
+              </Grid>
+              <Grid item sm={2} md={2} lg={2} align="right">
+                <InfoOutlinedIcon onClick={handleInfo} />
+              </Grid>
+            </Grid>
+
             <Box
               display="flex"
               flexDirection="column"
@@ -698,9 +808,16 @@ const Dashboard = () => {
             <Typography
               variant="h5"
               fontWeight="600"
-              sx={{ padding: "30px 30px 0 30px" }}
+              sx={{ padding: "30px 20px 0 30px" }}
             >
-              # Customers trend line by service through timeframe
+              <Grid container spacing={2}>
+                <Grid item sm={10} md={10} lg={10}>
+                  <div># Customers trend line by service through timeframe</div>
+                </Grid>
+                <Grid item sm={2} md={2} lg={2} align="right">
+                  <InfoOutlinedIcon onClick={handleInfo} />
+                </Grid>
+              </Grid>
             </Typography>
             <Box height="250px" mt="-20px">
               <BarChart isDashboard={true} />
@@ -720,7 +837,14 @@ const Dashboard = () => {
               fontWeight="600"
               sx={{ marginBottom: "15px" }}
             >
-              Geography Based Traffic
+              <Grid container spacing={2}>
+                <Grid item sm={10} md={10} lg={10}>
+                  <div>Geography Based Traffic</div>
+                </Grid>
+                <Grid item sm={2} md={2} lg={2} align="right">
+                  <InfoOutlinedIcon onClick={handleInfo} />
+                </Grid>
+              </Grid>
             </Typography>
             <Box height="200px">
               <GeographyChart isDashboard={true} />

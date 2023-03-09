@@ -236,6 +236,6 @@ export const getCommissionData = async (sessionToken: string, filters: Filters) 
   commissionData.delinquents = "Coming Soon"
 
   commissionData.projections = "Coming Soon"
-
+  // console.log(`commissionData : ${commissionData}`);
   return commissionData;
 };
