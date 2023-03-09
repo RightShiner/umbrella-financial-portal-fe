@@ -1,7 +1,14 @@
 import { useEffect, useState, useContext } from "react";
 import axios from "axios";
 
-import { Box, Button, IconButton, Typography, useTheme } from "@mui/material";
+import {
+  Box,
+  Button,
+  IconButton,
+  Typography,
+  useTheme,
+  Modal,
+} from "@mui/material";
 import DownloadOutlinedIcon from "@mui/icons-material/DownloadOutlined";
 import PointOfSaleIcon from "@mui/icons-material/PointOfSale";
 import ForestIcon from "@mui/icons-material/Forest";
@@ -11,6 +18,7 @@ import GrassIcon from "@mui/icons-material/Grass";
 import HandshakeIcon from "@mui/icons-material/Handshake";
 import HubIcon from "@mui/icons-material/Hub";
 import TrafficIcon from "@mui/icons-material/Traffic";
+import InfoOutlinedIcon from "@mui/icons-material/InfoOutlined";
 
 import { tokens } from "../../theme";
 
@@ -21,6 +29,7 @@ import BarChart from "../../components/BarChart";
 import StatBox from "../../components/StatBox";
 import TopsalesBox from "../../components/TopsalesBox";
 import ProgressCircle from "../../components/ProgressCircle";
+import Videos from "../../components/Videos";
 
 import { mockTransactions } from "../../data/mockData";
 import {
@@ -131,8 +140,20 @@ const Dashboard = () => {
   };
 
   const [filterOperator, setFilterOperator] = useState("");
-
   const [filterValue, setFilterValue] = useState("");
+  const [modalFlag, setModalFlag] = useState(false);
+
+  const style = {
+    position: "absolute",
+    top: "50%",
+    left: "50%",
+    transform: "translate(-50%, -50%)",
+    width: 400,
+    bgcolor: "background.paper",
+    border: "2px solid #000",
+    boxShadow: 24,
+    p: 4,
+  };
 
   const handleChangeFilterOperator = (event) => {
     setFilterOperator(event.target.value);
@@ -175,8 +196,26 @@ const Dashboard = () => {
 
   console.log(filterField);
 
+  const handleInfo = () => {
+    setModalFlag(true);
+  };
+
+  const handleModalClose = () => {
+    setModalFlag(false);
+  };
+
   return (
     <Box m="20px">
+      <Modal
+        open={modalFlag}
+        onClose={handleModalClose}
+        aria-labelledby="parent-modal-title"
+        aria-describedby="parent-modal-description"
+      >
+        <Box sx={{ ...style, width: 400 }}>
+          <Videos />
+        </Box>
+      </Modal>
       {/* HEADER */}
       <Box display="flex" justifyContent="space-between" alignItems="center">
         <Header title="DASHBOARD" subtitle="Welcome to your dashboard" />
@@ -202,6 +241,7 @@ const Dashboard = () => {
         <Grid container spacing={3}>
           <Grid item xs={4}>
             Fields
+            <InfoOutlinedIcon onClick={handleInfo} />
             <div>
               <FormControl sx={{ m: 1, minWidth: 120 }}>
                 <Select
