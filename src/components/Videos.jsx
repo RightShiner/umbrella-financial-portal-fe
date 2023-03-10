@@ -5,7 +5,19 @@ import * as React from "react";
 // import Card from "@mui/joy/Card";
 // import Typography from "@mui/joy/Typography";
 
+<<<<<<< Updated upstream
 import { Box, Button, Card, Typography, Container } from "@mui/material";
+=======
+import {
+  Box,
+  Button,
+  Card,
+  Typography,
+  Container,
+  CardMedia,
+  CardContent,
+} from "@mui/material";
+>>>>>>> Stashed changes
 
 // import "../App.css";
 import { AdvancedVideo, lazyload } from "@cloudinary/react";
@@ -58,7 +70,11 @@ const Videos = (props) => {
     <div className="App-body">
       <Card variant="outlined" sx={{ width: 320, radius: 50, border: "none" }}>
         <div className="space"></div>
+<<<<<<< Updated upstream
         <Container maxWidth="sm">
+=======
+        <CardMedia>
+>>>>>>> Stashed changes
           <AdvancedVideo
             cldVid={getAdvancedVideoPropertiesVideo()}
             controls
@@ -69,6 +85,7 @@ const Videos = (props) => {
             plugins={[lazyload()]}
             style={{ width: "100%", height: "100%" }}
           />
+<<<<<<< Updated upstream
         </Container>
         <Box sx={{ display: "flex" }}>
           <div>
@@ -82,6 +99,23 @@ const Videos = (props) => {
             </Typography>
           </div>
         </Box>
+=======
+        </CardMedia>
+        <CardContent sx={{ display: "flex" }}>
+          <div>
+            {/* description */}
+            <Typography variant="h4" level="body3">
+              Total price:
+            </Typography>
+            <Typography fontSize="lg" fontWeight="lg" gutterBottom>
+              $2,900
+            </Typography>
+            <Typography variant="h5" gutterBottom>
+              {desc}
+            </Typography>
+          </div>
+        </CardContent>
+>>>>>>> Stashed changes
       </Card>
     </div>
   );

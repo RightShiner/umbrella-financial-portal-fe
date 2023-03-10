@@ -141,10 +141,17 @@ const Dashboard = () => {
   };
 
   const [filterOperator, setFilterOperator] = useState("");
+<<<<<<< Updated upstream
   const [filterValue, setFilterValue] = useState("");
   const [modalFlag, setModalFlag] = useState(false);
   const [curInfo, setCurInfo] = useState();
 
+=======
+
+<<<<<<< Updated upstream
+  const [filterValue, setFilterValue] = useState("");
+=======
+>>>>>>> Stashed changes
   const style = {
     position: "absolute",
     top: "50%",
@@ -152,10 +159,17 @@ const Dashboard = () => {
     transform: "translate(-50%, -50%)",
     width: 400,
     bgcolor: "background.paper",
+<<<<<<< Updated upstream
     border: "2px solid #000",
     boxShadow: 24,
     p: 4,
   };
+=======
+    border: "2px solid #555",
+    boxShadow: 24,
+  };
+>>>>>>> Stashed changes
+>>>>>>> Stashed changes
 
   const handleChangeFilterOperator = (event) => {
     setFilterOperator(event.target.value);
@@ -204,16 +218,31 @@ const Dashboard = () => {
 
   return (
     <Box m="20px">
+<<<<<<< Updated upstream
+=======
+<<<<<<< Updated upstream
+=======
+>>>>>>> Stashed changes
       <Modal
         open={modalFlag}
         onClose={handleModalClose}
         aria-labelledby="parent-modal-title"
         aria-describedby="parent-modal-description"
+<<<<<<< Updated upstream
       >
         <Box sx={{ ...style, width: 400 }}>
           <Videos desc={curInfo} />
         </Box>
       </Modal>
+=======
+        sx={{ radius: 50 }}
+      >
+        <Box sx={{ ...style, width: 400, radius: 50, p: 4 }} align="center">
+          <Videos desc={curInfo} />
+        </Box>
+      </Modal>
+>>>>>>> Stashed changes
+>>>>>>> Stashed changes
       {/* HEADER */}
       <Box display="flex" justifyContent="space-between" alignItems="center">
         <Header title="DASHBOARD" subtitle="Welcome to your dashboard" />
